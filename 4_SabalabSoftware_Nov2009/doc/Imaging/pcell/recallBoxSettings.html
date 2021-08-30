@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of recallBoxSettings</title>
+  <meta name="keywords" content="recallBoxSettings">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Imaging</a> &gt; <a href="index.html">pcell</a> &gt; recallBoxSettings.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\pcell&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>recallBoxSettings
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function recallBoxSettings(boxNum) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>	given the name of a global variable, find and update the GUI that contains it</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="changeBoxNumber.html" class="code" title="function changeBoxNumber">changeBoxNumber</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function recallBoxSettings(boxNum)</a>
+0002     <span class="keyword">global</span> state
+0003     
+0004     <span class="keyword">if</span> nargin&lt;1
+0005         boxNum=state.pcell.currentBoxNumber;
+0006     <span class="keyword">end</span>
+0007     
+0008     state.pcell.currentStartX=state.pcell.boxListStartX(boxNum);
+0009     state.pcell.currentStartY=state.pcell.boxListStartY(boxNum);
+0010     state.pcell.currentEndX=state.pcell.boxListEndX(boxNum);
+0011     state.pcell.currentEndY=state.pcell.boxListEndY(boxNum);
+0012     state.pcell.currentActiveStatus=state.pcell.boxListActive(boxNum);
+0013     state.pcell.currentBoxHandle=state.pcell.boxListHandles(boxNum);
+0014     state.pcell.currentPowerLevel=state.pcell.boxListPowerLevel(state.pcell.currentBoxNumber);
+0015     state.pcell.currentBoxChannel=state.pcell.boxListBoxChannel(state.pcell.currentBoxNumber);
+0016     state.pcell.currentFrameNumber=state.pcell.boxListFrameNumber(state.pcell.currentBoxNumber);
+0017 
+0018 <span class="comment">%     updateGUIByGlobal('state.pcell.currentStartX');</span>
+0019 <span class="comment">%     updateGUIByGlobal('state.pcell.currentStartY');</span>
+0020 <span class="comment">%     updateGUIByGlobal('state.pcell.currentEndX');</span>
+0021 <span class="comment">%     updateGUIByGlobal('state.pcell.currentEndY');</span>
+0022     <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.pcell.currentActiveStatus'</span>);
+0023     <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.pcell.currentPowerLevel'</span>);
+0024     <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.pcell.currentBoxChannel'</span>);
+0025     <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.pcell.currentFrameNumber'</span>);
+0026 
+0027     <span class="keyword">if</span> ishandle(state.pcell.currentBoxHandle) &amp; state.pcell.currentBoxHandle~=0
+0028         set(state.pcell.currentBoxHandle,<span class="string">'Color'</span>,[0 0 1]);
+0029         drawnow;
+0030     <span class="keyword">end</span>
+0031 
+0032</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

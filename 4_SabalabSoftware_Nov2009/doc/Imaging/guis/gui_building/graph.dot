@@ -1,0 +1,17 @@
+/* Created by mdot for Matlab */
+digraph m2html {
+  makeImageFigures -> makeColorMap;
+
+  advancedCycleGUI [URL="advancedCycleGUI.html"];
+  basicConfigurationGUI [URL="basicConfigurationGUI.html"];
+  channelGUI [URL="channelGUI.html"];
+  fieldAdjustGUI [URL="fieldAdjustGUI.html"];
+  imageGUI [URL="imageGUI.html"];
+  imageTracker [URL="imageTracker.html"];
+  makeColorMap [URL="makeColorMap.html"];
+  makeGraphicalLUT [URL="makeGraphicalLUT.html"];
+  makeImageFigures [URL="makeImageFigures.html"];
+  motorGUI [URL="motorGUI.html"];
+  resetImageProperties [URL="resetImageProperties.html"];
+  siGUI_ImagingControls [URL="siGUI_ImagingControls.html"];
+}

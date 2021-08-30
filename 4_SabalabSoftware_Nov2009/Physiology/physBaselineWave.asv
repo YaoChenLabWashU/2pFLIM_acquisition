@@ -1,0 +1,13 @@
+function physBaselineWave(waveName, baseline)
+	if ~iswave(waveName)
+		error('physBaselineWave: expected wave name');
+	else
+		xscale=get(waveName, 'xscale');
+		baselineString='state.phys.settings.inputRate*[2:400]'; % reaplce 1 and 100 with baseline period in ms
+		baselineStart=max(ceil(basline(1)/xscale(2)),1);
+		baselineEnd=floor(
+		evalin('base', ['tempBaseline=mean(' dataWaveName ...
+				'(' baselineString '));'])
+		evalin('base', [dataWaveName '.data=' dataWaveName '.data-tempBaseline;'])
+		
+	end

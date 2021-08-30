@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of calcLineScan</title>
+  <meta name="keywords" content="calcLineScan">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Imaging</a> &gt; <a href="index.html">FluoProcessing</a> &gt; calcLineScan.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\FluoProcessing&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>calcLineScan
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function out=calcLineScan(im, startLine, stopLine, filterPoint) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="lineScanProcess.html" class="code" title="function lineScanProcess(channel1, channel2, flChannelIndex, lsChannelIndex, offsets, numROI)">lineScanProcess</a>	</li><li><a href="runLineScanAnalysis.html" class="code" title="function founderr=runLineScanAnalysis">runLineScanAnalysis</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function out=calcLineScan(im, startLine, stopLine, filterPoint)</a>
+0002     <span class="keyword">if</span> nargin&lt;4
+0003         filterPoint=3;
+0004     <span class="keyword">end</span>
+0005     <span class="keyword">if</span> nargin&lt;3
+0006         stopLine=size(im, 1);
+0007     <span class="keyword">end</span>
+0008     <span class="keyword">if</span> nargin&lt;2
+0009         startLine=1;
+0010     <span class="keyword">end</span>
+0011     
+0012     <span class="keyword">if</span> stopLine&lt;1 | stopLine&gt;size(im,1)
+0013         stopLine=size(im, 1);
+0014     <span class="keyword">end</span>        
+0015     <span class="keyword">if</span> startLine&lt;1
+0016         startLine=1;
+0017     <span class="keyword">end</span>        
+0018     
+0019     out=mean(im(startLine:stopLine,:),1);
+0020     <span class="keyword">if</span> filterPoint&gt;1
+0021         out=filter(repmat(1/filterPoint, 1, filterPoint), 1, out);
+0022     <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

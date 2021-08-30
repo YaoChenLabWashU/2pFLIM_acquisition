@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of initTimer</title>
+  <meta name="keywords" content="initTimer">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">Timer</a> &gt; initTimer.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Timer&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>initTimer
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function initTimer(analysisMode, packages) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="../Imaging/guis/gui_building/advancedCycleGUI.html" class="code" title="function varargout = advancedCycleGUI(varargin)">advancedCycleGUI</a>	ADVANCEDCYCLEGUI M-file for advancedCycleGUI.fig</li><li><a href="../Imaging/guis/gui_handling/seeGUI.html" class="code" title="function seeGUI(GUI)">seeGUI</a>	makes a gui visible.  expects string with name of gui</li><li><a href="../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>	This function sets the status field in mainControls.</li><li><a href="../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>	given the name of a global variable, find and update the GUI that contains it</li><li><a href="../Imaging/io/file_io/data/updateHeaderString.html" class="code" title="function updateHeaderString(globalName)">updateHeaderString</a>	</li><li><a href="../Imaging/io/file_io/initialization/openini.html" class="code" title="function out=openini(fileName)">openini</a>	</li><li><a href="../Imaging/io/scanFieldControl/updateCycleDisplay.html" class="code" title="function updateCycleDisplay(position)">updateCycleDisplay</a>	</li><li><a href="initTraceAnalysis.html" class="code" title="function initTraceAnalysis">initTraceAnalysis</a>	</li><li><a href="loadUserSettings.html" class="code" title="function loadUserSettings(pname, fname)">loadUserSettings</a>	Allows user to select a settings file (*.ini) from disk and loads it</li><li><a href="loadUserSettingsPath.html" class="code" title="function loadUserSettingsPath">loadUserSettingsPath</a>	</li><li><a href="makeTimerPackagesMenu.html" class="code" title="function makeTimerPackagesMenu">makeTimerPackagesMenu</a>	</li><li><a href="timerMainControls.html" class="code" title="function varargout = timerMainControls(varargin)">timerMainControls</a>	TIMERMAINCONTROLS M-file for timerMainControls.fig</li><li><a href="timerMakeAnalysisFunctionMenu.html" class="code" title="function timerMakeAnalysisFunctionMenu">timerMakeAnalysisFunctionMenu</a>	</li><li><a href="timerSetActiveStatus.html" class="code" title="function timerSetActiveStatus(packageList, status)">timerSetActiveStatus</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function initTimer(analysisMode, packages)</a>
+0002 
+0003     <span class="keyword">global</span> state gh
+0004     
+0005     <span class="keyword">if</span> nargin==0
+0006         analysisMode=0;
+0007         packages=[];
+0008     <span class="keyword">elseif</span> nargin==1
+0009         packages=analysisMode;
+0010         analysisMode=0;
+0011     <span class="keyword">end</span>
+0012             
+0013     gh.timerMainControls = guihandles(<a href="timerMainControls.html" class="code" title="function varargout = timerMainControls(varargin)">timerMainControls</a>);
+0014     gh.pulseMaker=guihandles(pulseMaker);
+0015     set(gh.timerMainControls.statusString, <span class="string">'String'</span>, <span class="string">'Opening GUIS...'</span>)
+0016     gh.advancedCycleGui=guihandles(<a href="../Imaging/guis/gui_building/advancedCycleGUI.html" class="code" title="function varargout = advancedCycleGUI(varargin)">advancedCycleGUI</a>);
+0017     set(gh.timerMainControls.statusString, <span class="string">'String'</span>, <span class="string">'Read timer.ini ...'</span>)
+0018     <a href="../Imaging/io/file_io/initialization/openini.html" class="code" title="function out=openini(fileName)">openini</a>(<span class="string">'timer.ini'</span>);
+0019     set(gh.timerMainControls.statusString, <span class="string">'String'</span>, <span class="string">'Read machineSpecific.ini ...'</span>)
+0020     <a href="../Imaging/io/file_io/initialization/openini.html" class="code" title="function out=openini(fileName)">openini</a>(<span class="string">'machineSpecific.ini'</span>);
+0021     <a href="../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Opening packages...'</span>);
+0022     <a href="makeTimerPackagesMenu.html" class="code" title="function makeTimerPackagesMenu">makeTimerPackagesMenu</a>;
+0023 
+0024     <span class="keyword">if</span> analysisMode
+0025         state.analysisMode=1;
+0026     <span class="keyword">else</span>
+0027         state.analysisMode=0;
+0028     <span class="keyword">end</span>
+0029 
+0030     state.pulses.addCompList={<span class="string">''</span>};
+0031     state.pulses.patternNameList={<span class="string">''</span>};
+0032     waveo(<span class="string">'currentPulsePattern'</span>, 0);
+0033     waveo(<span class="string">'currentPulseVectorX'</span>, [0 0]);
+0034     waveo(<span class="string">'currentPulseVectorY'</span>, [0 0]);
+0035     changePulsePatternNumber(1);
+0036     <span class="keyword">global</span> currentPulsePattern
+0037     plot(currentPulsePattern);
+0038 <span class="comment">%    plotxy('currentPulseVectorX', 'currentPulseVectorY')</span>
+0039     state.internal.pulsePatternPlot=gcf;
+0040     set(state.internal.pulsePatternPlot, <span class="string">'visible'</span>, <span class="string">'off'</span>, <span class="keyword">...</span>
+0041         <span class="string">'CloseRequestFcn'</span>, <span class="string">'hideCurrentWindow'</span>, <span class="keyword">...</span>
+0042         <span class="string">'Name'</span>, <span class="string">'PULSE PATTERN'</span>, <span class="keyword">...</span>
+0043         <span class="string">'NumberTitle'</span>, <span class="string">'off'</span>, <span class="keyword">...</span>
+0044         <span class="string">'Position'</span>, [400   656   321   144], <span class="keyword">...</span>
+0045         <span class="string">'MenuBar'</span>, <span class="string">'none'</span>);
+0046     
+0047     state.internal.startupTime=clock;
+0048     state.internal.startupTimeString=clockToString(state.internal.startupTime);
+0049     <a href="../Imaging/io/file_io/data/updateHeaderString.html" class="code" title="function updateHeaderString(globalName)">updateHeaderString</a>(<span class="string">'state.internal.startupTimeString'</span>);
+0050 
+0051     state.internal.cycleListNames={};
+0052     allfields=fieldnames(state.cycle);
+0053     <span class="keyword">for</span> counter=1:length(allfields)
+0054         <span class="keyword">if</span> ~isempty(findstr(allfields{counter}, <span class="string">'List'</span>))
+0055             tag=allfields{counter};
+0056             state.internal.cycleListNames{end+1}=tag(1:end-4);
+0057         <span class="keyword">end</span>
+0058     <span class="keyword">end</span>
+0059     
+0060     state.internal.triggerTime=clock;
+0061     
+0062     state.initializing=1;
+0063     initNotebooks;
+0064     <a href="../Imaging/guis/gui_handling/seeGUI.html" class="code" title="function seeGUI(GUI)">seeGUI</a>(<span class="string">'gh.advancedCycleGui.figure1'</span>);
+0065     
+0066     <a href="timerSetActiveStatus.html" class="code" title="function timerSetActiveStatus(packageList, status)">timerSetActiveStatus</a>(packages, 1);
+0067         
+0068     <a href="initTraceAnalysis.html" class="code" title="function initTraceAnalysis">initTraceAnalysis</a>;
+0069     <a href="loadUserSettingsPath.html" class="code" title="function loadUserSettingsPath">loadUserSettingsPath</a>;
+0070     <a href="loadUserSettings.html" class="code" title="function loadUserSettings(pname, fname)">loadUserSettings</a>;
+0071     <a href="../Imaging/io/scanFieldControl/updateCycleDisplay.html" class="code" title="function updateCycleDisplay(position)">updateCycleDisplay</a>(1);
+0072     
+0073     <span class="keyword">if</span> state.analysisMode
+0074         set(gh.timerMainControls.loop, <span class="string">'Enable'</span>, <span class="string">'off'</span>);
+0075         set(gh.timerMainControls.doOne, <span class="string">'Enable'</span>, <span class="string">'off'</span>);
+0076         state.files.autoSave=0;
+0077         <a href="../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.files.autoSave'</span>);
+0078     <span class="keyword">end</span>
+0079     
+0080     <a href="timerMakeAnalysisFunctionMenu.html" class="code" title="function timerMakeAnalysisFunctionMenu">timerMakeAnalysisFunctionMenu</a>
+0081     
+0082     waveo(<span class="string">'timerAcqTime'</span>, []);
+0083     <a href="../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Ready to Use'</span>);
+0084     
+0085     <span class="comment">%try</span>
+0086     <span class="comment">%    TNSetPath;</span>
+0087     <span class="comment">%catch</span>
+0088     <span class="comment">%end</span></pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

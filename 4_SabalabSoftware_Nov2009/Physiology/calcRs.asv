@@ -1,0 +1,65 @@
+function [rin, rs, cm, error]=calcRs(data, dx, pulseAmp, pulseStart, pulseLength, baselineStart, baselineEnd)
+		rin=0;
+		rs=0;
+		cm=0;
+		error=0;
+		
+		dataPulseStart=round(pulseStart/dx)+1;
+		dataPulseEnd=1+round((pulseStart+pulseLength)/dx);
+		
+        if dataPulseStart>size(data, 2)
+			disp('calcRs: start of pulse is beyond end of data')
+			error=1;
+			return
+		end
+		
+	   if ((round(pulseStart/dx)+1)>size(data, 2))
+			disp('calcRs: end of pulse is beyond end of data.  Fitting to available data')
+			return
+	   end
+		
+		if pulseAmp>0
+			[peak, peakloc]=max(data(dataPulseStart:));
+		else
+			[peak, peakloc]=min(data(dataPulseStart:1+round((pulseStart+pulseLength)/dx)));
+		end
+		peakloc=peakloc+round(pulseStart/dx)-1;
+		
+		delta=round(0.1*pulseLength/dx);
+		endline=mean(data(round((pulseStart+pulseLength*0.7)/dx)+1:round((pulseStart+pulseLength)/dx)));
+		baseline=mean(data(round(baselineStart/dx)+1:round(baselineEnd/dx)-1));
+		
+		if pulseAmp>0
+			above=find(data(dataPulseStart:round((pulseStart+pulseLength)/dx))>(peak-endline)/5+endline);
+			if isempty(above)
+				error=1;
+				return;
+			end
+			last=above(end)+round(pulseStart/dx);
+		else
+			above=find(data(dataPulseStart:round((pulseStart+pulseLength)/dx))<(peak-endline)/5+endline);
+			if isempty(above)
+				error=1;
+				return;
+			end
+			last=above(end)+round(pulseStart/dx);
+		end
+
+		delta=round((last-peakloc)/2);
+		clear above last
+		
+		peak1=peak-endline;
+		peak2=data(delta+peakloc)-endline;
+		peak3=data(2*delta+peakloc)-endline;
+		peakloc=peakloc-round(pulseStart/dx)-1;
+		
+		tau=delta*(1/log(peak1/peak2)+1/log(peak2/peak3)+2/log(peak1/peak3))/3;
+		amp=(peak1/exp(-peakloc/tau)+peak2/exp(-(peakloc+delta)/tau)+peak3/exp(-(peakloc+2*delta)/tau))/3;
+		
+		rs=1000*pulseAmp/amp;
+		rin=1000*pulseAmp/(endline-baseline)-rs;
+		cm=1000*tau*dx/rs;
+
+		waveo('calcRsFit', endline+amp*exp(-[0:round(pulseLength/dx)]/tau), 'xscale', [pulseStart dx]);
+		clear tau amp peak peak1 peak2 peak3 peakloc endlkine baseline
+

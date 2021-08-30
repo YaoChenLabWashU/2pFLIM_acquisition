@@ -1,0 +1,18 @@
+/* Created by mdot for Matlab */
+digraph m2html {
+  makeFrameByStripes -> endAcquisition;
+  makeFrameByStripes -> siProcessImageStripe;
+  makeStripe -> siProcessImageStripe;
+  siProcessImageStripe -> add2d;
+
+  add2d [URL="add2d.html"];
+  endAcquisition [URL="endAcquisition.html"];
+  makeFrameByStripes [URL="makeFrameByStripes.html"];
+  makeStripe [URL="makeStripe.html"];
+  preallocateMemory [URL="preallocateMemory.html"];
+  resetCounters [URL="resetCounters.html"];
+  selectNumberOfStripes [URL="selectNumberOfStripes.html"];
+  siProcessImageStripe [URL="siProcessImageStripe.html"];
+  startFocus [URL="startFocus.html"];
+  startGrab [URL="startGrab.html"];
+}

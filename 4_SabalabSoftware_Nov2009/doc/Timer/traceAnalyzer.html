@@ -1,0 +1,331 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of traceAnalyzer</title>
+  <meta name="keywords" content="traceAnalyzer">
+  <meta name="description" content="TRACEANALYZER M-file for traceAnalyzer.fig">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">Timer</a> &gt; traceAnalyzer.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Timer&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>traceAnalyzer
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>TRACEANALYZER M-file for traceAnalyzer.fig</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function varargout = traceAnalyzer(varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> TRACEANALYZER M-file for traceAnalyzer.fig
+      TRACEANALYZER, by itself, creates a new TRACEANALYZER or raises the existing
+      singleton*.
+
+      H = TRACEANALYZER returns the handle to a new TRACEANALYZER or the handle to
+      the existing singleton*.
+
+      TRACEANALYZER('CALLBACK',hObject,eventData,handles,...) calls the local
+      function named CALLBACK in TRACEANALYZER.M with the given input arguments.
+
+      TRACEANALYZER('Property','Value',...) creates a new TRACEANALYZER or raises the
+      existing singleton*.  Starting from the left, property value pairs are
+      applied to the GUI before traceAnalyzer_OpeningFunction gets called.  An
+      unrecognized property name or invalid value makes property application
+      stop.  All inputs are passed to traceAnalyzer_OpeningFcn via varargin.
+
+      *See GUI Options on GUIDE's Tools menu.  Choose &quot;GUI allows only one
+      instance to run (singleton)&quot;.
+
+ See also: GUIDE, GUIDATA, GUIHANDLES</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="../Imaging/FluoProcessing/runFluorAnalysis.html" class="code" title="function runFluorAnalysis(acqNumber)">runFluorAnalysis</a>	</li><li><a href="../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>	</li><li><a href="../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>	This function sets the status field in mainControls.</li><li><a href="../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>	given the name of a global variable, find and update the GUI that contains it</li><li><a href="../Imaging/guis/siSelectionChannelToFront.html" class="code" title="function siSelectionChannelToFront">siSelectionChannelToFront</a>	</li><li><a href="tracePlot.html" class="code" title="function tracePlot(newFigure, peaks, anaLine, anaPeak)">tracePlot</a>	</li><li><a href="updateLineDisplay.html" class="code" title="function updateLineDisplay">updateLineDisplay</a>	</li><li><a href="updatePeakDisplay.html" class="code" title="function updatePeakDisplay">updatePeakDisplay</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="initTraceAnalysis.html" class="code" title="function initTraceAnalysis">initTraceAnalysis</a>	</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function traceAnalyzer_OpeningFcn(hObject, eventdata, handles, varargin)</a></li><li><a href="#_sub2" class="code">function varargout = traceAnalyzer_OutputFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub3" class="code">function active_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub4" class="code">function displayLine_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub5" class="code">function displayPeak_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub6" class="code">function channelSelection_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub7" class="code">function pulsePattern_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub8" class="code">function roiSelection_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub9" class="code">function baselineMode_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub10" class="code">function baselineStart_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub11" class="code">function baselineEnd_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub12" class="code">function peakMode_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub13" class="code">function peakStart_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub14" class="code">function peakEnd_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub15" class="code">function deleteLine_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub16" class="code">function deletePeak_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub17" class="code">function baselinePlot_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub18" class="code">function baselineAppend_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub19" class="code">function peakPlot_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub20" class="code">function peakAppend_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub21" class="code">function generic_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub22" class="code">function rerunButton_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub23" class="code">function selectROIButton_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub24" class="code">function collapseButton_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub25" class="code">function Untitled_13_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub26" class="code">function saveAvgLinescan_Callback(hObject, eventdata, handles)</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function varargout = traceAnalyzer(varargin)</a>
+0002 <span class="comment">% TRACEANALYZER M-file for traceAnalyzer.fig</span>
+0003 <span class="comment">%      TRACEANALYZER, by itself, creates a new TRACEANALYZER or raises the existing</span>
+0004 <span class="comment">%      singleton*.</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">%      H = TRACEANALYZER returns the handle to a new TRACEANALYZER or the handle to</span>
+0007 <span class="comment">%      the existing singleton*.</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">%      TRACEANALYZER('CALLBACK',hObject,eventData,handles,...) calls the local</span>
+0010 <span class="comment">%      function named CALLBACK in TRACEANALYZER.M with the given input arguments.</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">%      TRACEANALYZER('Property','Value',...) creates a new TRACEANALYZER or raises the</span>
+0013 <span class="comment">%      existing singleton*.  Starting from the left, property value pairs are</span>
+0014 <span class="comment">%      applied to the GUI before traceAnalyzer_OpeningFunction gets called.  An</span>
+0015 <span class="comment">%      unrecognized property name or invalid value makes property application</span>
+0016 <span class="comment">%      stop.  All inputs are passed to traceAnalyzer_OpeningFcn via varargin.</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">%      *See GUI Options on GUIDE's Tools menu.  Choose &quot;GUI allows only one</span>
+0019 <span class="comment">%      instance to run (singleton)&quot;.</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">% See also: GUIDE, GUIDATA, GUIHANDLES</span>
+0022 
+0023 <span class="comment">% Edit the above text to modify the response to help traceAnalyzer</span>
+0024 
+0025 <span class="comment">% Last Modified by GUIDE v2.5 24-Sep-2009 16:24:48</span>
+0026 
+0027 <span class="comment">% Begin initialization code - DO NOT EDIT</span>
+0028 gui_Singleton = 1;
+0029 gui_State = struct(<span class="string">'gui_Name'</span>,       mfilename, <span class="keyword">...</span>
+0030                    <span class="string">'gui_Singleton'</span>,  gui_Singleton, <span class="keyword">...</span>
+0031                    <span class="string">'gui_OpeningFcn'</span>, @<a href="#_sub1" class="code" title="subfunction traceAnalyzer_OpeningFcn(hObject, eventdata, handles, varargin)">traceAnalyzer_OpeningFcn</a>, <span class="keyword">...</span>
+0032                    <span class="string">'gui_OutputFcn'</span>,  @<a href="#_sub2" class="code" title="subfunction varargout = traceAnalyzer_OutputFcn(hObject, eventdata, handles)">traceAnalyzer_OutputFcn</a>, <span class="keyword">...</span>
+0033                    <span class="string">'gui_LayoutFcn'</span>,  [] , <span class="keyword">...</span>
+0034                    <span class="string">'gui_Callback'</span>,   []);
+0035 <span class="keyword">if</span> nargin &amp; isstr(varargin{1})
+0036     gui_State.gui_Callback = str2func(varargin{1});
+0037 <span class="keyword">end</span>
+0038 
+0039 <span class="keyword">if</span> nargout
+0040     [varargout{1:nargout}] = gui_mainfcn(gui_State, varargin{:});
+0041 <span class="keyword">else</span>
+0042     gui_mainfcn(gui_State, varargin{:});
+0043 <span class="keyword">end</span>
+0044 <span class="comment">% End initialization code - DO NOT EDIT</span>
+0045 
+0046 
+0047 <span class="comment">% --- Executes just before traceAnalyzer is made visible.</span>
+0048 <a name="_sub1" href="#_subfunctions" class="code">function traceAnalyzer_OpeningFcn(hObject, eventdata, handles, varargin)</a>
+0049 <span class="comment">% This function has no output args, see OutputFcn.</span>
+0050 <span class="comment">% hObject    handle to figure</span>
+0051 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0052 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0053 <span class="comment">% varargin   command line arguments to traceAnalyzer (see VARARGIN)</span>
+0054 
+0055 <span class="comment">% Choose default command line output for traceAnalyzer</span>
+0056 handles.output = hObject;
+0057 
+0058 <span class="comment">% Update handles structure</span>
+0059 guidata(hObject, handles);
+0060 
+0061 <span class="comment">% UIWAIT makes traceAnalyzer wait for user response (see UIRESUME)</span>
+0062 <span class="comment">% uiwait(handles.figure1);</span>
+0063 
+0064 
+0065 <a name="_sub2" href="#_subfunctions" class="code">function varargout = traceAnalyzer_OutputFcn(hObject, eventdata, handles)</a>
+0066 varargout{1} = handles.output;
+0067 
+0068 
+0069 
+0070 
+0071 <span class="comment">%*****************</span>
+0072 
+0073 
+0074 <a name="_sub3" href="#_subfunctions" class="code">function active_Callback(hObject, eventdata, handles)</a>
+0075     <a href="../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0076 
+0077 <a name="_sub4" href="#_subfunctions" class="code">function displayLine_Callback(hObject, eventdata, handles)</a>
+0078     <a href="../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0079     <a href="updateLineDisplay.html" class="code" title="function updateLineDisplay">updateLineDisplay</a>;
+0080     
+0081 <a name="_sub5" href="#_subfunctions" class="code">function displayPeak_Callback(hObject, eventdata, handles)</a>
+0082     <a href="../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0083     <a href="updatePeakDisplay.html" class="code" title="function updatePeakDisplay">updatePeakDisplay</a>;
+0084     
+0085 <a name="_sub6" href="#_subfunctions" class="code">function channelSelection_Callback(hObject, eventdata, handles)</a>
+0086     <a href="../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0087     <span class="keyword">global</span> state
+0088     state.analysis.setup{state.analysis.displayLine, 1}=state.analysis.channelSelection;
+0089     
+0090 <a name="_sub7" href="#_subfunctions" class="code">function pulsePattern_Callback(hObject, eventdata, handles)</a>
+0091     <a href="../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0092     <span class="keyword">global</span> state
+0093     state.analysis.setup{state.analysis.displayLine, 2}=state.analysis.pulsePattern;
+0094 
+0095 <a name="_sub8" href="#_subfunctions" class="code">function roiSelection_Callback(hObject, eventdata, handles)</a>
+0096     <a href="../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0097     <span class="keyword">global</span> state
+0098     state.analysis.setup{state.analysis.displayLine, 3}=state.analysis.roiSelection;
+0099 
+0100 <a name="_sub9" href="#_subfunctions" class="code">function baselineMode_Callback(hObject, eventdata, handles)</a>
+0101     <a href="../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0102     <span class="keyword">global</span> state
+0103     state.analysis.setup{state.analysis.displayLine, 4}=state.analysis.baselineMode;
+0104 
+0105 <a name="_sub10" href="#_subfunctions" class="code">function baselineStart_Callback(hObject, eventdata, handles)</a>
+0106     <a href="../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0107     <span class="keyword">global</span> state
+0108     state.analysis.setup{state.analysis.displayLine, 5}=state.analysis.baselineStart;
+0109 
+0110 <a name="_sub11" href="#_subfunctions" class="code">function baselineEnd_Callback(hObject, eventdata, handles)</a>
+0111     <a href="../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0112     <span class="keyword">global</span> state
+0113     state.analysis.setup{state.analysis.displayLine, 6}=state.analysis.baselineEnd;
+0114 
+0115 <a name="_sub12" href="#_subfunctions" class="code">function peakMode_Callback(hObject, eventdata, handles)</a>
+0116     <a href="../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0117     <span class="keyword">global</span> state
+0118     state.analysis.setup{state.analysis.displayLine, 7}(state.analysis.displayPeak, 1)=state.analysis.peakMode;
+0119 
+0120 <a name="_sub13" href="#_subfunctions" class="code">function peakStart_Callback(hObject, eventdata, handles)</a>
+0121     <a href="../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0122     <span class="keyword">global</span> state
+0123     state.analysis.setup{state.analysis.displayLine, 7}(state.analysis.displayPeak, 2)=state.analysis.peakStart;
+0124 
+0125 <a name="_sub14" href="#_subfunctions" class="code">function peakEnd_Callback(hObject, eventdata, handles)</a>
+0126     <a href="../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0127     <span class="keyword">global</span> state
+0128     state.analysis.setup{state.analysis.displayLine, 7}(state.analysis.displayPeak, 3)=state.analysis.peakEnd;
+0129 
+0130 <a name="_sub15" href="#_subfunctions" class="code">function deleteLine_Callback(hObject, eventdata, handles)</a>
+0131     <span class="keyword">global</span> state
+0132     state.analysis.setup(state.analysis.displayLine, :)=[];
+0133     <span class="keyword">if</span> size(state.analysis.setup, 1)==0
+0134         state.analysis.setup={1 0 1 1 0 0 [1 0 0] {}};
+0135         state.analysis.displayLine = 1;
+0136         <a href="../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.analysis.displayLine'</span>)
+0137     <span class="keyword">elseif</span> state.analysis.displayLine &gt; size(state.analysis.setup, 1)
+0138         state.analysis.displayLine = size(state.analysis.setup, 1);
+0139         <a href="../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.analysis.displayLine'</span>)
+0140     <span class="keyword">end</span>
+0141     <a href="updateLineDisplay.html" class="code" title="function updateLineDisplay">updateLineDisplay</a>
+0142     
+0143 <a name="_sub16" href="#_subfunctions" class="code">function deletePeak_Callback(hObject, eventdata, handles)</a>
+0144     <span class="keyword">global</span> state
+0145 
+0146     state.analysis.setup{state.analysis.displayLine, 7}(state.analysis.displayPeak, :)=[];
+0147     
+0148     <span class="keyword">if</span> size(state.analysis.setup{state.analysis.displayLine, 7}, 1)==0
+0149         state.analysis.setup{state.analysis.displayLine, 7}=[1 0 0];
+0150         state.analysis.displayPeak = 1;
+0151         <a href="../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.analysis.displayPeak'</span>)
+0152     <span class="keyword">elseif</span> state.analysis.displayPeak &gt; size(state.analysis.setup{state.analysis.displayLine, 7}, 1)
+0153         state.analysis.displayPeak = size(state.analysis.setup{state.analysis.displayLine, 7}, 1);
+0154         <a href="../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.analysis.displayPeak'</span>)
+0155     <span class="keyword">end</span>
+0156     <a href="updatePeakDisplay.html" class="code" title="function updatePeakDisplay">updatePeakDisplay</a>
+0157 
+0158 <a name="_sub17" href="#_subfunctions" class="code">function baselinePlot_Callback(hObject, eventdata, handles)</a>
+0159     <a href="tracePlot.html" class="code" title="function tracePlot(newFigure, peaks, anaLine, anaPeak)">tracePlot</a>(1, 0);
+0160 
+0161 <a name="_sub18" href="#_subfunctions" class="code">function baselineAppend_Callback(hObject, eventdata, handles)</a>
+0162     <a href="tracePlot.html" class="code" title="function tracePlot(newFigure, peaks, anaLine, anaPeak)">tracePlot</a>(0, 0);
+0163 
+0164 <a name="_sub19" href="#_subfunctions" class="code">function peakPlot_Callback(hObject, eventdata, handles)</a>
+0165     <a href="tracePlot.html" class="code" title="function tracePlot(newFigure, peaks, anaLine, anaPeak)">tracePlot</a>(1, 1);
+0166 
+0167 <a name="_sub20" href="#_subfunctions" class="code">function peakAppend_Callback(hObject, eventdata, handles)</a>
+0168     <a href="tracePlot.html" class="code" title="function tracePlot(newFigure, peaks, anaLine, anaPeak)">tracePlot</a>(0, 1);
+0169 
+0170 <a name="_sub21" href="#_subfunctions" class="code">function generic_Callback(hObject, eventdata, handles)</a>
+0171     <a href="../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0172 
+0173 <a name="_sub22" href="#_subfunctions" class="code">function rerunButton_Callback(hObject, eventdata, handles)</a>
+0174     <span class="keyword">global</span> state
+0175     <a href="../Imaging/FluoProcessing/runFluorAnalysis.html" class="code" title="function runFluorAnalysis(acqNumber)">runFluorAnalysis</a>(state.files.lastAcquisition);
+0176 
+0177 <a name="_sub23" href="#_subfunctions" class="code">function selectROIButton_Callback(hObject, eventdata, handles)</a>
+0178     <span class="keyword">global</span> state gh
+0179     <span class="keyword">if</span> state.analysis.analysisMode==1
+0180         beep;
+0181         disp(<span class="string">'*** please select an analysis mode first ***'</span>);
+0182         <a href="../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'SELECT analysis mode'</span>);
+0183         <span class="keyword">return</span>
+0184     <span class="keyword">end</span>
+0185     set(hObject, <span class="string">'Enable'</span>, <span class="string">'off'</span>);    
+0186     <span class="keyword">try</span>
+0187         set(gh.traceAnalyzer.selectROIButton, <span class="string">'ForeGroundColor'</span>, [0 0 1]);
+0188         <a href="../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Drag over ROI'</span>);
+0189     
+0190         <a href="../Imaging/guis/siSelectionChannelToFront.html" class="code" title="function siSelectionChannelToFront">siSelectionChannelToFront</a>
+0191 
+0192         k = waitforbuttonpress;
+0193     
+0194         <span class="keyword">if</span> isempty(findobj(gcf, <span class="string">'Type'</span>, <span class="string">'axes'</span>))
+0195             disp(<span class="string">'*** NO axes***'</span>);
+0196             set(hObject, <span class="string">'Enable'</span>, <span class="string">'on'</span>);    
+0197             set(gh.traceAnalyzer.selectROIButton, <span class="string">'ForeGroundColor'</span>, [0 0 0]);
+0198             <span class="keyword">return</span>
+0199         <span class="keyword">end</span>
+0200         
+0201         point1 = get(gca,<span class="string">'CurrentPoint'</span>);    <span class="comment">% button down detected</span>
+0202         finalRect = rbbox;                   <span class="comment">% return figure units</span>
+0203         set(gh.traceAnalyzer.selectROIButton, <span class="string">'ForeGroundColor'</span>, [0 0 0]);
+0204         <a href="../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">''</span>);
+0205     
+0206         point2 = get(gca,<span class="string">'CurrentPoint'</span>);    <span class="comment">% button up detected</span>
+0207         point1 = point1(1,1:2);              <span class="comment">% extract x and y</span>
+0208         point2 = point2(1,1:2);
+0209         p1 = min(point1,point2);             <span class="comment">% calculate locations</span>
+0210         offset = abs(point1-point2);         <span class="comment">% and dimensions</span>
+0211         x = [p1(1) p1(1)+offset(1) p1(1)+offset(1) p1(1) p1(1)];
+0212         y = [p1(2) p1(2) p1(2)+offset(2) p1(2)+offset(2) p1(2)];
+0213         x=round(x);
+0214         y=round(y);
+0215         hold on;
+0216         axis manual;
+0217     
+0218         <span class="keyword">if</span> (state.analysis.analysisMode==2) | (state.analysis.analysisMode==4 &amp; state.acq.lineScan)
+0219             state.analysis.roiDefs(state.analysis.currentROINumber, :)=[x(1) x(2)];
+0220             waveo([<span class="string">'roi_'</span> num2str(state.analysis.currentROINumber) <span class="string">'x'</span>], x(1)-1);
+0221             waveo([<span class="string">'roi_'</span> num2str(state.analysis.currentROINumber) <span class="string">'y'</span>], x(2)-1);
+0222             
+0223         <span class="keyword">elseif</span> (state.analysis.analysisMode==3) | (state.analysis.analysisMode==4 &amp; ~state.acq.lineScan)
+0224             state.analysis.roiDefs2D(state.analysis.currentROINumber, :)=[x(1) x(2) y(1) y(3)];
+0225         <span class="keyword">end</span>
+0226     <span class="keyword">catch</span>
+0227         disp([<span class="string">'ROI selection error : '</span> lasterr]);
+0228     <span class="keyword">end</span>
+0229     set(hObject, <span class="string">'Enable'</span>, <span class="string">'on'</span>);
+0230 
+0231 
+0232 <a name="_sub24" href="#_subfunctions" class="code">function collapseButton_Callback(hObject, eventdata, handles)</a>
+0233     <span class="keyword">global</span> gh
+0234     p=get(gh.traceAnalyzer.figure1, <span class="string">'Position'</span>);
+0235     <span class="keyword">if</span> p(4)&lt;20
+0236         p(4)=39.9;
+0237         p(2)=p(2)-39.9+16;
+0238         set(gh.traceAnalyzer.collapseButton, <span class="string">'Position'</span>, [55 29 4.8000 1.7692])        
+0239     <span class="keyword">else</span>
+0240         p(4)=16;
+0241         p(2)=p(2)+39.9-16;
+0242         set(gh.traceAnalyzer.collapseButton, <span class="string">'Position'</span>, [55 1.2 4.8 1.7692])        
+0243     <span class="keyword">end</span>
+0244     
+0245     set(gh.traceAnalyzer.figure1, <span class="string">'Position'</span>, p)
+0246 
+0247 
+0248 <span class="comment">% --------------------------------------------------------------------</span>
+0249 <a name="_sub25" href="#_subfunctions" class="code">function Untitled_13_Callback(hObject, eventdata, handles)</a>
+0250 <span class="comment">% hObject    handle to Untitled_13 (see GCBO)</span>
+0251 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0252 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0253 
+0254 
+0255 
+0256 
+0257 <span class="comment">% --- Executes on button press in saveAvgLinescan.</span>
+0258 <a name="_sub26" href="#_subfunctions" class="code">function saveAvgLinescan_Callback(hObject, eventdata, handles)</a>
+0259 <span class="comment">% hObject    handle to saveAvgLinescan (see GCBO)</span>
+0260 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0261 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0262 
+0263 <span class="comment">% Hint: get(hObject,'Value') returns toggle state of saveAvgLinescan</span></pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

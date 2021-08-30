@@ -1,0 +1,4 @@
+function loadUserFigures
+	setFigurePath;
+	loadFiguresFromPath;
+	

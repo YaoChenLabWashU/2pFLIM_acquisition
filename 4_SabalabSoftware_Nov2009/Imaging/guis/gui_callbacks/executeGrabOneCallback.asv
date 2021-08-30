@@ -1,0 +1,48 @@
+function executeGrabOneCallback
+	global state gh
+
+	state.internal.looping=0;
+
+	val=get(gh.siGUI_ImagingControls.grabOneButton, 'String');
+
+	persistent multipleAbortAttempts
+	
+	if (exist('multipleAbortAttempts', 'var')~=1)
+		multipleAbortAttempts=0;
+	end
+	
+	if strcmp(val, 'GRAB')
+		if strcmp(get(gh.basicConfigurationGUI.figure1, 'Visible'), 'on') == 1
+			beep;
+			setStatusString('Close Configuration GUI');
+			return
+		end
+		
+		if ~savingInfoIsOK
+			return
+		end	
+		multipleAbortAttempts=0;
+		
+		timerSetActiveStatus('Imaging', 1);	
+
+		timerCallPackageFunctions('FirstSetup', 'Imaging');
+		timerCallPackageFunctions('Setup', 'Imaging');
+		timerCallPackageFunctions('Start', 'Imaging');
+		
+		state.cycle.loopingStatus=0;
+
+		global grabInput
+		start(grabInput);
+		trigger(grabInput);
+		
+	elseif strcmp(val, 'ABORT')
+		timerCallPackageFunctions('Abort', 'Imaging');
+		multipleAbortAttempts=multipleAbortAttempts+1;
+		if multipleAbortAttempts>1
+			multipleAbortAttempts=multipleAbortAttempts+1;
+			disp('Multiple abort attempts.  Will force abort.');
+			timerCallPackageFunctions('ForcedAbort');
+		end				
+	else
+		disp('executeGrabOneCallback: Grab One button is in unknown state'); 	% BSMOD - error checking
+	end

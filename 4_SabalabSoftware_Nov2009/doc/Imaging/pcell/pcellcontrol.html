@@ -1,0 +1,264 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of pcellcontrol</title>
+  <meta name="keywords" content="pcellcontrol">
+  <meta name="description" content="PCELLCONTROL Application M-file for pcellControl.fig">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Imaging</a> &gt; <a href="index.html">pcell</a> &gt; pcellcontrol.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\pcell&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>pcellcontrol
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>PCELLCONTROL Application M-file for pcellControl.fig</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function varargout = pcellcontrol(varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> PCELLCONTROL Application M-file for pcellControl.fig
+    FIG = PCELLCONTROL launch pcellControl GUI.
+    PCELLCONTROL('callback_name', ...) invoke the named callback.</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../Imaging/FluoProcessing/extractMaxFromStack.html" class="code" title="function [maxImage, maxIndex]=extractMaxFromStack(channel, xb, yb)">extractMaxFromStack</a>	</li><li><a href="../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>	</li><li><a href="../../Imaging/guis/gui_handling/getUserDataField.html" class="code" title="function retVal=getUserDataField(handle, field)">getUserDataField</a>	returns value of field in 'UserData' or [] if that field does not exist</li><li><a href="../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>	This function sets the status field in mainControls.</li><li><a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>	given the name of a global variable, find and update the GUI that contains it</li><li><a href="../../Imaging/guis/siSelectionChannelToFront.html" class="code" title="function siSelectionChannelToFront">siSelectionChannelToFront</a>	</li><li><a href="../../Imaging/io/applyChangesToOutput.html" class="code" title="function applyChangesToOutput(force)">applyChangesToOutput</a>	</li><li><a href="../../Imaging/io/file_io/data/updateHeaderString.html" class="code" title="function updateHeaderString(globalName)">updateHeaderString</a>	</li><li><a href="../../Imaging/io/scanFieldControl/getBoxCoords.html" class="code" title="function [x, y]=getBoxCoords(imageHandle, sortCoords)">getBoxCoords</a>	</li><li><a href="../../Imaging/io/scanFieldControl/mode.html" class="code" title="function out=mode(data)">mode</a>	</li><li><a href="../../Imaging/io/scanFieldControl/settingsManager.html" class="code" title="function varargout=settingsManager(varargin)">settingsManager</a>	</li><li><a href="siShowHidePcellBoxControls.html" class="code" title="function siShowHidePcellBoxControls">siShowHidePcellBoxControls</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../Imaging/io/initImaging.html" class="code" title="function initImaging(userFile, analysisMode)">initImaging</a>	</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function varargout = default_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub2" class="code">function varargout = flybackChange(h, eventdata, handles, varargin)</a></li><li><a href="#_sub3" class="code">function varargout = restingChange(h, eventdata, handles, varargin)</a></li><li><a href="#_sub4" class="code">function varargout = dualChange(h, eventdata, handles, varargin)</a></li><li><a href="#_sub5" class="code">function varargout = genericUpdate_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub6" class="code">function varargout = boxNumber_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub7" class="code">function varargout = boxChange_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub8" class="code">function varargout = selectBoxButton_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub9" class="code">function varargout = showHideBoxControls(h, eventdata, handles, varargin)</a></li><li><a href="#_sub10" class="code">function varargout = selectXYZButton_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub11" class="code">function handleChange</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function varargout = pcellcontrol(varargin)</a>
+0002 <span class="comment">% PCELLCONTROL Application M-file for pcellControl.fig</span>
+0003 <span class="comment">%    FIG = PCELLCONTROL launch pcellControl GUI.</span>
+0004 <span class="comment">%    PCELLCONTROL('callback_name', ...) invoke the named callback.</span>
+0005 
+0006 <span class="comment">% Last Modified by GUIDE v2.0 10-Apr-2002 17:24:44</span>
+0007 
+0008 <span class="keyword">if</span> nargin == 0  <span class="comment">% LAUNCH GUI</span>
+0009 
+0010     fig = openfig(mfilename,<span class="string">'reuse'</span>);
+0011 
+0012     <span class="comment">% Use system color scheme for figure:</span>
+0013     set(fig,<span class="string">'Color'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0014 
+0015     <span class="comment">% Generate a structure of handles to pass to callbacks, and store it.</span>
+0016     handles = guihandles(fig);
+0017     guidata(fig, handles);
+0018 
+0019     <span class="keyword">if</span> nargout &gt; 0
+0020         varargout{1} = fig;
+0021     <span class="keyword">end</span>
+0022 
+0023 <span class="keyword">elseif</span> ischar(varargin{1}) <span class="comment">% INVOKE NAMED SUBFUNCTION OR CALLBACK</span>
+0024 
+0025     <span class="keyword">try</span>
+0026         <span class="keyword">if</span> (nargout)
+0027             [varargout{1:nargout}] = feval(varargin{:}); <span class="comment">% FEVAL switchyard</span>
+0028         <span class="keyword">else</span>
+0029             feval(varargin{:}); <span class="comment">% FEVAL switchyard</span>
+0030         <span class="keyword">end</span>
+0031     <span class="keyword">catch</span>
+0032         disp(lasterr);
+0033     <span class="keyword">end</span>
+0034 
+0035 <span class="keyword">end</span>
+0036 
+0037 
+0038 <span class="comment">%| ABOUT CALLBACKS:</span>
+0039 <span class="comment">%| GUIDE automatically appends subfunction prototypes to this file, and</span>
+0040 <span class="comment">%| sets objects' callback properties to call them through the FEVAL</span>
+0041 <span class="comment">%| switchyard above. This comment describes that mechanism.</span>
+0042 <span class="comment">%|</span>
+0043 <span class="comment">%| Each callback subfunction declaration has the following form:</span>
+0044 <span class="comment">%| &lt;SUBFUNCTION_NAME&gt;(H, EVENTDATA, HANDLES, VARARGIN)</span>
+0045 <span class="comment">%|</span>
+0046 <span class="comment">%| The subfunction name is composed using the object's Tag and the</span>
+0047 <span class="comment">%| callback type separated by '_', e.g. 'slider2_Callback',</span>
+0048 <span class="comment">%| 'figure1_CloseRequestFcn', 'axis1_ButtondownFcn'.</span>
+0049 <span class="comment">%|</span>
+0050 <span class="comment">%| H is the callback object's handle (obtained using GCBO).</span>
+0051 <span class="comment">%|</span>
+0052 <span class="comment">%| EVENTDATA is empty, but reserved for future use.</span>
+0053 <span class="comment">%|</span>
+0054 <span class="comment">%| HANDLES is a structure containing handles of components in GUI using</span>
+0055 <span class="comment">%| tags as fieldnames, e.g. handles.figure1, handles.slider2. This</span>
+0056 <span class="comment">%| structure is created at GUI startup using GUIHANDLES and stored in</span>
+0057 <span class="comment">%| the figure's application data using GUIDATA. A copy of the structure</span>
+0058 <span class="comment">%| is passed to each callback.  You can store additional information in</span>
+0059 <span class="comment">%| this structure at GUI startup, and you can change the structure</span>
+0060 <span class="comment">%| during callbacks.  Call guidata(h, handles) after changing your</span>
+0061 <span class="comment">%| copy to replace the stored original so that subsequent callbacks see</span>
+0062 <span class="comment">%| the updates. Type &quot;help guihandles&quot; and &quot;help guidata&quot; for more</span>
+0063 <span class="comment">%| information.</span>
+0064 <span class="comment">%|</span>
+0065 <span class="comment">%| VARARGIN contains any extra arguments you have passed to the</span>
+0066 <span class="comment">%| callback. Specify the extra arguments by editing the callback</span>
+0067 <span class="comment">%| property in the inspector. By default, GUIDE sets the property to:</span>
+0068 <span class="comment">%| &lt;MFILENAME&gt;('&lt;SUBFUNCTION_NAME&gt;', gcbo, [], guidata(gcbo))</span>
+0069 <span class="comment">%| Add any extra arguments after the last argument, before the final</span>
+0070 <span class="comment">%| closing parenthesis.</span>
+0071 
+0072 <span class="comment">% --------------------------------------------------------------------</span>
+0073 <a name="_sub1" href="#_subfunctions" class="code">function varargout = default_Callback(h, eventdata, handles, varargin)</a>
+0074 <span class="comment">%    set(h, 'Enable', 'off');</span>
+0075     <a href="../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(h);
+0076     set(h, <span class="string">'Enable'</span>, <span class="string">'on'</span>);    
+0077 
+0078 <a name="_sub2" href="#_subfunctions" class="code">function varargout = flybackChange(h, eventdata, handles, varargin)</a>
+0079 <span class="comment">%    set(h, 'Enable', 'off');</span>
+0080     <a href="../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(h);
+0081     <a href="#_sub11" class="code" title="subfunction handleChange">handleChange</a>
+0082     set(h, <span class="string">'Enable'</span>, <span class="string">'on'</span>);    
+0083 
+0084 <a name="_sub3" href="#_subfunctions" class="code">function varargout = restingChange(h, eventdata, handles, varargin)</a>
+0085 <span class="comment">%    set(h, 'Enable', 'off');</span>
+0086     <a href="../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(h);
+0087     <a href="#_sub11" class="code" title="subfunction handleChange">handleChange</a>
+0088     set(h, <span class="string">'Enable'</span>, <span class="string">'on'</span>);    
+0089 
+0090 <a name="_sub4" href="#_subfunctions" class="code">function varargout = dualChange(h, eventdata, handles, varargin)</a>
+0091 <span class="comment">%    set(h, 'Enable', 'off');</span>
+0092     <a href="../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(h);
+0093     <a href="#_sub11" class="code" title="subfunction handleChange">handleChange</a>
+0094     set(h, <span class="string">'Enable'</span>, <span class="string">'on'</span>);    
+0095 
+0096 <span class="comment">% --------------------------------------------------------------------</span>
+0097 <a name="_sub5" href="#_subfunctions" class="code">function varargout = genericUpdate_Callback(h, eventdata, handles, varargin)</a>
+0098 <span class="comment">%    set(h, 'Enable', 'off');</span>
+0099     <a href="../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(h);
+0100     <span class="keyword">try</span>
+0101         <span class="keyword">global</span> state
+0102         disp([<span class="string">'Laser 2 power = '</span> <span class="keyword">...</span>
+0103                num2str(state.pcell.pcellPowerCal2(1+round(state.pcell.pcellScanning2)))<span class="keyword">...</span>
+0104                 <span class="string">' mW'</span>]);
+0105         state.pcell.pcellScanningPower2=state.pcell.pcellPowerCal2(1+round(state.pcell.pcellScanning2));
+0106     <span class="keyword">catch</span>
+0107         state.pcell.pcellScanningPower2=-1;
+0108     <span class="keyword">end</span>
+0109     <a href="../../Imaging/io/file_io/data/updateHeaderString.html" class="code" title="function updateHeaderString(globalName)">updateHeaderString</a>(<span class="string">'state.pcell.pcellScanningPower2'</span>);
+0110     <span class="keyword">try</span>
+0111         <span class="keyword">global</span> state
+0112         disp([<span class="string">'Laser 1 power = '</span> <span class="keyword">...</span>
+0113                num2str(state.pcell.pcellPowerCal1(1+round(state.pcell.pcellScanning1)))<span class="keyword">...</span>
+0114                 <span class="string">' mW'</span>]);
+0115         state.pcell.pcellScanningPower1=state.pcell.pcellPowerCal1(1+round(state.pcell.pcellScanning1));
+0116     <span class="keyword">catch</span>
+0117         state.pcell.pcellScanningPower1=-1;
+0118     <span class="keyword">end</span>
+0119     <a href="../../Imaging/io/file_io/data/updateHeaderString.html" class="code" title="function updateHeaderString(globalName)">updateHeaderString</a>(<span class="string">'state.pcell.pcellScanningPower1'</span>);    
+0120     <a href="#_sub11" class="code" title="subfunction handleChange">handleChange</a>;
+0121     set(h, <span class="string">'Enable'</span>, <span class="string">'on'</span>);    
+0122 
+0123 <span class="comment">% --------------------------------------------------------------------</span>
+0124 <a name="_sub6" href="#_subfunctions" class="code">function varargout = boxNumber_Callback(h, eventdata, handles, varargin)</a>
+0125     <a href="../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(h);
+0126     <span class="keyword">global</span> state
+0127     setLength=<a href="../../Imaging/io/scanFieldControl/settingsManager.html" class="code" title="function varargout=settingsManager(varargin)">settingsManager</a>(<span class="string">'getsetlength'</span>, <span class="string">'pcellBox'</span>);
+0128     <span class="keyword">if</span> state.pcell.boxNumber&gt;setLength
+0129         state.pcell.boxStartX=0;
+0130         state.pcell.boxStartY=0;
+0131         state.pcell.boxEndX=0;
+0132         state.pcell.boxEndY=0;
+0133         state.pcell.boxPowerLevel1=0;
+0134         state.pcell.boxPowerLevel2=0;
+0135         state.pcell.boxActiveStatus=0;
+0136         state.pcell.boxFrameNumber=1;
+0137         state.pcell.boxSliceNumber=1;
+0138         <a href="../../Imaging/io/scanFieldControl/settingsManager.html" class="code" title="function varargout=settingsManager(varargin)">settingsManager</a>(<span class="string">'store'</span>, <span class="string">'pcellBox'</span>, state.pcell.boxNumber);
+0139         <a href="../../Imaging/io/scanFieldControl/settingsManager.html" class="code" title="function varargout=settingsManager(varargin)">settingsManager</a>(<span class="string">'refresh'</span>, <span class="string">'pcellBox'</span>, state.pcell.boxNumber);
+0140     <span class="keyword">else</span>        
+0141         <a href="../../Imaging/io/scanFieldControl/settingsManager.html" class="code" title="function varargout=settingsManager(varargin)">settingsManager</a>(<span class="string">'recall'</span>, <span class="string">'pcellBox'</span>, state.pcell.boxNumber);
+0142     <span class="keyword">end</span>
+0143 
+0144 <span class="comment">% --------------------------------------------------------------------</span>
+0145 <a name="_sub7" href="#_subfunctions" class="code">function varargout = boxChange_Callback(h, eventdata, handles, varargin)</a>
+0146     <a href="../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(h);
+0147     <span class="keyword">global</span> state
+0148     guiGlobal=<a href="../../Imaging/guis/gui_handling/getUserDataField.html" class="code" title="function retVal=getUserDataField(handle, field)">getUserDataField</a>(h, <span class="string">'Global'</span>);
+0149     <a href="../../Imaging/io/scanFieldControl/settingsManager.html" class="code" title="function varargout=settingsManager(varargin)">settingsManager</a>(<span class="string">'storeone'</span>, <span class="string">'pcellBox'</span>, state.pcell.boxNumber, guiGlobal);
+0150     <a href="#_sub11" class="code" title="subfunction handleChange">handleChange</a>;
+0151     set(h, <span class="string">'Enable'</span>, <span class="string">'on'</span>);    
+0152 
+0153 
+0154 <span class="comment">% --------------------------------------------------------------------</span>
+0155 <a name="_sub8" href="#_subfunctions" class="code">function varargout = selectBoxButton_Callback(h, eventdata, handles, varargin)</a>
+0156     <span class="keyword">global</span> state 
+0157 
+0158     <a href="../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Drag over ROI'</span>);
+0159 
+0160     <a href="../../Imaging/guis/siSelectionChannelToFront.html" class="code" title="function siSelectionChannelToFront">siSelectionChannelToFront</a>
+0161     [y, x]=<a href="../../Imaging/io/scanFieldControl/getBoxCoords.html" class="code" title="function [x, y]=getBoxCoords(imageHandle, sortCoords)">getBoxCoords</a>([], 1)    <span class="comment">% get a box with the coords sorted by X</span>
+0162     <a href="../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">''</span>);
+0163 
+0164     <span class="keyword">if</span> isempty(x) || isempty(y)
+0165         <span class="keyword">return</span>
+0166     <span class="keyword">end</span>
+0167     
+0168     state.pcell.boxStartX=x(1);
+0169     state.pcell.boxStartY=y(1);
+0170     state.pcell.boxEndX=x(2);
+0171     state.pcell.boxEndY=y(2);
+0172 
+0173     <a href="../../Imaging/io/scanFieldControl/settingsManager.html" class="code" title="function varargout=settingsManager(varargin)">settingsManager</a>(<span class="string">'store'</span>, <span class="string">'pcellBox'</span>, state.pcell.boxNumber);
+0174     <a href="#_sub11" class="code" title="subfunction handleChange">handleChange</a>;
+0175 
+0176 <a name="_sub9" href="#_subfunctions" class="code">function varargout = showHideBoxControls(h, eventdata, handles, varargin)</a>
+0177     <a href="siShowHidePcellBoxControls.html" class="code" title="function siShowHidePcellBoxControls">siShowHidePcellBoxControls</a>
+0178     
+0179 
+0180 <a name="_sub10" href="#_subfunctions" class="code">function varargout = selectXYZButton_Callback(h, eventdata, handles, varargin)</a>
+0181     <span class="keyword">global</span> state 
+0182 
+0183     <a href="../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Drag over ROI'</span>);
+0184 
+0185     <a href="../../Imaging/guis/siSelectionChannelToFront.html" class="code" title="function siSelectionChannelToFront">siSelectionChannelToFront</a>
+0186 
+0187     [y, x]=<a href="../../Imaging/io/scanFieldControl/getBoxCoords.html" class="code" title="function [x, y]=getBoxCoords(imageHandle, sortCoords)">getBoxCoords</a>([], 1);    <span class="comment">% get a box with the coords sorted by X</span>
+0188     <a href="../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">''</span>);
+0189 
+0190     <span class="keyword">if</span> isempty(x) || isempty(y)
+0191         <span class="keyword">return</span>
+0192     <span class="keyword">end</span>
+0193         
+0194     [maxImage, maxIndex]=<a href="../../Imaging/FluoProcessing/extractMaxFromStack.html" class="code" title="function [maxImage, maxIndex]=extractMaxFromStack(channel, xb, yb)">extractMaxFromStack</a>(state.internal.selectionChannel, x, y);
+0195     state.pcell.boxSliceNumber=<a href="../../Imaging/io/scanFieldControl/mode.html" class="code" title="function out=mode(data)">mode</a>(maxIndex);
+0196     <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.pcell.boxSliceNumber'</span>);
+0197     
+0198     state.pcell.boxStartX=x(1);
+0199     state.pcell.boxStartY=y(1);
+0200     state.pcell.boxEndX=x(2);
+0201     state.pcell.boxEndY=y(2);
+0202 
+0203     <a href="../../Imaging/io/scanFieldControl/settingsManager.html" class="code" title="function varargout=settingsManager(varargin)">settingsManager</a>(<span class="string">'store'</span>, <span class="string">'pcellBox'</span>, state.pcell.boxNumber);
+0204     <a href="#_sub11" class="code" title="subfunction handleChange">handleChange</a>;
+0205 
+0206 <a name="_sub11" href="#_subfunctions" class="code">function handleChange</a>
+0207     <span class="keyword">global</span> state
+0208     state.internal.needNewPcellPowerOutput=1;
+0209     <span class="keyword">try</span>
+0210         <a href="../../Imaging/io/applyChangesToOutput.html" class="code" title="function applyChangesToOutput(force)">applyChangesToOutput</a>;
+0211     <span class="keyword">catch</span>
+0212         disp([<span class="string">'error in apply pcell change : '</span> lasterr]);
+0213     <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

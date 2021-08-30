@@ -1,0 +1,64 @@
+function seeIncomingDataMultiPanel(channels)
+	global state
+	
+	if nargin<1 || isempty(channels)
+		channelList=zeros(1,8);
+		for channel=1:8
+			if getfield(state.phys.settings, ['acq' num2str(channel)]) && getfield(state.phys.settings, ['disp' num2str(channel)])
+				channelList(channel)=1;
+			end
+		end
+		channels=find(channelList);
+	end
+	
+	first=1;
+	h=[];
+	title='INCOMING DATA AD';
+		
+	for channel=channels
+			if ~iswave(['dataWave' num2str(channel)])
+				wave(['dataWave' num2str(channel)], []);
+			end
+			eval(['global dataWave' num2str(channel) ]);
+			title=[title ' ' num2str(channel)];
+			if first
+				figure;
+				state.phys.internal.dataPlot=gcf;
+				h=gcf;
+				set(gcf, 'NumberTitle', 'off', 'Name', 'INCOMING DATA');
+				first=0;
+			end
+			figure(gcf);
+			eval(['append(' 'dataWave' num2str(channel) ');']);
+			eval(['setplotprops(dataWave' num2str(channel) ', ''color'', ''' colors{channel+1} '''); ']);
+		end
+	end
+	
+	first=1;
+	h=[];
+	title='INCOMING DATA AD';
+	
+	for channel=channelList
+		if getfield(state.phys.settings, ['acq' num2str(channel)]) & getfield(state.phys.settings, ['disp' num2str(channel)])
+			if ~iswave(['dataWave' num2str(channel)])
+				wave(['dataWave' num2str(channel)], []);
+			end
+			eval(['global dataWave' num2str(channel) ]);
+			title=[title ' ' num2str(channel)];
+			if first
+				eval(['plot(' 'dataWave' num2str(channel) ');']);
+				state.phys.internal.dataPlot=gcf;
+				h=gcf;
+				eval(['setplotprops(dataWave' num2str(channel) ', ''color'', ''' colors{channel+1} '''); ']);
+				set(gcf, 'NumberTitle', 'off');
+				first=0;
+			else
+				figure(gcf);
+				eval(['append(' 'dataWave' num2str(channel) ');']);
+				eval(['setplotprops(dataWave' num2str(channel) ', ''color'', ''' colors{channel+1} '''); ']);
+			end
+		end
+	end
+
+
+

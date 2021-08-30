@@ -1,0 +1,379 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of tilerControls</title>
+  <meta name="keywords" content="tilerControls">
+  <meta name="description" content="TILERCONTROLS Application M-file for tilerControls.fig">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Imaging</a> &gt; <a href="index.html">tiler</a> &gt; tilerControls.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\tiler&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>tilerControls
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>TILERCONTROLS Application M-file for tilerControls.fig</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function varargout = tilerControls(varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> TILERCONTROLS Application M-file for tilerControls.fig
+    FIG = TILERCONTROLS launch tilerControls GUI.
+    TILERCONTROLS('callback_name', ...) invoke the named callback.</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>	</li><li><a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>	given the name of a global variable, find and update the GUI that contains it</li><li><a href="../../Imaging/pcell/turnOffAllChildren.html" class="code" title="function turnOffAllChildren(h)">turnOffAllChildren</a>	</li><li><a href="../../Imaging/pcell/turnOnAllChildren.html" class="code" title="function turnOnAllChildren(h)">turnOnAllChildren</a>	</li><li><a href="makeTilerOutput.html" class="code" title="function makeTilerOutput">makeTilerOutput</a>	</li><li><a href="setTilerStatusString.html" class="code" title="function setTilerStatusString(st)">setTilerStatusString</a>	</li><li><a href="startTiler.html" class="code" title="function startTiler">startTiler</a>	</li><li><a href="tilerSetupForStart.html" class="code" title="function tilerSetupForStart">tilerSetupForStart</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="initTiler.html" class="code" title="function initTiler">initTiler</a>	</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function varargout = updatePulseOutput_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub2" class="code">function varargout = updateWithDuration_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub3" class="code">function varargout = X_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub4" class="code">function varargout = Y_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub5" class="code">function varargout = selectButton_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub6" class="code">function varargout = seeInputButton_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub7" class="code">function varargout = seeOutputButton_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub8" class="code">function varargout = doitButton_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub9" class="code">function varargout = tileSteps_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub10" class="code">function varargout = tileButton_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub11" class="code">function varargout = saveTileButton_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub12" class="code">function varargout = review_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub13" class="code">function varargout = plotTile_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub14" class="code">function varargout = counterSlider_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub15" class="code">function varargout = loadTileBUtton_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub16" class="code">function varargout = selectTileXY_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub17" class="code">function varargout = tileResult1_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub18" class="code">function varargout = tileResult2_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub19" class="code">function varargout = fileCounter_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub20" class="code">function pulseSeparation_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub21" class="code">function pulseSeparation_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub22" class="code">function nTilesX_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub23" class="code">function nTilesY_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub24" class="code">function nTilesXSlider_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub25" class="code">function nTilesXSlider_Callback(hObject, eventdata, handles)</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function varargout = tilerControls(varargin)</a>
+0002 <span class="comment">% TILERCONTROLS Application M-file for tilerControls.fig</span>
+0003 <span class="comment">%    FIG = TILERCONTROLS launch tilerControls GUI.</span>
+0004 <span class="comment">%    TILERCONTROLS('callback_name', ...) invoke the named callback.</span>
+0005 
+0006 <span class="comment">% Last Modified by GUIDE v2.5 21-Feb-2003 16:20:08</span>
+0007 
+0008 <span class="keyword">if</span> nargin == 0  <span class="comment">% LAUNCH GUI</span>
+0009 
+0010     fig = openfig(mfilename,<span class="string">'reuse'</span>);
+0011 
+0012     <span class="comment">% Use system color scheme for figure:</span>
+0013     set(fig,<span class="string">'Color'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0014 
+0015     <span class="comment">% Generate a structure of handles to pass to callbacks, and store it.</span>
+0016     handles = guihandles(fig);
+0017     guidata(fig, handles);
+0018 
+0019     <span class="keyword">if</span> nargout &gt; 0
+0020         varargout{1} = fig;
+0021     <span class="keyword">end</span>
+0022 
+0023 <span class="keyword">elseif</span> ischar(varargin{1}) <span class="comment">% INVOKE NAMED SUBFUNCTION OR CALLBACK</span>
+0024 
+0025     <span class="keyword">try</span>
+0026         <span class="keyword">if</span> (nargout)
+0027             [varargout{1:nargout}] = feval(varargin{:}); <span class="comment">% FEVAL switchyard</span>
+0028         <span class="keyword">else</span>
+0029             feval(varargin{:}); <span class="comment">% FEVAL switchyard</span>
+0030         <span class="keyword">end</span>
+0031     <span class="keyword">catch</span>
+0032         disp(lasterr);
+0033     <span class="keyword">end</span>
+0034 
+0035 <span class="keyword">end</span>
+0036 
+0037 
+0038 <span class="comment">%| ABOUT CALLBACKS:</span>
+0039 <span class="comment">%| GUIDE automatically appends subfunction prototypes to this file, and</span>
+0040 <span class="comment">%| sets objects' callback properties to call them through the FEVAL</span>
+0041 <span class="comment">%| switchyard above. This comment describes that mechanism.</span>
+0042 <span class="comment">%|</span>
+0043 <span class="comment">%| Each callback subfunction declaration has the following form:</span>
+0044 <span class="comment">%| &lt;SUBFUNCTION_NAME&gt;(H, EVENTDATA, HANDLES, VARARGIN)</span>
+0045 <span class="comment">%|</span>
+0046 <span class="comment">%| The subfunction name is composed using the object's Tag and the</span>
+0047 <span class="comment">%| callback type separated by '_', e.g. 'slider2_Callback',</span>
+0048 <span class="comment">%| 'figure1_CloseRequestFcn', 'axis1_ButtondownFcn'.</span>
+0049 <span class="comment">%|</span>
+0050 <span class="comment">%| H is the callback object's handle (obtained using GCBO).</span>
+0051 <span class="comment">%|</span>
+0052 <span class="comment">%| EVENTDATA is empty, but reserved for future use.</span>
+0053 <span class="comment">%|</span>
+0054 <span class="comment">%| HANDLES is a structure containing handles of components in GUI using</span>
+0055 <span class="comment">%| tags as fieldnames, e.g. handles.figure1, handles.slider2. This</span>
+0056 <span class="comment">%| structure is created at GUI startup using GUIHANDLES and stored in</span>
+0057 <span class="comment">%| the figure's application data using GUIDATA. A copy of the structure</span>
+0058 <span class="comment">%| is passed to each callback.  You can store additional information in</span>
+0059 <span class="comment">%| this structure at GUI startup, and you can change the structure</span>
+0060 <span class="comment">%| during callbacks.  Call guidata(h, handles) after changing your</span>
+0061 <span class="comment">%| copy to replace the stored original so that subsequent callbacks see</span>
+0062 <span class="comment">%| the updates. Type &quot;help guihandles&quot; and &quot;help guidata&quot; for more</span>
+0063 <span class="comment">%| information.</span>
+0064 <span class="comment">%|</span>
+0065 <span class="comment">%| VARARGIN contains any extra arguments you have passed to the</span>
+0066 <span class="comment">%| callback. Specify the extra arguments by editing the callback</span>
+0067 <span class="comment">%| property in the inspector. By default, GUIDE sets the property to:</span>
+0068 <span class="comment">%| &lt;MFILENAME&gt;('&lt;SUBFUNCTION_NAME&gt;', gcbo, [], guidata(gcbo))</span>
+0069 <span class="comment">%| Add any extra arguments after the last argument, before the final</span>
+0070 <span class="comment">%| closing parenthesis.</span>
+0071 
+0072 
+0073 
+0074 <span class="comment">% --------------------------------------------------------------------</span>
+0075 <a name="_sub1" href="#_subfunctions" class="code">function varargout = updatePulseOutput_Callback(h, eventdata, handles, varargin)</a>
+0076     <a href="../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(h);
+0077     <a href="makeTilerOutput.html" class="code" title="function makeTilerOutput">makeTilerOutput</a>;
+0078 
+0079 
+0080 
+0081 <span class="comment">% --------------------------------------------------------------------</span>
+0082 <a name="_sub2" href="#_subfunctions" class="code">function varargout = updateWithDuration_Callback(h, eventdata, handles, varargin)</a>
+0083     <a href="../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(h);
+0084     <a href="makeTilerOutput.html" class="code" title="function makeTilerOutput">makeTilerOutput</a>;
+0085     
+0086 <span class="comment">% --------------------------------------------------------------------</span>
+0087 <a name="_sub3" href="#_subfunctions" class="code">function varargout = X_Callback(h, eventdata, handles, varargin)</a>
+0088     <a href="../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(h);
+0089 
+0090 <span class="comment">% --------------------------------------------------------------------</span>
+0091 <a name="_sub4" href="#_subfunctions" class="code">function varargout = Y_Callback(h, eventdata, handles, varargin)</a>
+0092     <a href="../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(h);
+0093 
+0094 
+0095 <span class="comment">% --------------------------------------------------------------------</span>
+0096 <a name="_sub5" href="#_subfunctions" class="code">function varargout = selectButton_Callback(h, eventdata, handles, varargin)</a>
+0097 
+0098     <span class="keyword">global</span> state gh
+0099 
+0100     set(gh.tilerControls.selectButton, <span class="string">'ForeGroundColor'</span>, [0 0 1]);
+0101     <a href="setTilerStatusString.html" class="code" title="function setTilerStatusString(st)">setTilerStatusString</a>(<span class="string">'Click on spot'</span>);
+0102 
+0103     k = waitforbuttonpress;
+0104     p1 = get(gca,<span class="string">'CurrentPoint'</span>);    <span class="comment">% button down detected</span>
+0105     p1=p1(1,1:2);
+0106     set(gh.tilerControls.selectButton, <span class="string">'ForeGroundColor'</span>, [0 0 0]);
+0107     <a href="setTilerStatusString.html" class="code" title="function setTilerStatusString(st)">setTilerStatusString</a>(<span class="string">''</span>);
+0108 
+0109     state.internal.lineDelay = ((state.acq.lineDelay)/state.acq.msPerLine);
+0110     startColumnForFrameData = round((state.internal.lineDelay*state.internal.samplesPerLine));    
+0111     fractionStart=startColumnForFrameData/state.internal.samplesPerLine;
+0112     fractionEnd=(state.acq.samplesAcquiredPerLine+startColumnForFrameData)/state.internal.samplesPerLine;
+0113     fractionPerPixel=(fractionEnd-fractionStart)/state.acq.pixelsPerLine;
+0114 
+0115     mirrorPosition=state.acq.mirrorDataOutput(<span class="keyword">...</span>
+0116         round(round(p1(2)-1)*state.internal.lengthOfXData <span class="keyword">...</span>
+0117         +state.internal.lengthOfXData*(fractionStart+p1(1)*fractionPerPixel)),:);
+0118     state.tiler.X=mirrorPosition(1);
+0119     state.tiler.Y=mirrorPosition(2);
+0120     <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.tiler.X'</span>);    
+0121     <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.tiler.Y'</span>);    
+0122 
+0123 
+0124 
+0125 <span class="comment">% --------------------------------------------------------------------</span>
+0126 <a name="_sub6" href="#_subfunctions" class="code">function varargout = seeInputButton_Callback(h, eventdata, handles, varargin)</a>
+0127     pulseModePlotInput;
+0128 
+0129 
+0130 
+0131 <span class="comment">% --------------------------------------------------------------------</span>
+0132 <a name="_sub7" href="#_subfunctions" class="code">function varargout = seeOutputButton_Callback(h, eventdata, handles, varargin)</a>
+0133     pulseModePlotOutput;
+0134 
+0135 
+0136 
+0137 <span class="comment">% --------------------------------------------------------------------</span>
+0138 <a name="_sub8" href="#_subfunctions" class="code">function varargout = doitButton_Callback(h, eventdata, handles, varargin)</a>
+0139     <span class="keyword">global</span> gh state
+0140     state.tiler.tiling=0;
+0141     state.tiler.abort=1;
+0142 
+0143     <span class="keyword">if</span> strcmp(get(gh.tilerControls.doitButton, <span class="string">'String'</span>), <span class="string">'DO IT'</span>)
+0144         <a href="../../Imaging/pcell/turnOffAllChildren.html" class="code" title="function turnOffAllChildren(h)">turnOffAllChildren</a>(gh.tilerControls.figure1);
+0145         set(gh.tilerControls.doitButton, <span class="string">'String'</span>, <span class="string">'ABORT'</span>);
+0146         set(gh.tilerControls.doitButton, <span class="string">'enable'</span>, <span class="string">'on'</span>);
+0147         set(gh.tilerControls.statusString, <span class="string">'enable'</span>, <span class="string">'on'</span>);
+0148         <a href="setTilerStatusString.html" class="code" title="function setTilerStatusString(st)">setTilerStatusString</a>(<span class="string">'Acquiring...'</span>);
+0149         state.tiler.abort=0;
+0150         <a href="tilerSetupForStart.html" class="code" title="function tilerSetupForStart">tilerSetupForStart</a>;
+0151         drawnow;
+0152         <a href="startTiler.html" class="code" title="function startTiler">startTiler</a>;
+0153     <span class="keyword">else</span>
+0154 <span class="comment">%         state.tiler.abort=1;</span>
+0155 <span class="comment">%         setTilerStatusString('Aborting...');</span>
+0156 <span class="comment">%         flushPulseModeData;</span>
+0157         set(gh.tilerControls.doitButton, <span class="string">'String'</span>, <span class="string">'DO IT'</span>);
+0158         <a href="../../Imaging/pcell/turnOnAllChildren.html" class="code" title="function turnOnAllChildren(h)">turnOnAllChildren</a>(gh.tilerControls.figure1);
+0159         <a href="setTilerStatusString.html" class="code" title="function setTilerStatusString(st)">setTilerStatusString</a>(<span class="string">'Reset'</span>);
+0160     <span class="keyword">end</span>
+0161 
+0162 
+0163 
+0164 <span class="comment">% --------------------------------------------------------------------</span>
+0165 <a name="_sub9" href="#_subfunctions" class="code">function varargout = tileSteps_Callback(h, eventdata, handles, varargin)</a>
+0166     <a href="../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(h);
+0167     <a href="makeTilerOutput.html" class="code" title="function makeTilerOutput">makeTilerOutput</a>;
+0168 
+0169 
+0170 <span class="comment">% --------------------------------------------------------------------</span>
+0171 <a name="_sub10" href="#_subfunctions" class="code">function varargout = tileButton_Callback(h, eventdata, handles, varargin)</a>
+0172     <span class="keyword">global</span> state
+0173     state.tiler.abort=0;
+0174     tilePulseMode;
+0175 
+0176 
+0177 
+0178 <span class="comment">% --------------------------------------------------------------------</span>
+0179 <a name="_sub11" href="#_subfunctions" class="code">function varargout = saveTileButton_Callback(h, eventdata, handles, varargin)</a>
+0180     saveTileResults;
+0181 
+0182 
+0183 
+0184 <span class="comment">% --------------------------------------------------------------------</span>
+0185 <a name="_sub12" href="#_subfunctions" class="code">function varargout = review_Callback(h, eventdata, handles, varargin)</a>
+0186     <a href="../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(h);
+0187     <span class="keyword">global</span> state gh
+0188     <span class="keyword">if</span> state.tiler.tileCounter&gt;state.tiler.tileSteps^2
+0189         state.tiler.tileCounter=state.tiler.tileSteps^2;
+0190         <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.tiler.tileCounter'</span>);
+0191     <span class="keyword">end</span>
+0192     
+0193     <span class="keyword">global</span> pulseModeInputWave1 pulseModeInputWave2
+0194 
+0195     pulseModeInputWave1.data = state.tiler.tileAllResults1(state.tiler.tileCounter,:);
+0196     pulseModeInputWave2.data = state.tiler.tileAllResults2(state.tiler.tileCounter,:);    
+0197 
+0198 
+0199 <span class="comment">% --------------------------------------------------------------------</span>
+0200 <a name="_sub13" href="#_subfunctions" class="code">function varargout = plotTile_Callback(h, eventdata, handles, varargin)</a>
+0201     plotTileResults;
+0202     
+0203 
+0204 
+0205 <span class="comment">% --------------------------------------------------------------------</span>
+0206 <a name="_sub14" href="#_subfunctions" class="code">function varargout = counterSlider_Callback(h, eventdata, handles, varargin)</a>
+0207 
+0208 
+0209 
+0210 
+0211 <span class="comment">% --------------------------------------------------------------------</span>
+0212 <a name="_sub15" href="#_subfunctions" class="code">function varargout = loadTileBUtton_Callback(h, eventdata, handles, varargin)</a>
+0213     loadTileResults;
+0214 
+0215 
+0216 
+0217 <span class="comment">% --------------------------------------------------------------------</span>
+0218 <a name="_sub16" href="#_subfunctions" class="code">function varargout = selectTileXY_Callback(h, eventdata, handles, varargin)</a>
+0219 
+0220     <span class="keyword">global</span> state gh
+0221 
+0222     set(gh.tilerControls.selectTileXY, <span class="string">'ForeGroundColor'</span>, [0 0 1]);
+0223     <a href="setTilerStatusString.html" class="code" title="function setTilerStatusString(st)">setTilerStatusString</a>(<span class="string">'Click on tile'</span>);
+0224 
+0225     k = waitforbuttonpress;
+0226     p1 = get(gca,<span class="string">'CurrentPoint'</span>);    <span class="comment">% button down detected</span>
+0227     p1=p1(1,1:2);
+0228     set(gh.tilerControls.selectTileXY, <span class="string">'ForeGroundColor'</span>, [0 0 0]);
+0229     <a href="setTilerStatusString.html" class="code" title="function setTilerStatusString(st)">setTilerStatusString</a>(<span class="string">''</span>);
+0230 
+0231     state.tiler.X=p1(1);
+0232     state.tiler.Y=-p1(2);
+0233     <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.tiler.X'</span>);    
+0234     <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.tiler.Y'</span>);    
+0235 
+0236 
+0237 
+0238 
+0239 
+0240 <span class="comment">% --------------------------------------------------------------------</span>
+0241 <a name="_sub17" href="#_subfunctions" class="code">function varargout = tileResult1_Callback(h, eventdata, handles, varargin)</a>
+0242 
+0243 
+0244 
+0245 
+0246 <span class="comment">% --------------------------------------------------------------------</span>
+0247 <a name="_sub18" href="#_subfunctions" class="code">function varargout = tileResult2_Callback(h, eventdata, handles, varargin)</a>
+0248 
+0249 
+0250 
+0251 
+0252 <span class="comment">% --------------------------------------------------------------------</span>
+0253 <a name="_sub19" href="#_subfunctions" class="code">function varargout = fileCounter_Callback(h, eventdata, handles, varargin)</a>
+0254     <a href="../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(h);
+0255 
+0256 
+0257 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0258 <a name="_sub20" href="#_subfunctions" class="code">function pulseSeparation_CreateFcn(hObject, eventdata, handles)</a>
+0259     <span class="keyword">if</span> ispc
+0260         set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0261     <span class="keyword">else</span>
+0262         set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0263     <span class="keyword">end</span>
+0264 
+0265 
+0266 
+0267 <a name="_sub21" href="#_subfunctions" class="code">function pulseSeparation_Callback(hObject, eventdata, handles)</a>
+0268     <a href="../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0269     <a href="makeTilerOutput.html" class="code" title="function makeTilerOutput">makeTilerOutput</a>;
+0270     
+0271 
+0272 
+0273 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0274 <a name="_sub22" href="#_subfunctions" class="code">function nTilesX_CreateFcn(hObject, eventdata, handles)</a>
+0275 <span class="comment">% hObject    handle to nTilesX (see GCBO)</span>
+0276 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0277 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0278 
+0279 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0280 <span class="comment">%       See ISPC and COMPUTER.</span>
+0281 <span class="keyword">if</span> ispc
+0282     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0283 <span class="keyword">else</span>
+0284     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0285 <span class="keyword">end</span>
+0286 
+0287 
+0288 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0289 <a name="_sub23" href="#_subfunctions" class="code">function nTilesY_CreateFcn(hObject, eventdata, handles)</a>
+0290 <span class="comment">% hObject    handle to nTilesY (see GCBO)</span>
+0291 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0292 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0293 
+0294 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0295 <span class="comment">%       See ISPC and COMPUTER.</span>
+0296 <span class="keyword">if</span> ispc
+0297     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0298 <span class="keyword">else</span>
+0299     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0300 <span class="keyword">end</span>
+0301 
+0302 
+0303 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0304 <a name="_sub24" href="#_subfunctions" class="code">function nTilesXSlider_CreateFcn(hObject, eventdata, handles)</a>
+0305 <span class="comment">% hObject    handle to nTilesXSlider (see GCBO)</span>
+0306 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0307 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0308 
+0309 <span class="comment">% Hint: slider controls usually have a light gray background, change</span>
+0310 <span class="comment">%       'usewhitebg' to 0 to use default.  See ISPC and COMPUTER.</span>
+0311 usewhitebg = 1;
+0312 <span class="keyword">if</span> usewhitebg
+0313     set(hObject,<span class="string">'BackgroundColor'</span>,[.9 .9 .9]);
+0314 <span class="keyword">else</span>
+0315     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0316 <span class="keyword">end</span>
+0317 
+0318 
+0319 <span class="comment">% --- Executes on slider movement.</span>
+0320 <a name="_sub25" href="#_subfunctions" class="code">function nTilesXSlider_Callback(hObject, eventdata, handles)</a>
+0321 <span class="comment">% hObject    handle to nTilesXSlider (see GCBO)</span>
+0322 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0323 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0324 
+0325 <span class="comment">% Hints: get(hObject,'Value') returns position of slider</span>
+0326 <span class="comment">%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider</span>
+0327 
+0328</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

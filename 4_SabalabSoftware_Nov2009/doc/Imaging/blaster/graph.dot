@@ -1,0 +1,33 @@
+/* Created by mdot for Matlab */
+digraph m2html {
+  blaster -> makeBlasterConfigMenu;
+  blaster -> updateBlasterConfigDisplay;
+  blaster -> updateBlasterConfigLineDisplay;
+  blasterNewConfiguration -> makeBlasterConfigMenu;
+  clearBlasterPositions -> makeBlasterConfigMenu;
+  initBlaster -> blaster;
+  initBlaster -> makeBlasterConfigMenu;
+  loadBlasterSetup -> blaster;
+  loadBlasterSetup -> makeBlasterConfigMenu;
+  loadBlasterSetup -> updateBlasterConfigDisplay;
+  saveBlasterSetup -> blaster;
+  saveBlasterSetup -> saveBlasterSetupAs;
+  saveBlasterSetupAs -> makeBlasterConfigMenu;
+  saveBlasterSetupAs -> saveBlasterSetup;
+  selectBlasterConfigFromMenu -> updateBlasterConfigDisplay;
+  updateBlasterConfigDisplay -> updateBlasterConfigLineDisplay;
+
+  applyBlasterParking [URL="applyBlasterParking.html"];
+  blaster [URL="blaster.html"];
+  blasterNewConfiguration [URL="blasterNewConfiguration.html"];
+  clearBlasterPositions [URL="clearBlasterPositions.html"];
+  initBlaster [URL="initBlaster.html"];
+  loadBlasterSetup [URL="loadBlasterSetup.html"];
+  makeBlasterConfigMenu [URL="makeBlasterConfigMenu.html"];
+  saveBlasterSetup [URL="saveBlasterSetup.html"];
+  saveBlasterSetupAs [URL="saveBlasterSetupAs.html"];
+  selectBlasterConfigFromMenu [URL="selectBlasterConfigFromMenu.html"];
+  setupBlasterConfigsByPos [URL="setupBlasterConfigsByPos.html"];
+  updateBlasterConfigDisplay [URL="updateBlasterConfigDisplay.html"];
+  updateBlasterConfigLineDisplay [URL="updateBlasterConfigLineDisplay.html"];
+}

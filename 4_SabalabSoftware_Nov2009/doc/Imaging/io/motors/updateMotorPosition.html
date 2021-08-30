@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of updateMotorPosition</title>
+  <meta name="keywords" content="updateMotorPosition">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Imaging</a> &gt; <a href="../index.html">io</a> &gt; <a href="index.html">motors</a> &gt; updateMotorPosition.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\io\motors&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>updateMotorPosition
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function out=updateMotorPosition(updateHeader) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>	This function sets the status field in mainControls.</li><li><a href="../../../Imaging/io/file_io/data/updateHeaderString.html" class="code" title="function updateHeaderString(globalName)">updateHeaderString</a>	</li><li><a href="../../../Imaging/io/motors/MP285/mp285GetPos.html" class="code" title="function xyz=mp285GetPos">mp285GetPos</a>	mp285GetPos retrieves the position information from the mp285 controller</li><li><a href="updateRelativeMotorPosition.html" class="code" title="function updateRelativeMotorPosition(update)">updateRelativeMotorPosition</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Imaging/guis/gui_building/fieldAdjustGUI.html" class="code" title="function varargout = fieldAdjustGUI(varargin)">fieldAdjustGUI</a>	FIELDADJUSTGUI M-file for fieldAdjustGUI.fig</li><li><a href="../../../Imaging/guis/gui_building/motorGUI.html" class="code" title="function varargout = motorGUI(varargin)">motorGUI</a>	MOTORGUI Application M-file for motorGUI.fig</li><li><a href="../../../Imaging/guis/gui_callbacks/genericKeyPressFunction.html" class="code" title="function genericKeyPressFcn">genericKeyPressFunction</a>	</li><li><a href="applyShift.html" class="code" title="function applyShift(position)">applyShift</a>	</li><li><a href="applyShiftXY.html" class="code" title="function applyShiftXY(position)">applyShiftXY</a>	</li><li><a href="definePosition.html" class="code" title="function definePosition(pos)">definePosition</a>	</li><li><a href="distance.html" class="code" title="function distance">distance</a>	</li><li><a href="moveStackFocus.html" class="code" title="function moveStackFocus">moveStackFocus</a>	</li><li><a href="../../../Imaging/io/scanFieldControl/saveScan.html" class="code" title="function saveScan(varargin)">saveScan</a>	</li><li><a href="../../../Imaging/timerFunctions/timerSetup_Imaging.html" class="code" title="function timerSetup_Imaging">timerSetup_Imaging</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function out=updateMotorPosition(updateHeader)</a>
+0002 
+0003 <span class="keyword">if</span> nargin&lt;1
+0004     updateHeader=1;
+0005 <span class="keyword">end</span>
+0006 
+0007 <span class="keyword">global</span> state gh
+0008 out=[];
+0009 
+0010 <span class="comment">% updateMotorPosition.m*****</span>
+0011 <span class="comment">% Function that will read the settings from the MP285 and update the values on the screen.</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% Written By: Thomas Pologruto</span>
+0014 <span class="comment">% Cold Spring Harbor Labs</span>
+0015 <span class="comment">% February 1, 2001</span>
+0016 
+0017 <span class="keyword">if</span> state.motor.motorOn == 1
+0018     <a href="../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Talking to MP285...'</span>);
+0019     currentPos = <a href="../../../Imaging/io/motors/MP285/mp285GetPos.html" class="code" title="function xyz=mp285GetPos">mp285GetPos</a>;    <span class="comment">% Get current Position</span>
+0020     <span class="comment">% Set the absolute values</span>
+0021     <span class="keyword">if</span> isempty(currentPos)
+0022         disp(<span class="string">'updateMotorPosition: No position information available'</span>);
+0023         <a href="../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'MP285 Error'</span>);
+0024         <span class="keyword">return</span>
+0025     <span class="keyword">end</span>
+0026     state.motor.absXPosition = currentPos(1,1);
+0027     state.motor.absYPosition = currentPos(1,2);
+0028     state.motor.absZPosition = currentPos(1,3);
+0029     <span class="keyword">if</span> updateHeader
+0030         <a href="../../../Imaging/io/file_io/data/updateHeaderString.html" class="code" title="function updateHeaderString(globalName)">updateHeaderString</a>(<span class="string">'state.motor.absXPosition'</span>);
+0031         <a href="../../../Imaging/io/file_io/data/updateHeaderString.html" class="code" title="function updateHeaderString(globalName)">updateHeaderString</a>(<span class="string">'state.motor.absYPosition'</span>);
+0032         <a href="../../../Imaging/io/file_io/data/updateHeaderString.html" class="code" title="function updateHeaderString(globalName)">updateHeaderString</a>(<span class="string">'state.motor.absZPosition'</span>);
+0033     <span class="keyword">end</span>
+0034     <span class="comment">% Set the relative values</span>
+0035     <a href="updateRelativeMotorPosition.html" class="code" title="function updateRelativeMotorPosition(update)">updateRelativeMotorPosition</a>(updateHeader);
+0036     out=currentPos;
+0037     <a href="../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">''</span>);
+0038 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

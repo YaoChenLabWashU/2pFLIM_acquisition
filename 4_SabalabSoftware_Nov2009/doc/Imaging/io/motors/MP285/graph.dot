@@ -1,0 +1,23 @@
+/* Created by mdot for Matlab */
+digraph m2html {
+  mp285Config -> mp285SetVelocity;
+  mp285Config -> mp285Talk;
+  mp285FinishMove -> mp285GetPos;
+  mp285GetPos -> mp285Flush;
+  mp285SetPos -> mp285Flush;
+  mp285SetPos -> mp285GetPos;
+  mp285SetVelocity -> mp285Flush;
+  mp285SetVelocity -> mp285ReadAnswer;
+  mp285StartMove -> mp285Flush;
+  mp285Talk -> mp285ReadAnswer;
+
+  mp285Config [URL="mp285Config.html"];
+  mp285FinishMove [URL="mp285FinishMove.html"];
+  mp285Flush [URL="mp285Flush.html"];
+  mp285GetPos [URL="mp285GetPos.html"];
+  mp285ReadAnswer [URL="mp285ReadAnswer.html"];
+  mp285SetPos [URL="mp285SetPos.html"];
+  mp285SetVelocity [URL="mp285SetVelocity.html"];
+  mp285StartMove [URL="mp285StartMove.html"];
+  mp285Talk [URL="mp285Talk.html"];
+}

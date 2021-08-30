@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of makeNewPcellPowerOutput</title>
+  <meta name="keywords" content="makeNewPcellPowerOutput">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Imaging</a> &gt; <a href="index.html">io</a> &gt; makeNewPcellPowerOutput.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\io&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>makeNewPcellPowerOutput
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function makeNewPcellPowerOutput </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../Imaging/pcell/powerToPcellVoltage.html" class="code" title="function voltage=powerToPcellVoltage(power, chan)">powerToPcellVoltage</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../Imaging/gydummy.html" class="code" title="function [ output_args ] = gydummy( input_args )">gydummy</a>	GYDUMMY This is here only to try to force m2html to make a graph.png file</li><li><a href="applyChangesToOutput.html" class="code" title="function applyChangesToOutput(force)">applyChangesToOutput</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function makeNewPcellPowerOutput</a>
+0002     <span class="keyword">global</span> state
+0003     
+0004 <span class="comment">%    state.internal.lineDelay = state.acq.lineDelay/state.acq.msPerLine; % calculate fractional line delay</span>
+0005     
+0006     <span class="keyword">if</span> state.acq.bidi
+0007         pStart =  1+round(state.internal.lengthOfXData * <span class="keyword">...</span>
+0008             ((1-state.acq.fillFraction)/2+<span class="keyword">...</span>
+0009             (state.acq.lineDelay/2+state.acq.mirrorLag-state.pcell.pcellDelay)/state.acq.msPerLine));
+0010         pEnd =  1+round(state.internal.lengthOfXData * <span class="keyword">...</span>
+0011             ((1-state.acq.fillFraction)/2++state.acq.fillFraction+<span class="keyword">...</span>
+0012             (state.acq.lineDelay/2+state.acq.mirrorLag-state.pcell.pcellDelay)/state.acq.msPerLine));
+0013     <span class="keyword">else</span>
+0014         pStart = round(state.internal.lengthOfXData * <span class="keyword">...</span>
+0015             (state.acq.lineDelay+state.acq.mirrorLag-state.pcell.pcellDelay)/state.acq.msPerLine);
+0016         pEnd =  round(state.internal.lengthOfXData * <span class="keyword">...</span>
+0017             ((state.acq.lineDelay+state.acq.mirrorLag-state.pcell.pcellDelay)/state.acq.msPerLine+state.acq.fillFraction));
+0018     <span class="keyword">end</span>
+0019     
+0020     <span class="keyword">if</span> state.acq.dualLaserMode==1    <span class="comment">% both lasers on at the same time</span>
+0021         state.acq.pcellPowerOutput=zeros(state.internal.lengthOfXData*state.acq.linesPerFrame, 2*state.pcell.numberOfPcells);
+0022     <span class="keyword">elseif</span> state.acq.dualLaserMode==2
+0023         state.acq.pcellPowerOutput=zeros(2*state.internal.lengthOfXData*state.acq.linesPerFrame, 2*state.pcell.numberOfPcells);
+0024     <span class="keyword">end</span>
+0025     
+0026     <span class="keyword">for</span> pcellCounter=1:state.pcell.numberOfPcells
+0027         <span class="comment">% the power while imaging</span>
+0028         scanningPowerRaw=getfield(state.pcell, [<span class="string">'pcellScanning'</span> num2str(pcellCounter)]);
+0029         <span class="keyword">if</span> state.blaster.active &amp;&amp; state.blaster.blankImaging &amp;&amp; (state.internal.status~=2)
+0030             scanningPowerRaw=0;
+0031         <span class="keyword">end</span>
+0032         scanningPower=<a href="../../Imaging/pcell/powerToPcellVoltage.html" class="code" title="function voltage=powerToPcellVoltage(power, chan)">powerToPcellVoltage</a>(scanningPowerRaw, pcellCounter);            
+0033 
+0034         <span class="comment">% the power while flying back</span>
+0035         flybackPowerRaw = getfield(state.pcell, [<span class="string">'pcellFlyBack'</span> num2str(pcellCounter)]);        
+0036         <span class="keyword">if</span> flybackPowerRaw==-1
+0037             flybackPower=scanningPower;
+0038         <span class="keyword">else</span>
+0039             flybackPower=<a href="../../Imaging/pcell/powerToPcellVoltage.html" class="code" title="function voltage=powerToPcellVoltage(power, chan)">powerToPcellVoltage</a>(flybackPowerRaw, pcellCounter);
+0040         <span class="keyword">end</span>
+0041         
+0042         <span class="comment">% Fill with the flyback</span>
+0043         pOut = flybackPower*ones(state.internal.lengthOfXData, 1);    
+0044         <span class="comment">% Fill scanning portion</span>
+0045         pOut(max(pStart,1):min(pEnd,state.internal.lengthOfXData))=scanningPower;    
+0046         
+0047         <span class="keyword">if</span> state.acq.dualLaserMode==1    <span class="comment">% both lasers on at the same time</span>
+0048             <span class="keyword">if</span> state.acq.bidi <span class="comment">%bidirectional scan so flip alternate lines</span>
+0049                 state.acq.pcellPowerOutput(:, pcellCounter)  = repmat(pOut, [state.acq.linesPerFrame 1]); 
+0050                 <span class="comment">%state.acq.pcellPowerOutput(:, pcellCounter) = repmat([pOut; flipdim(pOut, 1)], [state.acq.linesPerFrame/2 1]);</span>
+0051             <span class="keyword">else</span> <span class="comment">% unidirectional scan</span>
+0052                 state.acq.pcellPowerOutput(:, pcellCounter)  = repmat(pOut, [state.acq.linesPerFrame 1]); 
+0053             <span class="keyword">end</span>
+0054         <span class="keyword">elseif</span> state.acq.dualLaserMode==2 <span class="comment">% alternate each laser in each scan</span>
+0055             dualPowerRaw = getfield(state.pcell, [<span class="string">'pcellDualLevel'</span> num2str(pcellCounter)]);
+0056             <span class="keyword">if</span> dualPowerRaw==-1
+0057                 dualPower=scanningPower;
+0058             <span class="keyword">else</span>
+0059                 dualPower=<a href="../../Imaging/pcell/powerToPcellVoltage.html" class="code" title="function voltage=powerToPcellVoltage(power, chan)">powerToPcellVoltage</a>(dualPowerRaw, pcellCounter);
+0060             <span class="keyword">end</span>
+0061             pOutDual=flybackPower*ones(state.internal.lengthOfXData, 1);    
+0062             pOutDual(max(pStart,1):min(pEnd,state.internal.lengthOfXData))=dualPower;    
+0063             
+0064             <span class="keyword">if</span> state.acq.bidi    
+0065                 <span class="keyword">if</span> mod(pcellCounter, 2)==1         
+0066                     state.acq.pcellPowerOutput(:, pcellCounter) = repmat([pOut; flipdim(pOutDual, 1)], [state.acq.linesPerFrame 1]);
+0067                 <span class="keyword">else</span>
+0068                     state.acq.pcellPowerOutput(:, pcellCounter) = repmat([pOutDual; flipdim(pOut, 1)], [state.acq.linesPerFrame 1]);
+0069                 <span class="keyword">end</span>
+0070             <span class="keyword">else</span>
+0071                 <span class="keyword">if</span> mod(pcellCounter, 2)==1         
+0072                     state.acq.pcellPowerOutput(:, pcellCounter) = repmat([pOut; pOutDual], [state.acq.linesPerFrame 1]);
+0073                 <span class="keyword">else</span>
+0074                     state.acq.pcellPowerOutput(:, pcellCounter) = repmat([pOutDual; pOut], [state.acq.linesPerFrame 1]);
+0075                 <span class="keyword">end</span>
+0076             <span class="keyword">end</span>
+0077         <span class="keyword">end</span>
+0078 
+0079         <span class="keyword">if</span> (scanningPowerRaw&gt;0) || ((state.acq.dualLaserMode==2) &amp;&amp; (dualPowerRaw&gt;0))
+0080             state.acq.pcellPowerOutput(:, pcellCounter + state.pcell.numberOfPcells) = 5 * state.shutter.open;
+0081         <span class="keyword">else</span>
+0082             state.acq.pcellPowerOutput(:, pcellCounter + state.pcell.numberOfPcells) = 5 * state.shutter.closed;
+0083         <span class="keyword">end</span>                
+0084     <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

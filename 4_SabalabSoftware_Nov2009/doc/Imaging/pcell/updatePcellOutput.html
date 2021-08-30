@@ -1,0 +1,172 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of updatePcellOutput</title>
+  <meta name="keywords" content="updatePcellOutput">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Imaging</a> &gt; <a href="index.html">pcell</a> &gt; updatePcellOutput.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\pcell&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>updatePcellOutput
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function updatePcellOutput </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="powerToPcellVoltage.html" class="code" title="function voltage=powerToPcellVoltage(power, chan)">powerToPcellVoltage</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="resetPcellOutput.html" class="code" title="function resetPcellOutput">resetPcellOutput</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function updatePcellOutput</a>
+0002     <span class="keyword">global</span> state 
+0003     
+0004     <span class="keyword">for</span> pcellCounter=1:state.pcell.numberOfPcells
+0005         <span class="keyword">if</span> eval([<span class="string">'state.pcell.pcellActive'</span> num2str(pcellCounter)])
+0006             
+0007             pockellData = <a href="powerToPcellVoltage.html" class="code" title="function voltage=powerToPcellVoltage(power, chan)">powerToPcellVoltage</a>(eval([<span class="string">'state.pcell.pcellFlyBack'</span> num2str(pcellCounter)]), pcellCounter)<span class="keyword">...</span>
+0008                 *ones(state.internal.lengthOfXData ,1);                    <span class="comment">% Data for On Cell</span>
+0009         
+0010             state.internal.lineDelay = state.acq.lineDelay/state.acq.msPerLine; <span class="comment">% calculate fractional line delay</span>
+0011             pockelStart = round(state.internal.lengthOfXData * <span class="keyword">...</span>
+0012                 (state.acq.lineDelay+state.acq.mirrorLag-state.pcell.pcellDelay)/state.acq.msPerLine);
+0013         
+0014             pockellEnd =  round(state.internal.lengthOfXData * <span class="keyword">...</span>
+0015                 ((state.acq.lineDelay+state.acq.mirrorLag-state.pcell.pcellDelay)/state.acq.msPerLine+state.acq.fillFraction));
+0016         
+0017             pockellData(pockelStart:pockellEnd)=<a href="powerToPcellVoltage.html" class="code" title="function voltage=powerToPcellVoltage(power, chan)">powerToPcellVoltage</a>(eval([<span class="string">'state.pcell.pcellScanning'</span> num2str(pcellCounter)]), pcellCounter);
+0018         
+0019             <span class="keyword">if</span> pcellCounter==1
+0020                 pcellOut = repmat(pockellData, [state.acq.linesPerFrame 1]);                         <span class="comment">% Final Pockell Data for one frame</span>
+0021             <span class="keyword">else</span>
+0022                 pcellOut(:, pcellCounter) = repmat(pockellData, [state.acq.linesPerFrame 1]);         <span class="comment">% Final Pockell Data for one frame</span>
+0023             <span class="keyword">end</span>
+0024         <span class="keyword">else</span>
+0025             pockellData = zeros(state.internal.lengthOfXData ,1);                    <span class="comment">% Data for On Cell</span>
+0026         
+0027             <span class="keyword">if</span> pcellCounter==1
+0028                 pcellOut = repmat(pockellData, [state.acq.linesPerFrame 1]);                         <span class="comment">% Final Pockell Data for one frame</span>
+0029             <span class="keyword">else</span>
+0030                 pcellOut(:, pcellCounter) = repmat(pockellData, [state.acq.linesPerFrame 1]);         <span class="comment">% Final Pockell Data for one frame</span>
+0031             <span class="keyword">end</span>
+0032         <span class="keyword">end</span>
+0033     <span class="keyword">end</span>
+0034     
+0035     <span class="keyword">if</span> state.pcell.timedShutter        <span class="comment">% using a line for shutter control</span>
+0036         pcellOut(:,end+1) = 5 * state.shutter.open*ones(state.internal.lengthOfXData*state.acq.linesPerFrame,1);
+0037         pcellOut(<span class="keyword">end</span>,end) = 5 * state.shutter.closed;
+0038     <span class="keyword">end</span>
+0039     
+0040     state.acq.pockellDataOutput = pcellOut; <span class="comment">% save data without boxes for focusing</span>
+0041     
+0042     <span class="keyword">if</span> state.pcell.timedShutter        <span class="comment">% using a line for shutter control</span>
+0043         pcellOut(<span class="keyword">end</span>,end) = 5 * state.shutter.open;
+0044     <span class="keyword">end</span>
+0045 
+0046     pcellOut=repmat(pcellOut, state.acq.numberOfFrames, 1);
+0047     
+0048     <span class="keyword">for</span> counter=1:length(state.pcell.boxListStartX)
+0049         <span class="keyword">if</span> state.pcell.boxListActive(counter) &amp; eval([<span class="string">'state.pcell.pcellActive'</span> num2str(state.pcell.boxListBoxChannel(counter))])
+0050             <span class="keyword">if</span> state.pcell.boxListStartX(counter)&lt;1 | <span class="keyword">...</span>
+0051                     state.pcell.boxListStartY(counter)&lt;1 | <span class="keyword">...</span>
+0052                     state.pcell.boxListEndX(counter)&lt;1 | <span class="keyword">...</span>
+0053                     state.pcell.boxListEndY(counter)&lt;1
+0054                 disp([<span class="string">'updatePcellOutput: Box #'</span> num2str(counter) <span class="string">' is not completely defined. Skipping.'</span>]);
+0055             <span class="keyword">else</span>
+0056                 startX=round(state.internal.lengthOfXData*(state.internal.fractionStart+state.pcell.boxListStartX(counter)*state.internal.fractionPerPixel));
+0057                 endX=round(state.internal.lengthOfXData*(state.internal.fractionStart+state.pcell.boxListEndX(counter)*state.internal.fractionPerPixel));
+0058                 
+0059                 pow=<a href="powerToPcellVoltage.html" class="code" title="function voltage=powerToPcellVoltage(power, chan)">powerToPcellVoltage</a>(state.pcell.boxListPowerLevel(counter),state.pcell.boxListBoxChannel(counter));
+0060                 
+0061                 <span class="keyword">if</span> ~isempty(pow)
+0062                     <span class="keyword">if</span> state.pcell.boxListFrameNumber(counter)&lt;=state.acq.numberOfFrames
+0063                         addLine=(state.pcell.boxListFrameNumber(counter)-1)*state.acq.linesPerFrame;
+0064                         <span class="keyword">for</span> line = addLine + state.pcell.boxListStartY(counter) : addLine + state.pcell.boxListEndY(counter)
+0065                             pcellOut(<span class="keyword">...</span>
+0066                                 (line-1) * state.internal.lengthOfXData+startX : <span class="keyword">...</span>
+0067                                 (line-1) * state.internal.lengthOfXData+endX, state.pcell.boxListBoxChannel(counter)) <span class="keyword">...</span>
+0068                                 = pow;
+0069                         <span class="keyword">end</span>
+0070                     <span class="keyword">end</span>
+0071                 <span class="keyword">end</span>
+0072             <span class="keyword">end</span>
+0073         <span class="keyword">end</span>
+0074     <span class="keyword">end</span>
+0075 
+0076     <span class="keyword">if</span> state.pcell.timedShutter    <span class="comment">% using a line for shutter control</span>
+0077         pcellOut(<span class="keyword">end</span>, end) = 5 * state.shutter.closed;
+0078         <span class="keyword">if</span> state.pcell.shutterDelay &gt; 0    
+0079             pcellOut(1:round(state.pcell.shutterDelay/(state.acq.pixelTime*1000)),end) = <span class="keyword">...</span>
+0080                 5 * state.shutter.closed * ones(round(state.pcell.shutterDelay/(state.acq.pixelTime*1000)), 1);
+0081         <span class="keyword">end</span>
+0082     <span class="keyword">end</span>
+0083     state.acq.pockellDataOutputGrab = pcellOut; <span class="comment">% with boxes for grabing</span>
+0084     
+0085     <span class="keyword">if</span> isfield(state, <span class="string">'blaster'</span>)
+0086         <span class="keyword">if</span> isfield(state.blaster, <span class="string">'active'</span>)
+0087             <span class="keyword">if</span> state.blaster.active
+0088                 zeroPow1 = <a href="powerToPcellVoltage.html" class="code" title="function voltage=powerToPcellVoltage(power, chan)">powerToPcellVoltage</a>(0, 1);
+0089                 zeroPow2 = <a href="powerToPcellVoltage.html" class="code" title="function voltage=powerToPcellVoltage(power, chan)">powerToPcellVoltage</a>(0, 2);
+0090                 
+0091                 <span class="keyword">for</span> counter=1:state.acq.numberOfFrames
+0092                     startBlankX = state.acq.msPerLine * state.acq.linesPerFrame * counter/1000 - state.blaster.duration/1000;
+0093                 
+0094                     start = round(startBlankX*state.acq.outputRate);
+0095                     stop = round((startBlankX + state.blaster.duration/1000) * state.acq.outputRate);
+0096                     state.acq.pockellDataOutputGrab(start : stop, 1) = zeroPow1;
+0097                     state.acq.pockellDataOutputGrab(start : stop, 2) = zeroPow2;
+0098                     <span class="keyword">if</span> counter==1
+0099                         state.acq.pockellDataOutput(start : stop, 1) = zeroPow1;
+0100                         state.acq.pockellDataOutput(start : stop, 2) = zeroPow2;
+0101                     <span class="keyword">end</span>
+0102                     stop = round((startBlankX + state.blaster.start/1000 + state.blaster.width/1000) * state.acq.outputRate);
+0103                     
+0104                     lastStop=start-1;
+0105                 
+0106                     f=find(counter==state.blaster.frameList);
+0107                     <span class="keyword">if</span> ~isempty(f)
+0108                         <span class="keyword">for</span> blasterCounter=f
+0109                             start = round(<span class="keyword">...</span>
+0110                                     (startBlankX + <span class="keyword">...</span>
+0111                                     state.blaster.startList(blasterCounter)/1000) <span class="keyword">...</span>
+0112                                     * state.acq.outputRate);
+0113                             stop = round(<span class="keyword">...</span>
+0114                                     (startBlankX + <span class="keyword">...</span>
+0115                                     state.blaster.startList(blasterCounter)/1000 + <span class="keyword">...</span>
+0116                                     state.blaster.widthList(blasterCounter)/1000) <span class="keyword">...</span>
+0117                                     * state.acq.outputRate);
+0118                             state.acq.pockellDataOutputGrab(start : stop, 2) = <a href="powerToPcellVoltage.html" class="code" title="function voltage=powerToPcellVoltage(power, chan)">powerToPcellVoltage</a>(state.blaster.ampList(blasterCounter), 2);
+0119                         <span class="keyword">end</span>
+0120                     <span class="keyword">end</span>
+0121                 <span class="keyword">end</span>
+0122             <span class="keyword">end</span>
+0123         <span class="keyword">end</span>
+0124     <span class="keyword">end</span>
+0125</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of savePhysUserSettings</title>
+  <meta name="keywords" content="savePhysUserSettings">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">Physiology</a> &gt; savePhysUserSettings.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Physiology&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>savePhysUserSettings
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function savePhysUserSettings </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="makeUserSettingsMenu.html" class="code" title="function makeUserSettingsMenu">makeUserSettingsMenu</a>	</li><li><a href="savePhysUserSettingsAs.html" class="code" title="function savePhysCycleAs">savePhysUserSettingsAs</a>	save pulse set to disk with new name</li><li><a href="savePhysUserSettingsPath.html" class="code" title="function savePhysUserSettingsPath(userPath)">savePhysUserSettingsPath</a>	</li><li><a href="setPhysStatusString.html" class="code" title="function setPhysStatusString(status)">setPhysStatusString</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="savePhysUserSettingsAs.html" class="code" title="function savePhysCycleAs">savePhysUserSettingsAs</a>	save pulse set to disk with new name</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function savePhysUserSettings</a>
+0002     <span class="keyword">global</span> state gh
+0003     
+0004     <span class="keyword">if</span> isempty(state.phys.internal.userSettingsPath) | isempty(state.phys.internal.userSettingsName)
+0005         <a href="savePhysUserSettingsAs.html" class="code" title="function savePhysCycleAs">savePhysUserSettingsAs</a>;
+0006     <span class="keyword">else</span>
+0007         <a href="setPhysStatusString.html" class="code" title="function setPhysStatusString(status)">setPhysStatusString</a>(<span class="string">'Saving user settings...'</span>);
+0008 
+0009         [fid, message]=fopen(fullfile(state.phys.internal.userSettingsPath, [state.phys.internal.userSettingsName <span class="string">'.usr'</span>]), <span class="string">'wt'</span>);
+0010         <span class="keyword">if</span> fid==-1
+0011             disp([<span class="string">'savePhysUserSettings: Error cannot open output file '</span> <span class="keyword">...</span>
+0012                     fullfile(state.phys.internal.userSettingsPath, [state.phys.internal.userSettingsName <span class="string">'.usr'</span>]) ]);
+0013             <a href="setPhysStatusString.html" class="code" title="function setPhysStatusString(status)">setPhysStatusString</a>(<span class="string">'Can''t open file...'</span>);
+0014             <span class="keyword">return</span>
+0015         <span class="keyword">end</span>
+0016                 
+0017         wins=fieldnames(gh);
+0018         
+0019         <span class="keyword">for</span> winCount=1:length(wins)
+0020             winName=wins{winCount};
+0021             h=getfield(getfield(gh, winName), <span class="string">'figure1'</span>);
+0022             <span class="keyword">if</span> ishandle(h)
+0023                 pos=get(h, <span class="string">'Position'</span>);
+0024                 eval([<span class="string">'state.phys.windowPositions.'</span> winName <span class="string">'_position=pos;'</span>]);
+0025             <span class="keyword">end</span>
+0026         <span class="keyword">end</span>
+0027     
+0028         <span class="keyword">if</span> ishandle(state.phys.internal.scopeHandle)
+0029             pos=get(state.phys.internal.scopeHandle, <span class="string">'Position'</span>);
+0030             state.phys.windowPositions.scopeWindow_position = pos;
+0031         <span class="keyword">end</span>
+0032             
+0033         <span class="keyword">if</span> ishandle(state.phys.internal.pulsePatternPlot)
+0034             pos=get(state.phys.internal.pulsePatternPlot, <span class="string">'Position'</span>);
+0035             state.phys.windowPositions.pulsePatternPlotWindow_position = pos;
+0036         <span class="keyword">end</span>
+0037 
+0038         createConfigFileFast(8, fid, 1);
+0039         fclose(fid);
+0040         <a href="makeUserSettingsMenu.html" class="code" title="function makeUserSettingsMenu">makeUserSettingsMenu</a>;
+0041         <a href="savePhysUserSettingsPath.html" class="code" title="function savePhysUserSettingsPath(userPath)">savePhysUserSettingsPath</a>;
+0042         <a href="setPhysStatusString.html" class="code" title="function setPhysStatusString(status)">setPhysStatusString</a>(<span class="string">''</span>);
+0043     <span class="keyword">end</span>
+0044 
+0045</pre></div>
+<hr><address>Generated on Fri 17-Aug-2012 10:39:43 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

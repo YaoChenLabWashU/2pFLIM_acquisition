@@ -1,0 +1,39 @@
+/* Created by mdot for Matlab */
+digraph m2html {
+  calibratePCell -> makePcellLookupTable;
+  calibratePCell -> pcellTest;
+  calibratePCell -> turnOffAllChildren;
+  calibratePCell -> turnOnAllChildren;
+  changeBoxNumber -> recallBoxSettings;
+  loadPcellLookupTable -> turnOnAllChildren;
+  pcellcontrol -> siShowHidePcellBoxControls;
+  reloadPcellTables -> turnOnAllChildren;
+  resetPcellOutput -> updatePcellOutput;
+  setPcellsToDefault -> powerToPcellVoltage;
+  updateCurrentBox -> storeBoxSettings;
+  updatePcellOutput -> powerToPcellVoltage;
+
+  calibratePCell [URL="calibratePCell.html"];
+  changeBoxNumber [URL="changeBoxNumber.html"];
+  imSetScanningPower [URL="imSetScanningPower.html"];
+  initPcellBoxSettingsManager [URL="initPcellBoxSettingsManager.html"];
+  loadPcellLookupTable [URL="loadPcellLookupTable.html"];
+  makePcellLookupTable [URL="makePcellLookupTable.html"];
+  pcellCalibrate [URL="pcellCalibrate.html"];
+  pcellSeeTables [URL="pcellSeeTables.html"];
+  pcellTest [URL="pcellTest.html"];
+  pcellcontrol [URL="pcellcontrol.html"];
+  pickPcellBoxCenters [URL="pickPcellBoxCenters.html"];
+  powerToPcellVoltage [URL="powerToPcellVoltage.html"];
+  recallBoxSettings [URL="recallBoxSettings.html"];
+  reloadPcellTables [URL="reloadPcellTables.html"];
+  resetPcellOutput [URL="resetPcellOutput.html"];
+  savePcellLookupTable [URL="savePcellLookupTable.html"];
+  setPcellsToDefault [URL="setPcellsToDefault.html"];
+  siShowHidePcellBoxControls [URL="siShowHidePcellBoxControls.html"];
+  storeBoxSettings [URL="storeBoxSettings.html"];
+  turnOffAllChildren [URL="turnOffAllChildren.html"];
+  turnOnAllChildren [URL="turnOnAllChildren.html"];
+  updateCurrentBox [URL="updateCurrentBox.html"];
+  updatePcellOutput [URL="updatePcellOutput.html"];
+}

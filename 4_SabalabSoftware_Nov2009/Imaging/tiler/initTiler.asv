@@ -1,0 +1,12 @@
+function initTiler
+	global state gh
+	
+	gh.pulseModeControl=guihandles(tilerControls);
+	gh.pulseModeControl=guihandles(tilerLineControls);
+	openini('tiler.ini');
+
+	createPulseDAQObjects;
+	makePulseData;
+	setupPulseDAQObjects;
+	tilePulseMode(0);
+	

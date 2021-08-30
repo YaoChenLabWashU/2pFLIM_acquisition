@@ -1,0 +1,23 @@
+function ivDrawObjectBound(objects)
+	global state
+	
+	if nargin<1
+		objects=state.imageViewer.currentObject;
+	end
+
+	if isempty(objects)
+		objects=1:size(state.imageViewer.objStructs,2);
+	end
+	
+	for objectNumber=objects
+		axis=ivSelectionAxisHandle;		
+		state.imageViewer.objStructs(objectNumber).boundBoxHandle = rectangle('Position', ...
+			[state.imageViewer.objStructs(objectNumber).coords(1)-state.imageViewer.objectRadius,...
+			state.imageViewer.objStructs(objectNumber).coords(2)-state.imageViewer.objectRadius, ...
+			2*state.imageViewer.objectRadius, 2*state.imageViewer.objectRadius], ...
+			 'edgecolor', 'r', 'LineWidth', 2, 'LineStyle', '--', 'Parent', axis);
+		state.imageViewer.objStructs(objectNumber).boundBoxLabelHandle = ...
+			text(state.imageViewer.objStructs(objectNumber).coords(1)-state.imageViewer.objectRadius, ...
+			state.imageViewer.objStructs(objectNumber).coords(2)-state.imageViewer.objectRadius, ...
+			num2str(objectNumber), 'BackgroundColor', [.7 .9 .7], 'Parent', axis);
+	end

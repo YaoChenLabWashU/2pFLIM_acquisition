@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of addOrRemoveConfigGlobal</title>
+  <meta name="keywords" content="addOrRemoveConfigGlobal">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Imaging</a> &gt; <a href="../index.html">guis</a> &gt; <a href="index.html">gui_handling</a> &gt; addOrRemoveConfigGlobal.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\guis\gui_handling&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>addOrRemoveConfigGlobal
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function setGlobalConfigStatus(globalName, flag) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="structNameParts.html" class="code" title="function [outTopName, outStructName, outFieldName] = structNameParts(s)">structNameParts</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function setGlobalConfigStatus(globalName, flag)</a>
+0002     [topName, structName, fieldName]=<a href="structNameParts.html" class="code" title="function [outTopName, outStructName, outFieldName] = structNameParts(s)">structNameParts</a>(globalName);
+0003     <span class="keyword">if</span> ~isnumeric(flag)
+0004         val=str2num(flag);
+0005         <span class="keyword">if</span> isnumeric(val)
+0006             flag=val;
+0007         <span class="keyword">else</span>
+0008             disp([<span class="string">'addOrRemoveConfigGlobal: expecting 0 or 1 as flag. Got '</span> flag ]);
+0009             <span class="keyword">return</span>
+0010         <span class="keyword">end</span>
+0011     <span class="keyword">end</span>
+0012     
+0013     eval([<span class="string">'global '</span> topName <span class="string">';'</span>]);
+0014     <span class="keyword">if</span> length(topName)==0
+0015         disp([<span class="string">'addOrRemoveConfigGlobal: empty global name (flag = '</span> flag <span class="string">')'</span>]);
+0016     <span class="keyword">end</span>
+0017     <span class="keyword">if</span> ~exist(topName, <span class="string">'var'</span>)
+0018         disp([<span class="string">'addOrRemoveConfigGlobal: global'</span> globalName <span class="string">'does not exists (flag = '</span> flag <span class="string">')'</span>]);
+0019         <span class="keyword">return</span>
+0020     <span class="keyword">end</span>
+0021 
+0022     <span class="keyword">if</span> length(structName)==0            <span class="comment">% we are dealing with a top level global</span>
+0023         <span class="keyword">global</span> configGlobals
+0024         <span class="keyword">if</span> ~isstruct(configGlobals)
+0025             configGlobals=[];
+0026         <span class="keyword">end</span>
+0027         configGlobals=setfield(configGlobals, topName, flag);
+0028     <span class="keyword">else</span>                                <span class="comment">% we are dealing with the field of a global</span>
+0029         <span class="keyword">if</span> ~eval([<span class="string">'isfield('</span> structName <span class="string">', ''configGlobals'');'</span>])
+0030             eval([structName <span class="string">'.configGlobals=[];'</span>]);
+0031         <span class="keyword">end</span>
+0032         eval([structName <span class="string">'.configGlobals.'</span> fieldName <span class="string">'='</span> flag <span class="string">'};'</span>]);
+0033     <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

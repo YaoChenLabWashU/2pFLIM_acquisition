@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of makeFluorAnalysisMenu</title>
+  <meta name="keywords" content="makeFluorAnalysisMenu">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Imaging</a> &gt; <a href="index.html">FluoProcessing</a> &gt; makeFluorAnalysisMenu.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\FluoProcessing&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>makeFluorAnalysisMenu
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function makeFluorAnalysisMenu </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="saveFluorAnalysisSettings.html" class="code" title="function saveFluorAnalysisSettings">saveFluorAnalysisSettings</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function makeFluorAnalysisMenu</a>
+0002     <span class="keyword">global</span> state gh
+0003     
+0004     <span class="keyword">if</span> ishandle(state.analysis.analysisSetupMenu)
+0005         delete(state.analysis.analysisSetupMenu);
+0006     <span class="keyword">end</span>
+0007     
+0008     <span class="keyword">if</span> ~isempty(state.analysis.analysisSetupPath)
+0009         state.analysis.analysisSetupMenu=uimenu(gh.fluorAnalysisSettings.figure1, <span class="string">'Label'</span>, <span class="string">'Setups'</span>);
+0010         flist=dir(fullfile(state.analysis.analysisSetupPath, <span class="string">'*.ana'</span>));
+0011         uimenu(state.analysis.analysisSetupMenu, <span class="string">'Label'</span>, state.analysis.analysisSetupPath, <span class="string">'Enable'</span>, <span class="string">'on'</span>);
+0012         
+0013         <span class="keyword">for</span> counter=1:length(flist)    
+0014             <span class="keyword">if</span> counter==1
+0015                 uimenu(state.analysis.analysisSetupMenu, <span class="string">'Label'</span>, flist(counter).name, <span class="string">'Callback'</span>, <span class="string">'selectFluorAnalysisFromMenu'</span> <span class="keyword">...</span>
+0016                     , <span class="string">'Separator'</span>, <span class="string">'on'</span>);
+0017             <span class="keyword">else</span>
+0018                 uimenu(state.analysis.analysisSetupMenu, <span class="string">'Label'</span>, flist(counter).name, <span class="string">'Callback'</span>, <span class="string">'selectFluorAnalysisFromMenu'</span>);
+0019             <span class="keyword">end</span>
+0020         <span class="keyword">end</span>
+0021     <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

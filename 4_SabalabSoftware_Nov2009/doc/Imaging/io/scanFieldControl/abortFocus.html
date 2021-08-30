@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of abortFocus</title>
+  <meta name="keywords" content="abortFocus">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Imaging</a> &gt; <a href="../index.html">io</a> &gt; <a href="index.html">scanFieldControl</a> &gt; abortFocus.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\io\scanFieldControl&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>abortFocus
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function abortFocus </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>	This function sets the status field in mainControls.</li><li><a href="../../../Imaging/guis/gui_handling/turnOffMenus.html" class="code" title="function turnOffMenus">turnOffMenus</a>	</li><li><a href="../../../Imaging/guis/gui_handling/turnOnMenus.html" class="code" title="function turnOnMenus">turnOnMenus</a>	</li><li><a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>	given the name of a global variable, find and update the GUI that contains it</li><li><a href="../../../Imaging/guis/siRedrawImages.html" class="code" title="function siRedrawImages(channelList, frame)">siRedrawImages</a>	</li><li><a href="../../../Imaging/io/ad_da/resetCounters.html" class="code" title="function resetCounters">resetCounters</a>	</li><li><a href="../../../Imaging/io/applyChangesToOutput.html" class="code" title="function applyChangesToOutput(force)">applyChangesToOutput</a>	</li><li><a href="../../../Imaging/io/motors/MP285/mp285Flush.html" class="code" title="function temp=mp285Flush">mp285Flush</a>	</li><li><a href="flushFocusData.html" class="code" title="function flushFocusData">flushFocusData</a>	</li><li><a href="../../../Imaging/pcell/setPcellsToDefault.html" class="code" title="function setPcellsToDefault">setPcellsToDefault</a>	</li><li><a href="../../../Timer/timerReleasePause.html" class="code" title="function timerReleasePause(package)">timerReleasePause</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Imaging/guis/gui_callbacks/executeFocusCallback.html" class="code" title="function executeFocusCallback">executeFocusCallback</a>	</li><li><a href="../../../Imaging/io/ad_da/makeStripe.html" class="code" title="function makeStripe(aiF, SamplesAcquired)">makeStripe</a>	makeStripe.m*****</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function abortFocus</a>
+0002     <span class="keyword">global</span> state gh
+0003     state.internal.abortActionFunctions=0;
+0004     
+0005     <span class="keyword">global</span> focusInput focusOutput pcellFocusOutput
+0006     stop([pcellFocusOutput focusOutput focusInput]);
+0007 
+0008     <span class="keyword">while</span> ~strcmp(get(pcellFocusOutput, <span class="string">'Running'</span>), <span class="string">'Off'</span>)
+0009         pause(0.001);
+0010     <span class="keyword">end</span>
+0011     
+0012     <a href="../../../Imaging/pcell/setPcellsToDefault.html" class="code" title="function setPcellsToDefault">setPcellsToDefault</a>;
+0013     <a href="../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Aborting Focus...'</span>);
+0014     
+0015     set(gh.siGUI_ImagingControls.focusButton, <span class="string">'Enable'</span>, <span class="string">'off'</span>);
+0016 
+0017     <span class="keyword">while</span> ~any(strcmp(get([pcellFocusOutput focusOutput focusInput], <span class="string">'Running'</span>), <span class="string">'Off'</span>))
+0018         pause(0.01);
+0019     <span class="keyword">end</span>
+0020     
+0021     <a href="../../../Imaging/pcell/setPcellsToDefault.html" class="code" title="function setPcellsToDefault">setPcellsToDefault</a>;
+0022 
+0023     <a href="flushFocusData.html" class="code" title="function flushFocusData">flushFocusData</a>;
+0024 
+0025     <span class="keyword">if</span> get(focusInput, <span class="string">'SamplesAvailable'</span>)&gt;0
+0026         <span class="keyword">try</span>
+0027             flushdata(focusInput);
+0028         <span class="keyword">catch</span>
+0029             disp(<span class="string">'abortFocus: error in input flush data.  proceeding...'</span>);
+0030         <span class="keyword">end</span>
+0031     <span class="keyword">end</span>
+0032     
+0033     <a href="../../../Imaging/io/motors/MP285/mp285Flush.html" class="code" title="function temp=mp285Flush">mp285Flush</a>;
+0034 
+0035     
+0036     set(gh.siGUI_ImagingControls.focusButton, <span class="string">'String'</span>, <span class="string">'FOCUS'</span>);
+0037     set(gh.siGUI_ImagingControls.focusButton, <span class="string">'Enable'</span>, <span class="string">'on'</span>);
+0038     set(gh.fieldAdjustGUI.focusButton, <span class="string">'String'</span>, <span class="string">'focus'</span>);    
+0039 <span class="comment">%    set(gh.siGUI_ImagingControls.startLoopButton, 'Visible', 'On');</span>
+0040 
+0041     <span class="keyword">if</span> ~state.internal.looping
+0042         set(gh.siGUI_ImagingControls.grabOneButton, <span class="string">'Visible'</span>, <span class="string">'On'</span>);
+0043         <a href="../../../Imaging/guis/gui_handling/turnOnMenus.html" class="code" title="function turnOnMenus">turnOnMenus</a>;
+0044         state.internal.status=0;
+0045         <a href="../../../Imaging/io/applyChangesToOutput.html" class="code" title="function applyChangesToOutput(force)">applyChangesToOutput</a>;
+0046     <span class="keyword">else</span>
+0047         state.internal.status=4;
+0048         <a href="../../../Imaging/io/applyChangesToOutput.html" class="code" title="function applyChangesToOutput(force)">applyChangesToOutput</a>;
+0049         <a href="../../../Imaging/guis/gui_handling/turnOffMenus.html" class="code" title="function turnOffMenus">turnOffMenus</a>;
+0050 
+0051         <a href="../../../Imaging/io/ad_da/resetCounters.html" class="code" title="function resetCounters">resetCounters</a>;
+0052         state.internal.abortActionFunctions=0;
+0053         <a href="../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Resuming loop...'</span>);
+0054     
+0055         <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.internal.frameCounter'</span>);
+0056         <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.internal.zSliceCounter'</span>);
+0057 
+0058         state.internal.abort=0;
+0059         state.internal.currentMode=3;
+0060 
+0061         mainLoop;
+0062     <span class="keyword">end</span>
+0063 
+0064     <a href="../../../Imaging/guis/siRedrawImages.html" class="code" title="function siRedrawImages(channelList, frame)">siRedrawImages</a>;
+0065     <a href="../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">''</span>);
+0066     <a href="../../../Timer/timerReleasePause.html" class="code" title="function timerReleasePause(package)">timerReleasePause</a>(<span class="string">'Imaging'</span>);
+0067</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

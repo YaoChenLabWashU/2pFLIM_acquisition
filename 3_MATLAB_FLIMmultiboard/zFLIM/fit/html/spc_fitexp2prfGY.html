@@ -1,0 +1,168 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>spc_fitexp2prfGY</title><meta name="generator" content="MATLAB 7.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-11-27"><meta name="DC.source" content="spc_fitexp2prfGY.m"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> betahat=spc_fitexp2prfGY(chan)
+<span class="comment">% gy multiFLIM updated (start) 201111</span>
+<span class="keyword">global</span> spc;
+
+spc.fits{chan}.lastFitFunction = mfilename;
+spc.fits{chan}.fitOrder=2;
+[betaInit range floats]=spc_fitParamsFromGlobal(chan);
+spc.fits{chan}.nFreeParams=sum([1 1 1 1 1 1].*floats);
+
+
+<span class="comment">% get the lifetime from the lifetimes structure</span>
+lifetime = spc.lifetimes{chan}(range(1):1:range(2));
+x = [1:1:length(lifetime)];  <span class="comment">% x starts at 1?? gy</span>
+
+<span class="comment">% if values are bad, get a good initial guess</span>
+beta0 = spc_initialValue_double(betaInit,lifetime,range,1);
+<span class="comment">% pass range and prf for the current channel through spc.fit</span>
+spc.fit.range = range;
+spc.fit.prf = spc.fits{chan}.prf;
+spc.fit.lifetime=lifetime;
+
+<span class="comment">% this is different from Ryohei's version</span>
+<span class="comment">%  1) the fixed parameters are not searched at all, so the fit</span>
+<span class="comment">%     should be more efficient.</span>
+<span class="comment">%  2) there is an option of transforming the parameters (last parameter)</span>
+<span class="comment">%     0 = no transform; 1 = log transform; 2 = sin transform (range 0-1)</span>
+<span class="comment">%</span>
+weights=sqrt(lifetime)/sqrt(max(lifetime));
+spc.fit.failedFit=0; <span class="comment">% initialize to not-failed</span>
+<span class="comment">% for the scatter parameter (6), use a 3-transform (sinusoid 0-10000)</span>
+betahat = spc_nlinfitGY(x, lifetime, weights, @spc_exp2prfGY, beta0, floats, [0 1 0 1 0 3]);
+fit = spc_exp2prfGY(betahat, x);
+<span class="keyword">if</span> spc.fit.failedFit==0
+    <span class="comment">% calculate the fraction of photons from SHG/scatter term</span>
+    betahat2=betahat;  betahat2(6)=0; fit2 = spc_exp2prfGY(betahat2,x);
+    spc.fits{chan}.frSHG = 1-(sum(fit2)/sum(fit));
+    disp([<span class="string">'fraction of photons from SHG: '</span> num2str(spc.fits{chan}.frSHG)]);
+
+    spc_betaIntoGlobal(betahat,chan,chan==spc_mainChannelChoice);  <span class="comment">% update globals and display if current</span>
+    spc_fitPostCalcs(chan); <span class="comment">% consider moving this into prev</span>
+    spc.fits{chan}.failedFit=0;
+<span class="keyword">else</span>
+    spc.fits{chan}.failedFit=1;
+<span class="keyword">end</span>
+
+t = [range(1):range(2)]*spc.datainfo.psPerUnit/1000;
+spc_drawfit (t, fit, lifetime, betahat, chan);
+</pre><pre class="codeoutput">Input argument "chan" is undefined.
+
+Error in ==&gt; spc_fitexp2prfGY at 5
+spc.fits{chan}.lastFitFunction = mfilename;
+</pre><p class="footer"><br>
+      Published with MATLAB&reg; 7.11<br></p></div><!--
+##### SOURCE BEGIN #####
+function betahat=spc_fitexp2prfGY(chan)
+% gy multiFLIM updated (start) 201111
+global spc;
+
+spc.fits{chan}.lastFitFunction = mfilename;
+spc.fits{chan}.fitOrder=2;
+[betaInit range floats]=spc_fitParamsFromGlobal(chan);
+spc.fits{chan}.nFreeParams=sum([1 1 1 1 1 1].*floats);
+
+
+% get the lifetime from the lifetimes structure
+lifetime = spc.lifetimes{chan}(range(1):1:range(2));
+x = [1:1:length(lifetime)];  % x starts at 1?? gy
+
+% if values are bad, get a good initial guess
+beta0 = spc_initialValue_double(betaInit,lifetime,range,1);
+% pass range and prf for the current channel through spc.fit
+spc.fit.range = range;
+spc.fit.prf = spc.fits{chan}.prf;
+spc.fit.lifetime=lifetime;
+   
+% this is different from Ryohei's version
+%  1) the fixed parameters are not searched at all, so the fit
+%     should be more efficient.
+%  2) there is an option of transforming the parameters (last parameter)
+%     0 = no transform; 1 = log transform; 2 = sin transform (range 0-1)
+%
+weights=sqrt(lifetime)/sqrt(max(lifetime));
+spc.fit.failedFit=0; % initialize to not-failed
+% for the scatter parameter (6), use a 3-transform (sinusoid 0-10000)
+betahat = spc_nlinfitGY(x, lifetime, weights, @spc_exp2prfGY, beta0, floats, [0 1 0 1 0 3]);
+fit = spc_exp2prfGY(betahat, x);
+if spc.fit.failedFit==0
+    % calculate the fraction of photons from SHG/scatter term
+    betahat2=betahat;  betahat2(6)=0; fit2 = spc_exp2prfGY(betahat2,x);
+    spc.fits{chan}.frSHG = 1-(sum(fit2)/sum(fit));
+    disp(['fraction of photons from SHG: ' num2str(spc.fits{chan}.frSHG)]);
+    
+    spc_betaIntoGlobal(betahat,chan,chan==spc_mainChannelChoice);  % update globals and display if current
+    spc_fitPostCalcs(chan); % consider moving this into prev
+    spc.fits{chan}.failedFit=0;
+else
+    spc.fits{chan}.failedFit=1;
+end
+
+t = [range(1):range(2)]*spc.datainfo.psPerUnit/1000;
+spc_drawfit (t, fit, lifetime, betahat, chan);
+
+##### SOURCE END #####
+--></body></html>

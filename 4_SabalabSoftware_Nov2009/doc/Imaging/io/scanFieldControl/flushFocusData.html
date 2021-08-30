@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of flushFocusData</title>
+  <meta name="keywords" content="flushFocusData">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Imaging</a> &gt; <a href="../index.html">io</a> &gt; <a href="index.html">scanFieldControl</a> &gt; flushFocusData.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\io\scanFieldControl&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>flushFocusData
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function flushFocusData </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Imaging/guis/gui_callbacks/executeFocusCallback.html" class="code" title="function executeFocusCallback">executeFocusCallback</a>	</li><li><a href="../../../Imaging/io/applyChangesToOutput.html" class="code" title="function applyChangesToOutput(force)">applyChangesToOutput</a>	</li><li><a href="abortFocus.html" class="code" title="function abortFocus">abortFocus</a>	</li><li><a href="applyImagingOutputParams.html" class="code" title="function applyImagingOutputParams">applyImagingOutputParams</a>	</li><li><a href="stopAndRestartFocus.html" class="code" title="function stopAndRestartFocus">stopAndRestartFocus</a>	</li><li><a href="../../../Imaging/pcell/resetPcellOutput.html" class="code" title="function resetPcellOutput">resetPcellOutput</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function flushFocusData</a>
+0002     <span class="keyword">global</span> state
+0003     <span class="keyword">global</span> focusOutput pcellFocusOutput
+0004     
+0005     <span class="keyword">try</span>
+0006         stop(focusOutput)
+0007         <span class="keyword">if</span> state.pcell.pcellOn
+0008             stop(pcellFocusOutput)
+0009         <span class="keyword">end</span>
+0010 
+0011         deviceList=[];
+0012         <span class="keyword">if</span> state.pcell.pcellOn
+0013             <span class="keyword">if</span> get(pcellFocusOutput, <span class="string">'SamplesAvailable'</span>)&gt;0
+0014                 deviceList=pcellFocusOutput;
+0015             <span class="keyword">end</span>
+0016         <span class="keyword">end</span>
+0017         <span class="keyword">if</span> get(focusOutput, <span class="string">'SamplesAvailable'</span>)&gt;0
+0018             <span class="keyword">if</span> isempty(deviceList)
+0019                 deviceList=focusOutput;
+0020             <span class="keyword">else</span>
+0021                 deviceList(end+1)=focusOutput;
+0022             <span class="keyword">end</span>
+0023         <span class="keyword">end</span>
+0024         
+0025         <span class="keyword">if</span> ~isempty(deviceList)
+0026             <span class="string">'secondary in flushFocusData'</span>
+0027             start(deviceList);
+0028             stop(deviceList);
+0029     
+0030             <span class="keyword">while</span> ~any(strcmp(get(deviceList, <span class="string">'Running'</span>), repmat(<span class="string">'Off'</span>, length(deviceList), 1)))
+0031                 pause(.001);
+0032             <span class="keyword">end</span>
+0033         <span class="keyword">end</span>
+0034     <span class="keyword">catch</span>
+0035         disp([<span class="string">'flushFocusData: '</span> lasterr]);
+0036     <span class="keyword">end</span>
+0037</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

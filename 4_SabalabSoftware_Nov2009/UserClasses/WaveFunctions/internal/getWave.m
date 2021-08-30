@@ -1,0 +1,1 @@
+function out=getWave(wv, prop)	if nargin==1        if ischar(wv)			out=evalin('base', ['get(' wv ')']);		else			out=get(wv);        end			else        if ischar(wv)			out=evalin('base', [wv '.' prop]);		else			out=eval(['wv.' prop]);        end	end

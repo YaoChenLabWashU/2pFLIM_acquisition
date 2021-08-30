@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of makeStripe</title>
+  <meta name="keywords" content="makeStripe">
+  <meta name="description" content="makeStripe.m*****">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Imaging</a> &gt; <a href="../index.html">io</a> &gt; <a href="index.html">ad_da</a> &gt; makeStripe.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\io\ad_da&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>makeStripe
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>makeStripe.m*****</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function makeStripe(aiF, SamplesAcquired) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> makeStripe.m*****
+ Action Function
+ Called during the focusMode.m script execution.
+ Takes data from data acquisition engine and formats it into a proper intensity image.
+
+ This function will take the datainput from the DAQ engine and remove the data for the
+ lines that are acquired.  It will then bin the matrix along the columns to produce a final 1024 x 1024 image
+
+ Written by: Thomas Pologruto &amp; Bernardo Sabatini
+ Harvard Medical School
+ HHMI
+ Cold Spring Harbor Labs
+ 2002 - 2009</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>	given the name of a global variable, find and update the GUI that contains it</li><li><a href="../../../Imaging/guis/siRedrawImages.html" class="code" title="function siRedrawImages(channelList, frame)">siRedrawImages</a>	</li><li><a href="siProcessImageStripe.html" class="code" title="function siProcessImageStripe(stripeData, averaging)">siProcessImageStripe</a>	siProcessImageStripe.m*****</li><li><a href="../../../Imaging/io/scanFieldControl/abortFocus.html" class="code" title="function abortFocus">abortFocus</a>	</li><li><a href="../../../Imaging/io/scanFieldControl/stopAndRestartFocus.html" class="code" title="function stopAndRestartFocus">stopAndRestartFocus</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function makeStripe(aiF, SamplesAcquired)</a>
+0002 <span class="comment">% makeStripe.m*****</span>
+0003 <span class="comment">% Action Function</span>
+0004 <span class="comment">% Called during the focusMode.m script execution.</span>
+0005 <span class="comment">% Takes data from data acquisition engine and formats it into a proper intensity image.</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% This function will take the datainput from the DAQ engine and remove the data for the</span>
+0008 <span class="comment">% lines that are acquired.  It will then bin the matrix along the columns to produce a final 1024 x 1024 image</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">% Written by: Thomas Pologruto &amp; Bernardo Sabatini</span>
+0011 <span class="comment">% Harvard Medical School</span>
+0012 <span class="comment">% HHMI</span>
+0013 <span class="comment">% Cold Spring Harbor Labs</span>
+0014 <span class="comment">% 2002 - 2009</span>
+0015 
+0016 
+0017     <span class="keyword">global</span> focusInput state
+0018     
+0019     <span class="keyword">if</span> state.internal.pauseAndRotate
+0020         <a href="../../../Imaging/io/scanFieldControl/stopAndRestartFocus.html" class="code" title="function stopAndRestartFocus">stopAndRestartFocus</a>;
+0021         <span class="keyword">return</span>
+0022     <span class="keyword">end</span>
+0023 
+0024     <span class="keyword">if</span> (state.internal.looping==1) &amp;&amp; (state.internal.stripeCounter==1)
+0025         state.internal.secondsCounter=floor(state.internal.lastTimeDelay-etime(clock,state.internal.triggerTime));
+0026         <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.internal.secondsCounter'</span>);
+0027     <span class="keyword">end</span>
+0028 
+0029     stripeData = getdata(focusInput, state.internal.samplesPerStripe, <span class="string">'double'</span>); <span class="comment">% Gets enoogh data for one stripe from the DAQ engine for all channels present</span>
+0030 
+0031     <a href="siProcessImageStripe.html" class="code" title="function siProcessImageStripe(stripeData, averaging)">siProcessImageStripe</a>(stripeData, 0);
+0032     
+0033     <span class="keyword">if</span> state.internal.pauseAndRotate
+0034         <a href="../../../Imaging/io/scanFieldControl/stopAndRestartFocus.html" class="code" title="function stopAndRestartFocus">stopAndRestartFocus</a>;
+0035         <span class="keyword">return</span>
+0036     <span class="keyword">end</span>
+0037     
+0038     <span class="keyword">if</span> state.internal.abortActionFunctions
+0039         <a href="../../../Imaging/io/scanFieldControl/abortFocus.html" class="code" title="function abortFocus">abortFocus</a>
+0040         <a href="../../../Imaging/guis/siRedrawImages.html" class="code" title="function siRedrawImages(channelList, frame)">siRedrawImages</a>
+0041         <span class="keyword">return</span>
+0042     <span class="keyword">end</span>
+0043 
+0044     state.internal.stripeCounter = state.internal.stripeCounter + 1; <span class="comment">% increments the stripecounter to ensure proper image displays</span>
+0045     <span class="keyword">if</span>  state.internal.stripeCounter == state.internal.numberOfStripes            
+0046         state.internal.stripeCounter = 0;
+0047         state.internal.frameCounter = state.internal.frameCounter + 1;
+0048         <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.internal.frameCounter'</span>);
+0049     <span class="keyword">end</span>
+0050     
+0051     <span class="keyword">if</span> state.internal.abortActionFunctions
+0052         <a href="../../../Imaging/io/scanFieldControl/abortFocus.html" class="code" title="function abortFocus">abortFocus</a>
+0053         <a href="../../../Imaging/guis/siRedrawImages.html" class="code" title="function siRedrawImages(channelList, frame)">siRedrawImages</a>
+0054         <span class="keyword">return</span>
+0055     <span class="keyword">end</span>
+0056 
+0057     <span class="keyword">if</span> state.internal.frameCounter == state.internal.numberOfFocusFrames
+0058         disp(<span class="string">'makeStripe: reached number of focus frames'</span>)
+0059 
+0060         <span class="comment">%stopAndRestartFocus;</span>
+0061         <span class="comment">%return</span>
+0062     <span class="keyword">end</span>
+0063 
+0064 
+0065 
+0066 
+0067</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

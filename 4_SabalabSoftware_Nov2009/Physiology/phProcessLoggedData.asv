@@ -1,0 +1,60 @@
+function phProcessLoggedData(fileName)
+	global state
+	
+	try
+		daqinfo = daqread(fileName,'info');
+	catch
+		error('phProcessLoggedData: Unable to load data from log file');
+	end
+	
+	deltax=1/daqinfo.ObjInfo.SampleRate;
+	eventLog=daqinfo.ObjInfo.EventLog;
+	f=find(strcmp({eventLog.Type}, 'Trigger'));
+	if isempty(f)
+		disp('*** phProcessLoggedData: No trigger information found');
+		state.phys.internal.triggerClock=eventLog(f(1)).Data.AbsTime;
+		updateMinInCell(state.phys.internal.triggerClock);
+	end
+	
+	global physData
+	physData=daqread(fileName)';
+	if size(daqinfo.ObjInfo.Channel,2)~=size(physData,2)
+		error('Loaded data and list of acquisition channels do not match');
+	end
+	
+	for counter=1:length(channelList)
+		channel=daqinfo.ObjInfo.Channel(counter).HwChannel;
+
+			waveo(['dataWave' num2str(channel)], physData(couter, :), ...
+					'xscale', [0 1000/state.phys.settings.inputRate]);
+			else
+				setwave(['dataWave' num2str(channel)], 'xscale', [0 1000/state.phys.settings.inputRate]);
+				eval(['global dataWave' num2str(channel)]);
+				eval(['dataWave' num2str(channel) dataRangeString '=state.phys.data' num2str(channel) dataRangeString ';']);
+			end
+
+			setfield(['dataWave' num2str(channel)], 'headerString', state.headerString);
+		elseif (state.phys.internal.stripeCounter==state.phys.internal.stripes)
+			if size(getfield(state.phys, ['data' num2str(channel)]),2)>endData
+				eval(['state.phys.data' num2str(channel) '(' num2str(endData+1) ':end) = [];']);
+			end
+			setWave(['dataWave' num2str(channel)], 'data',  getfield(state.phys, ['data' num2str(channel)]));
+		else
+			eval(['global dataWave' num2str(channel)]);
+			eval(['dataWave' num2str(channel) displayDataRangeString '=state.phys.data' num2str(channel) dataRangeString ';']);
+		end
+
+		% this adds a small leading blank as the data appears on the screen
+		if displayStripe<state.phys.internal.stripes
+			nextDataRangeString=[...
+				'(' ...
+				num2str(displayEndData+1) ...
+				':' ...
+				num2str(round(state.phys.internal.samplesPerStripe*(displayStripe+0.5)))...
+				')'...
+				];
+			eval(['global dataWave' num2str(channel)]);
+			eval(['dataWave' num2str(channel) nextDataRangeString '=NaN;']);
+		end
+	end
+	

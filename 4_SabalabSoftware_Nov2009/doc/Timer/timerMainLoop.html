@@ -1,0 +1,198 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of timerMainLoop</title>
+  <meta name="keywords" content="timerMainLoop">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">Timer</a> &gt; timerMainLoop.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Timer&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>timerMainLoop
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function timerMainLoop </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>	This function sets the status field in mainControls.</li><li><a href="../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>	given the name of a global variable, find and update the GUI that contains it</li><li><a href="applyAdvancedCyclePosition.html" class="code" title="function applyAdvancedCyclePosition(position)">applyAdvancedCyclePosition</a>	</li><li><a href="findValidCyclePosition.html" class="code" title="function valid=findValidCyclePosition">findValidCyclePosition</a>	</li><li><a href="gotoCycleStagePosition.html" class="code" title="function gotoCycleStagePosition(forceMovement)">gotoCycleStagePosition</a>	</li><li><a href="timerCallPackageFunctions.html" class="code" title="function status=timerCallPackageFunctions(type, package)">timerCallPackageFunctions</a>	</li><li><a href="timerPausedStatus.html" class="code" title="function out=timerPausedStatus(package)">timerPausedStatus</a>	</li><li><a href="timerTrigger.html" class="code" title="function timerTrigger(freshTriggerTime)">timerTrigger</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="timerLoop.html" class="code" title="function timerLoop">timerLoop</a>	</li><li><a href="timerReleasePause.html" class="code" title="function timerReleasePause(package)">timerReleasePause</a>	</li><li><a href="timerResumeLoop.html" class="code" title="function resumeLoop">timerResumeLoop</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function timerMainLoop</a>
+0002     <span class="keyword">global</span> state gh
+0003     
+0004     <a href="../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Looping...'</span>);
+0005     
+0006     change=0;
+0007     recoveredFromPause=0;
+0008     <span class="keyword">if</span> state.cycle.loopingStatus==2    <span class="comment">% we're going in after a pause</span>
+0009         state.cycle.loopingStatus=1;
+0010         recoveredFromPause=1;
+0011     <span class="keyword">end</span>
+0012     
+0013     <span class="keyword">if</span> state.timer.abort
+0014         <span class="keyword">return</span>
+0015     <span class="keyword">end</span>    
+0016     <span class="keyword">if</span> <a href="timerPausedStatus.html" class="code" title="function out=timerPausedStatus(package)">timerPausedStatus</a>
+0017         state.cycle.loopingStatus=2;
+0018         <a href="../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'LOOP PAUSED'</span>);
+0019         <span class="keyword">return</span>
+0020     <span class="keyword">end</span>
+0021     
+0022     <span class="keyword">if</span> (~<a href="findValidCyclePosition.html" class="code" title="function valid=findValidCyclePosition">findValidCyclePosition</a>)
+0023         <a href="../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'BAD CYCLE'</span>);
+0024         error(<span class="string">'mainLoop: Unable to find valid cycle position'</span>);
+0025     <span class="keyword">end</span>
+0026     <a href="applyAdvancedCyclePosition.html" class="code" title="function applyAdvancedCyclePosition(position)">applyAdvancedCyclePosition</a>;
+0027 
+0028     <a href="../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Setting up packages...'</span>);
+0029     <a href="timerCallPackageFunctions.html" class="code" title="function status=timerCallPackageFunctions(type, package)">timerCallPackageFunctions</a>(<span class="string">'Setup'</span>);
+0030     
+0031     <span class="keyword">if</span> state.timer.abort
+0032         <span class="keyword">return</span>
+0033     <span class="keyword">end</span>    
+0034     <span class="keyword">if</span> <a href="timerPausedStatus.html" class="code" title="function out=timerPausedStatus(package)">timerPausedStatus</a>
+0035         state.cycle.loopingStatus=2;
+0036         <a href="../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'LOOP PAUSED'</span>);
+0037         <span class="keyword">return</span>
+0038     <span class="keyword">end</span>
+0039     
+0040     state.cycle.loopingStatus=1;
+0041     
+0042     <span class="keyword">if</span> (state.internal.firstTimeThroughLoop==0) || recoveredFromPause
+0043         state.internal.secondsCounter=floor(state.internal.lastTimeDelay-etime(clock,state.internal.triggerTime));
+0044     <span class="keyword">else</span>
+0045         state.internal.triggerTime=clock;
+0046         state.internal.secondsCounter=state.internal.lastTimeDelay;
+0047     <span class="keyword">end</span>
+0048     
+0049     <a href="../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.internal.secondsCounter'</span>);
+0050     
+0051     <span class="comment">% load daq engine % here get dacq ready for trigger</span>
+0052     <span class="keyword">if</span> (state.internal.firstTimeThroughLoop==0) || state.acq.externalTrigger
+0053         <a href="../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Counting down...'</span>);
+0054         
+0055         <span class="keyword">if</span> etime(clock,state.internal.triggerTime)&gt;(state.internal.lastTimeDelay)
+0056             <a href="../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'DELAY TOO SHORT!'</span>);
+0057             beep;
+0058         <span class="keyword">end</span>
+0059         
+0060         <span class="keyword">if</span> etime(clock,state.internal.triggerTime) &gt;= (state.internal.lastTimeDelay-10)
+0061             <a href="gotoCycleStagePosition.html" class="code" title="function gotoCycleStagePosition(forceMovement)">gotoCycleStagePosition</a>(state.internal.firstTimeThroughLoop);
+0062             moveDone=1;
+0063         <span class="keyword">else</span>
+0064             moveDone=0;
+0065         <span class="keyword">end</span>
+0066         
+0067         <span class="keyword">while</span> etime(clock,state.internal.triggerTime) &lt;(state.internal.lastTimeDelay-1)
+0068             <span class="keyword">if</span> state.timer.abort
+0069                 <span class="keyword">return</span>
+0070             <span class="keyword">end</span>    
+0071             <span class="keyword">if</span> <a href="timerPausedStatus.html" class="code" title="function out=timerPausedStatus(package)">timerPausedStatus</a>
+0072                 state.cycle.loopingStatus=2;
+0073                 <a href="../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'LOOP PAUSED'</span>);
+0074                 <span class="keyword">return</span>
+0075             <span class="keyword">end</span>
+0076             
+0077             <span class="keyword">if</span> (etime(clock,state.internal.triggerTime) &gt;= (state.internal.lastTimeDelay-10)) &amp; ~moveDone
+0078                 <a href="gotoCycleStagePosition.html" class="code" title="function gotoCycleStagePosition(forceMovement)">gotoCycleStagePosition</a>(state.internal.firstTimeThroughLoop);
+0079                 moveDone=1;
+0080             <span class="keyword">end</span>
+0081             old=etime(clock,state.internal.triggerTime);
+0082             
+0083             <a href="timerCallPackageFunctions.html" class="code" title="function status=timerCallPackageFunctions(type, package)">timerCallPackageFunctions</a>(<span class="string">'Wait'</span>);
+0084             
+0085             <span class="keyword">while</span> floor(etime(clock,state.internal.triggerTime))&lt;old
+0086                 pause(0.01);
+0087                 <span class="keyword">if</span> state.timer.abort
+0088                     <span class="keyword">return</span>
+0089                 <span class="keyword">end</span>    
+0090                 <span class="keyword">if</span> <a href="timerPausedStatus.html" class="code" title="function out=timerPausedStatus(package)">timerPausedStatus</a>
+0091                     state.cycle.loopingStatus=2;
+0092                     <a href="../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'LOOP PAUSED'</span>);
+0093                     <span class="keyword">return</span>
+0094                 <span class="keyword">end</span>
+0095             <span class="keyword">end</span>
+0096             state.internal.secondsCounter=round(state.internal.lastTimeDelay-etime(clock,state.internal.triggerTime));
+0097             <a href="../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.internal.secondsCounter'</span>);
+0098             pause(0.01);
+0099         <span class="keyword">end</span>
+0100         
+0101         <span class="keyword">if</span> state.timer.abort
+0102             <span class="keyword">return</span>
+0103         <span class="keyword">end</span>    
+0104         
+0105         <span class="keyword">if</span> <a href="timerPausedStatus.html" class="code" title="function out=timerPausedStatus(package)">timerPausedStatus</a>
+0106             state.cycle.loopingStatus=2;
+0107             <a href="../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'LOOP PAUSED'</span>);
+0108             <span class="keyword">return</span>
+0109         <span class="keyword">end</span>
+0110         
+0111         state.internal.secondsCounter=0;
+0112         
+0113         <a href="timerCallPackageFunctions.html" class="code" title="function status=timerCallPackageFunctions(type, package)">timerCallPackageFunctions</a>(<span class="string">'Start'</span>);
+0114         
+0115         <span class="keyword">if</span> state.internal.lastTimeDelay-etime(clock,state.internal.triggerTime)-state.internal.timingDelay&gt;0
+0116             pause(state.internal.lastTimeDelay-etime(clock,state.internal.triggerTime)-state.internal.timingDelay) <span class="comment">% 0.05 is</span>
+0117         <span class="keyword">end</span>
+0118     <span class="keyword">else</span>
+0119         <span class="keyword">if</span> ~recoveredFromPause
+0120             <a href="gotoCycleStagePosition.html" class="code" title="function gotoCycleStagePosition(forceMovement)">gotoCycleStagePosition</a>(state.internal.firstTimeThroughLoop);
+0121         <span class="keyword">end</span>
+0122         <span class="keyword">if</span> state.timer.abort
+0123             <span class="keyword">return</span>
+0124         <span class="keyword">end</span>    
+0125         <span class="keyword">if</span> <a href="timerPausedStatus.html" class="code" title="function out=timerPausedStatus(package)">timerPausedStatus</a>
+0126             state.cycle.loopingStatus=2;
+0127             <a href="../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'LOOP PAUSED'</span>);
+0128             <span class="keyword">return</span>
+0129         <span class="keyword">end</span>
+0130         
+0131         <a href="timerCallPackageFunctions.html" class="code" title="function status=timerCallPackageFunctions(type, package)">timerCallPackageFunctions</a>(<span class="string">'Start'</span>);
+0132         
+0133         state.internal.firstTimeThroughLoop=0;
+0134     <span class="keyword">end</span>
+0135     
+0136     <span class="keyword">if</span> state.timer.abort
+0137         <span class="keyword">return</span>
+0138     <span class="keyword">end</span>
+0139     
+0140     <a href="../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Acquiring...'</span>);
+0141     
+0142     <span class="keyword">if</span> ~state.acq.externalTrigger
+0143         <a href="timerTrigger.html" class="code" title="function timerTrigger(freshTriggerTime)">timerTrigger</a>;
+0144     <span class="keyword">else</span>
+0145         <a href="../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Waiting for trigger...'</span>);
+0146         disp([<span class="string">'Waiting for trigger at '</span> clockToString(clock) <span class="string">'. '</span>]);
+0147     <span class="keyword">end</span>        
+0148     
+0149     
+0150     
+0151</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

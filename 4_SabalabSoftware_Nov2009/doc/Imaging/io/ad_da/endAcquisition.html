@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of endAcquisition</title>
+  <meta name="keywords" content="endAcquisition">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Imaging</a> &gt; <a href="../index.html">io</a> &gt; <a href="index.html">ad_da</a> &gt; endAcquisition.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\io\ad_da&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>endAcquisition
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function endAcquisition </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>	This function sets the status field in mainControls.</li><li><a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>	given the name of a global variable, find and update the GUI that contains it</li><li><a href="../../../Imaging/guis/siRedrawImages.html" class="code" title="function siRedrawImages(channelList, frame)">siRedrawImages</a>	</li><li><a href="../../../Imaging/io/Piezo/piezoWait.html" class="code" title="function piezoWait()">piezoWait</a>	</li><li><a href="../../../Imaging/io/file_io/data/writeData.html" class="code" title="function writeData">writeData</a>	</li><li><a href="../../../Imaging/io/file_io/data/writeMaxData.html" class="code" title="function writeMaxData">writeMaxData</a>	saves the max projection data into a 16 bit tiff files.  Each channel is saved sequentially in</li><li><a href="../../../Imaging/io/makeNewPcellRepeatedOutput.html" class="code" title="function makeNewPcellRepeatedOutput">makeNewPcellRepeatedOutput</a>	</li><li><a href="../../../Imaging/io/motors/MP285/mp285FinishMove.html" class="code" title="function out=mp285FinishMove(check)">mp285FinishMove</a>	mp285SetPos controls the position of the mp285</li><li><a href="../../../Imaging/io/motors/executeGoHome.html" class="code" title="function moved=executeGoHome">executeGoHome</a>	</li><li><a href="../../../Imaging/io/scanFieldControl/parkMirrors.html" class="code" title="function parkMirrors(xy)">parkMirrors</a>	</li><li><a href="../../../Imaging/pcell/setPcellsToDefault.html" class="code" title="function setPcellsToDefault">setPcellsToDefault</a>	</li><li><a href="../../../Imaging/timerFunctions/timerStart_Imaging.html" class="code" title="function timerStart_Imaging">timerStart_Imaging</a>	</li><li><a href="../../../Timer/timerRegisterPackageDone.html" class="code" title="function timerRegisterPackageDone(package)">timerRegisterPackageDone</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="makeFrameByStripes.html" class="code" title="function makeFrameByStripes(ai, SamplesAcquired)">makeFrameByStripes</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function endAcquisition</a>
+0002     <span class="keyword">global</span> state imageData projectionData
+0003 
+0004     <span class="comment">% endAcquisition.m*****</span>
+0005     <span class="comment">% Function called at the end of the acquistion that will park the laser, close the shutter,</span>
+0006     <span class="comment">% write the data to disk, reset the counters (internal), reset the currentMode, and make the</span>
+0007     <span class="comment">% Grab One and Loop buttons visible.</span>
+0008     <span class="comment">%</span>
+0009     <span class="comment">% Written By: Thomas Pologruto and Bernardo Sabatini</span>
+0010     <span class="comment">% Harvard Medical School</span>
+0011     <span class="comment">% Cold Spring Harbor Labs</span>
+0012     <span class="comment">% 2001-2009</span>
+0013     
+0014     <a href="../../../Imaging/pcell/setPcellsToDefault.html" class="code" title="function setPcellsToDefault">setPcellsToDefault</a> <span class="comment">% close shutters and pcells</span>
+0015     
+0016     <span class="comment">% Calculate and display any projections</span>
+0017     <span class="keyword">if</span> ((state.acq.numberOfFrames==1) || state.acq.averaging) &amp;&amp; any(state.acq.maxImage)
+0018         <span class="keyword">if</span> state.internal.keepAllSlicesInMemory <span class="comment">% BSMOD 1/18/2</span>
+0019             position = state.internal.zSliceCounter + 1;
+0020         <span class="keyword">else</span>
+0021             position = 1;
+0022         <span class="keyword">end</span>
+0023 
+0024         channelList=find(state.acq.acquiringChannel.*state.acq.maxImage);
+0025         <span class="keyword">if</span> state.acq.dualLaserMode==2   <span class="comment">% lasers go simulataneously therefor one image window per laser</span>
+0026             channelList=[channelList channelList+10];
+0027         <span class="keyword">end</span>
+0028 
+0029         <span class="keyword">for</span> channel = channelList
+0030             inputChannel=mod(channel, 10);
+0031             <span class="keyword">if</span> state.internal.zSliceCounter==0            <span class="comment">% BSMOD2 2/27/2</span>
+0032                 projectionData{channel} = imageData{channel}(:,:,position);
+0033             <span class="keyword">else</span>
+0034                 <span class="keyword">if</span> state.acq.maxMode==0
+0035                     projectionData{channel} = max(imageData{channel}(:,:,position), <span class="keyword">...</span>
+0036                         projectionData{channel});
+0037                 <span class="keyword">else</span>
+0038                     projectionData{channel} = <span class="keyword">...</span>
+0039                         (imageData{channel}(:,:,state.internal.zSliceCounter + 1) + <span class="keyword">...</span>
+0040                         state.internal.zSliceCounter*projectionData{channel})/(state.internal.zSliceCounter + 1);
+0041                     <span class="comment">%  BSMOD 1/18/2 eliminated reliance on position for above 2 lines</span>
+0042                 <span class="keyword">end</span>
+0043             <span class="keyword">end</span>
+0044             <span class="comment">% Displays the current Max images on the screen as they are acquired.</span>
+0045             set(state.internal.maximagehandle(channel), <span class="string">'EraseMode'</span>, <span class="string">'none'</span>, <span class="string">'CData'</span>, <span class="keyword">...</span>
+0046                 projectionData{channel});
+0047         <span class="keyword">end</span>
+0048         
+0049         drawnow;    
+0050         <a href="../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Saving projections'</span>);
+0051         <a href="../../../Imaging/io/file_io/data/writeMaxData.html" class="code" title="function writeMaxData">writeMaxData</a>;
+0052     <span class="keyword">end</span>
+0053     
+0054     state.internal.zSliceCounter = state.internal.zSliceCounter + 1;
+0055     <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.internal.zSliceCounter'</span>);
+0056     
+0057     <span class="keyword">if</span> state.internal.zSliceCounter &gt;= state.acq.numberOfZSlices
+0058     <span class="comment">% Done Acquisition.</span>
+0059         <span class="keyword">if</span> state.files.autoSave        <span class="comment">% BSMOD - Check status of autoSave option</span>
+0060             <a href="../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Saving images'</span>);
+0061             <a href="../../../Imaging/io/file_io/data/writeData.html" class="code" title="function writeData">writeData</a>;
+0062         <span class="keyword">end</span>
+0063         
+0064         <a href="../../../Imaging/io/scanFieldControl/parkMirrors.html" class="code" title="function parkMirrors(xy)">parkMirrors</a>;
+0065         
+0066         <span class="keyword">if</span> state.acq.numberOfZSlices &gt; 1
+0067             <span class="keyword">if</span> state.piezo.usePiezo
+0068                 <a href="../../../Imaging/io/Piezo/piezoWait.html" class="code" title="function piezoWait()">piezoWait</a>;
+0069             <span class="keyword">else</span>
+0070                 <a href="../../../Imaging/io/motors/MP285/mp285FinishMove.html" class="code" title="function out=mp285FinishMove(check)">mp285FinishMove</a>(1);    <span class="comment">% check that movement worked during stack</span>
+0071             <span class="keyword">end</span>
+0072             <a href="../../../Imaging/io/motors/executeGoHome.html" class="code" title="function moved=executeGoHome">executeGoHome</a>;
+0073         <span class="keyword">end</span>                
+0074 
+0075         <a href="../../../Imaging/guis/siRedrawImages.html" class="code" title="function siRedrawImages(channelList, frame)">siRedrawImages</a>
+0076         <a href="../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Cleaning up'</span>);
+0077         <a href="../../../Timer/timerRegisterPackageDone.html" class="code" title="function timerRegisterPackageDone(package)">timerRegisterPackageDone</a>(<span class="string">'Imaging'</span>);    
+0078     <span class="keyword">else</span>
+0079     <span class="comment">% Between Acquisitions or ZSlices</span>
+0080         <a href="../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Next Slice...'</span>);
+0081         
+0082         <span class="keyword">if</span> state.files.autoSave        <span class="comment">% BSMOD - Check status of autoSave option</span>
+0083             <a href="../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Saving images'</span>);
+0084             <a href="../../../Imaging/io/file_io/data/writeData.html" class="code" title="function writeData">writeData</a>;
+0085         <span class="keyword">end</span>
+0086     
+0087         state.internal.frameCounter = 0;
+0088         <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.internal.frameCounter'</span>);
+0089                 
+0090         <span class="comment">% if there is slice specific pcell control, remake the pcell output</span>
+0091         <span class="keyword">if</span> state.pcell.boxSliceSpecific
+0092             <a href="../../../Imaging/io/makeNewPcellRepeatedOutput.html" class="code" title="function makeNewPcellRepeatedOutput">makeNewPcellRepeatedOutput</a>;
+0093         <span class="keyword">end</span>
+0094 
+0095         <a href="../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Acquiring...'</span>);
+0096 
+0097         <span class="keyword">if</span> state.piezo.usePiezo
+0098             <a href="../../../Imaging/io/Piezo/piezoWait.html" class="code" title="function piezoWait()">piezoWait</a>;
+0099         <span class="keyword">else</span>
+0100             <a href="../../../Imaging/io/motors/MP285/mp285FinishMove.html" class="code" title="function out=mp285FinishMove(check)">mp285FinishMove</a>(0);    <span class="comment">% check that movement worked during stack</span>
+0101         <span class="keyword">end</span>
+0102         
+0103         <a href="../../../Imaging/timerFunctions/timerStart_Imaging.html" class="code" title="function timerStart_Imaging">timerStart_Imaging</a>;
+0104         <span class="keyword">global</span> grabInput
+0105         start(grabInput);
+0106         trigger(grabInput);
+0107     <span class="keyword">end</span>
+0108     
+0109 
+0110     
+0111     
+0112</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

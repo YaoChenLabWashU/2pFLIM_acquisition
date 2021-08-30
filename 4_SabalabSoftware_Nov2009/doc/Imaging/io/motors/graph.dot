@@ -1,0 +1,34 @@
+/* Created by mdot for Matlab */
+digraph m2html {
+  applyShift -> updateMotorPosition;
+  applyShiftXY -> updateMotorPosition;
+  definePosition -> updateMotorPosition;
+  distance -> updateMotorPosition;
+  executeGoHome -> setMotorPosition;
+  executeGoHome -> updateRelativeMotorPosition;
+  gotoPosition -> setMotorPosition;
+  gotoPosition -> updateRelativeMotorPosition;
+  gotoZero -> setMotorPosition;
+  gotoZero -> updateRelativeMotorPosition;
+  moveStackFocus -> updateMotorPosition;
+  moveToRelativePosition -> setMotorPosition;
+  updateMotorPosition -> updateRelativeMotorPosition;
+
+  applyShift [URL="applyShift.html"];
+  applyShiftXY [URL="applyShiftXY.html"];
+  definePosition [URL="definePosition.html"];
+  distance [URL="distance.html"];
+  executeGoHome [URL="executeGoHome.html"];
+  gotoPosition [URL="gotoPosition.html"];
+  gotoZero [URL="gotoZero.html"];
+  listPositions [URL="listPositions.html"];
+  moveStackFocus [URL="moveStackFocus.html"];
+  moveToRelativePosition [URL="moveToRelativePosition.html"];
+  setMotorOffsets [URL="setMotorOffsets.html"];
+  setMotorPosition [URL="setMotorPosition.html"];
+  startMoveStackFocus [URL="startMoveStackFocus.html"];
+  startSetMotorPosition [URL="startSetMotorPosition.html"];
+  undoMotorAction [URL="undoMotorAction.html"];
+  updateMotorPosition [URL="updateMotorPosition.html"];
+  updateRelativeMotorPosition [URL="updateRelativeMotorPosition.html"];
+}

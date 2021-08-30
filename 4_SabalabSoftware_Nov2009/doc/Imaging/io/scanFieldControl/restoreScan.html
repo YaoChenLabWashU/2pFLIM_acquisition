@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of restoreScan</title>
+  <meta name="keywords" content="restoreScan">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Imaging</a> &gt; <a href="../index.html">io</a> &gt; <a href="index.html">scanFieldControl</a> &gt; restoreScan.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\io\scanFieldControl&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>restoreScan
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function restoreScan(posNum) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Imaging/guis/gui_callbacks/calculateStackParameters.html" class="code" title="function calculateStackParameters">calculateStackParameters</a>	</li><li><a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>	given the name of a global variable, find and update the GUI that contains it</li><li><a href="../../../Imaging/io/Piezo/piezoUpdatePosition.html" class="code" title="function piezoUpdatePosition()">piezoUpdatePosition</a>	</li><li><a href="../../../Imaging/io/applyChangesToOutput.html" class="code" title="function applyChangesToOutput(force)">applyChangesToOutput</a>	</li><li><a href="updateReferenceImage.html" class="code" title="function updateReferenceImage">updateReferenceImage</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function restoreScan(posNum)</a>
+0002     
+0003     <span class="keyword">global</span> state
+0004     
+0005     <span class="keyword">try</span>
+0006         <span class="keyword">if</span> size(state.internal.saveScanInfo,2)~=14
+0007             beep
+0008             disp([<span class="string">'ERROR : restoreScan position'</span> num2str(posNum) <span class="string">'does not exist'</span> ]);
+0009             <span class="keyword">return</span>
+0010         <span class="keyword">end</span>
+0011     <span class="keyword">catch</span>
+0012         beep
+0013         disp([<span class="string">'ERROR : restoreScan position'</span> num2str(posNum) <span class="string">'does not exist'</span> ]);
+0014         <span class="keyword">return</span>
+0015     <span class="keyword">end</span>
+0016     
+0017     <span class="keyword">if</span> size(state.internal.saveScanInfo,1)&lt;posNum
+0018         beep
+0019         disp([<span class="string">'ERROR : restoreScan position'</span> num2str(posNum) <span class="string">'does not exist'</span> ]);
+0020         <span class="keyword">return</span>
+0021     <span class="keyword">end</span>
+0022             
+0023     state.acq.zoomFactor = state.internal.saveScanInfo(posNum, 1);
+0024     state.acq.scanRotation  = state.internal.saveScanInfo(posNum, 2);
+0025     state.acq.postRotOffsetX = state.internal.saveScanInfo(posNum, 3);
+0026     state.acq.postRotOffsetY  = state.internal.saveScanInfo(posNum, 4);
+0027     state.internal.trackerX0 = state.internal.saveScanInfo(posNum, 5);
+0028     state.internal.trackerY0 = state.internal.saveScanInfo(posNum, 6);
+0029     state.acq.scanShiftX = state.internal.saveScanInfo(posNum, 7);
+0030     state.acq.scanShiftY = state.internal.saveScanInfo(posNum, 8);
+0031     state.acq.pixelShiftX = state.internal.saveScanInfo(posNum, 9);
+0032     state.acq.pixelShiftY = state.internal.saveScanInfo(posNum, 10);
+0033     state.internal.refShiftX = state.internal.saveScanInfo(posNum, 11);
+0034     state.internal.refShiftY = state.internal.saveScanInfo(posNum, 12);
+0035     state.piezo.next_pos=state.internal.saveScanInfo(posNum, 13);
+0036     <a href="../../../Imaging/io/Piezo/piezoUpdatePosition.html" class="code" title="function piezoUpdatePosition()">piezoUpdatePosition</a>;
+0037 
+0038     state.acq.trackerReference=state.internal.trackerReferences{posNum};
+0039     state.acq.trackerReferenceAll    = state.acq.trackerReferencesAll{posNum};
+0040 
+0041     state.internal.needNewRotatedMirrorOutput=1;
+0042     state.internal.needNewPcellRepeatedOutput=1;
+0043     
+0044     <span class="keyword">if</span> state.piezo.usePiezo
+0045         <span class="keyword">if</span>(state.cycle.trackerList(state.cycle.currentCyclePosition))
+0046             state.motor.stackStart=state.piezo.next_pos-state.cycle.zStepSize;
+0047             state.motor.stackStop=state.piezo.next_pos+2*state.cycle.zStepSize;
+0048             <span class="keyword">if</span> state.motor.stackStart&lt;0
+0049                 disp([<span class="string">'ERROR : restoreScan position'</span> num2str(posNum) <span class="string">'too close to Z=0'</span> ]);
+0050                 state.motor.stackStart=0
+0051                 state.motor.stackStop=4;
+0052             <span class="keyword">end</span>
+0053             
+0054             <a href="../../../Imaging/guis/gui_callbacks/calculateStackParameters.html" class="code" title="function calculateStackParameters">calculateStackParameters</a>;
+0055             state.piezo.next_pos=state.motor.stackStart;
+0056             disp([<span class="string">'Stack from '</span> num2str(state.motor.stackStart) <span class="string">' to '</span> num2str(state.motor.stackStop) <span class="string">' step '</span> num2str(state.cycle.zStepSize)]);
+0057         <span class="keyword">else</span>
+0058             state.piezo.next_pos=state.internal.saveScanInfo(posNum, 13);
+0059         <span class="keyword">end</span>
+0060         <a href="../../../Imaging/io/Piezo/piezoUpdatePosition.html" class="code" title="function piezoUpdatePosition()">piezoUpdatePosition</a>;
+0061     <span class="keyword">end</span>
+0062     
+0063     <a href="../../../Imaging/io/applyChangesToOutput.html" class="code" title="function applyChangesToOutput(force)">applyChangesToOutput</a>(1);
+0064     <a href="updateReferenceImage.html" class="code" title="function updateReferenceImage">updateReferenceImage</a>;
+0065     <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.scanRotation'</span>);
+0066     <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.zoomFactor'</span>);
+0067     
+0068     disp([<span class="string">'*** LOADED POSITION '</span> num2str(posNum) ]);</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

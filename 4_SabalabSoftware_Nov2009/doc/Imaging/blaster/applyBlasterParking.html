@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of applyBlasterParking</title>
+  <meta name="keywords" content="applyBlasterParking">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Imaging</a> &gt; <a href="index.html">blaster</a> &gt; applyBlasterParking.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\blaster&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>applyBlasterParking
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function applyBlasterParking(config) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>	This function sets the status field in mainControls.</li><li><a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>	given the name of a global variable, find and update the GUI that contains it</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../Imaging/io/makeNewRepeatedMirrorOutput.html" class="code" title="function makeNewRepeatedMirrorOutput">makeNewRepeatedMirrorOutput</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function applyBlasterParking(config)</a>
+0002     <span class="keyword">global</span> state
+0003 
+0004     <span class="keyword">if</span> state.blaster.currentConfig&lt;1
+0005         state.blaster.currentConfig=1;
+0006     <span class="keyword">end</span>
+0007     
+0008     <span class="keyword">if</span> nargin&lt;1
+0009         config=state.blaster.currentConfig;
+0010     <span class="keyword">end</span>
+0011     config=max(config,1);
+0012     
+0013     
+0014     parkParams=[];    <span class="comment">%each row [startPark endPark X Y]</span>
+0015     
+0016     <span class="comment">% below we gather all of the times that the laser must be parked, sort</span>
+0017     <span class="comment">% them, and then apply them in reverse order.  This ensures that later</span>
+0018     <span class="comment">% pulse do not obliterate early ones</span>
+0019     
+0020     <span class="keyword">if</span> size(state.blaster.allConfigs{config, 2},2) == 6 <span class="comment">% there are 6 entries</span>
+0021                                                         <span class="comment">% in the line indicating that it</span>
+0022                                                         <span class="comment">% is a properly defined blaster position</span>
+0023         <span class="keyword">for</span> lineCounter=1:size(state.blaster.allConfigs{config, 2},1)
+0024             pulseNumber=state.blaster.allConfigs{config, 2}(lineCounter, 2);
+0025             <span class="keyword">if</span> pulseNumber
+0026                 pos=state.blaster.allConfigs{config, 2}(lineCounter, 1);
+0027                 <span class="keyword">if</span> state.blaster.indexList(pos)
+0028                     <span class="keyword">if</span> state.blaster.screenCoord
+0029                         <span class="keyword">if</span> state.blaster.allConfigs{config, 2}(lineCounter, 6)    <span class="comment">% use the tiler for this position</span>
+0030                             state.blaster.indexList(pos)=state.blaster.tileIndexList(state.blaster.tileCounter);
+0031                             state.blaster.posUsingTiler=pos;
+0032                         <span class="keyword">end</span>
+0033                         X=state.acq.rotatedMirrorData2D(state.blaster.indexList(pos), 1);
+0034                         Y=state.acq.rotatedMirrorData2D(state.blaster.indexList(pos), 2);
+0035                         state.blaster.XList(pos)=X;
+0036                         state.blaster.YList(pos)=Y;
+0037                         <span class="keyword">if</span> pos==state.blaster.displayPos
+0038                             state.blaster.X=X;
+0039                             state.blaster.Y=Y;
+0040                             <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.blaster.X'</span>);
+0041                             <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.blaster.Y'</span>);
+0042                         <span class="keyword">end</span>
+0043                     <span class="keyword">else</span>
+0044                         X=state.blaster.XList(state.blaster.displayPos);
+0045                         Y=state.blaster.XList(state.blaster.displayPos);
+0046                     <span class="keyword">end</span>
+0047                 <span class="keyword">else</span>
+0048                     <a href="../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Blaster pos not defined'</span>);
+0049                     error([<span class="string">'applyBlasterParking : Blaster position #'</span> num2str(pos) <span class="string">' not defined'</span>]);
+0050                 <span class="keyword">end</span>
+0051                 
+0052                 <span class="keyword">if</span> state.blaster.widthFromPattern
+0053                     width=state.pulses.pulseWidthList(pulseNumber);
+0054                 <span class="keyword">else</span>
+0055                     width=state.blaster.allConfigs{config, 2}(lineCounter, 3);
+0056                 <span class="keyword">end</span>
+0057                 
+0058                 <span class="comment">%                 if state.blaster.powerFromPattern</span>
+0059                 <span class="comment">%                     power=state.pulses.amplitudeList(pulseNumber);</span>
+0060                 <span class="comment">%                 else</span>
+0061                 <span class="comment">%                     power=state.blaster.allConfigs{config, 2}(lineCounter, 4);</span>
+0062                 <span class="comment">%                 end</span>
+0063                 <span class="keyword">try</span>
+0064                     <span class="keyword">for</span> patternCounter=1:max(state.pulses.patternRepeatsList(pulseNumber), 1)
+0065                         start=state.pulses.delayList(pulseNumber) + (patternCounter-1)*state.pulses.patternISIList(pulseNumber);
+0066                         <span class="keyword">for</span> counter=1:state.pulses.numPulsesList(pulseNumber)
+0067                             parkParams(end+1, :) = [<span class="keyword">...</span>
+0068                                 start-state.blaster.prePark start+width  X Y];
+0069                             start=start + state.pulses.isiList(pulseNumber);
+0070                         <span class="keyword">end</span>
+0071                     <span class="keyword">end</span>    
+0072                 <span class="keyword">catch</span>
+0073                     disp(<span class="string">'*** Error in applyBlasterParking.  Physiology must be loaded to use blaster'</span>);
+0074                     error([<span class="string">'applyBlasterParking : '</span> lasterr]);
+0075                 <span class="keyword">end</span>
+0076             <span class="keyword">end</span>
+0077         <span class="keyword">end</span>
+0078     <span class="keyword">else</span>
+0079         beep;
+0080         disp(<span class="string">'*** Error in applyBlasterParking.  blaster positions are not fully defined'</span>);
+0081     <span class="keyword">end</span>        
+0082 
+0083     <span class="keyword">if</span> ~isempty(parkParams)
+0084         acqLength=state.acq.msPerLine*state.acq.linesPerFrame*state.acq.numberOfFrames;     <span class="comment">% in ms</span>
+0085         parkParams=sortRows(parkParams);
+0086         <span class="keyword">for</span> counter=size(parkParams,1):-1:1
+0087             <span class="keyword">if</span> parkParams(counter, 1) &lt; acqLength
+0088                 start = 1 + round(parkParams(counter, 1) * state.acq.outputRate/1000);
+0089                 stop = 1 + round(min(acqLength, parkParams(counter, 2)) * state.acq.outputRate/1000);
+0090                 state.acq.repeatedMirrorData(start : stop, 1) = parkParams(counter, 3);
+0091                 state.acq.repeatedMirrorData(start : stop, 2) = parkParams(counter, 4);
+0092             <span class="keyword">end</span>
+0093         <span class="keyword">end</span>
+0094     <span class="keyword">end</span>
+0095     
+0096     
+0097</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

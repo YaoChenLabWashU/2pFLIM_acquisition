@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of getPMTOffsets</title>
+  <meta name="keywords" content="getPMTOffsets">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Imaging</a> &gt; <a href="../index.html">io</a> &gt; <a href="index.html">scanFieldControl</a> &gt; getPMTOffsets.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\io\scanFieldControl&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>getPMTOffsets
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function getPMTOffsets </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>	This function sets the status field in mainControls.</li><li><a href="../../../Imaging/io/file_io/data/updateHeaderString.html" class="code" title="function updateHeaderString(globalName)">updateHeaderString</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Imaging/guis/gui_callbacks/executeFocusCallback.html" class="code" title="function executeFocusCallback">executeFocusCallback</a>	</li><li><a href="../../../Imaging/timerFunctions/timerSetup_Imaging.html" class="code" title="function timerSetup_Imaging">timerSetup_Imaging</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function getPMTOffsets</a>
+0002     <span class="keyword">global</span> state
+0003     
+0004     <a href="../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Reading PMT offsets...'</span>);
+0005     
+0006     start(state.daq.pmtOffsetInput);
+0007     
+0008     <span class="keyword">while</span> strcmp(state.daq.pmtOffsetInput.Running, <span class="string">'On'</span>)
+0009         pause(0.001);
+0010     <span class="keyword">end</span>
+0011     
+0012     <span class="keyword">try</span>
+0013         tempData = mean(double(getdata(state.daq.pmtOffsetInput, <span class="string">'native'</span>)))/state.internal.intensityScaleFactor;
+0014     
+0015         inputChannelCounter = 0;
+0016         <span class="keyword">for</span> channelCounter = 1:state.init.maximumNumberOfInputChannels
+0017             <span class="keyword">if</span> getfield(state.acq, [<span class="string">'acquiringChannel'</span> num2str(channelCounter)]) <span class="comment">% if statement only gets executed when there is a channel to acquire.</span>
+0018                 inputChannelCounter = inputChannelCounter + 1;
+0019                 eval([<span class="string">'state.acq.pmtOffsetChannel'</span> num2str(channelCounter) <span class="string">' = tempData(inputChannelCounter);'</span>]);
+0020                 <a href="../../../Imaging/io/file_io/data/updateHeaderString.html" class="code" title="function updateHeaderString(globalName)">updateHeaderString</a>([<span class="string">'state.acq.pmtOffsetChannel'</span> num2str(channelCounter)]);
+0021             <span class="keyword">end</span>
+0022             <span class="comment">%state.acq.pmtOffsetChannel4 = tempData(4);</span>
+0023             <span class="comment">%updateHeaderString('state.acq.pmtOffsetChannel4');</span>
+0024         <span class="keyword">end</span>
+0025     <span class="keyword">catch</span>
+0026         <a href="../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Error in pmt offsets'</span>);
+0027         disp([<span class="string">'getPMTOffsets: caught error :'</span> lasterr]);
+0028     <span class="keyword">end</span>
+0029     
+0030     <a href="../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">''</span>);
+0031     
+0032</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

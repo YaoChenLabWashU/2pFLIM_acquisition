@@ -1,0 +1,5 @@
+function plotKeyPressFcn%Key Press function for class waves.
+	val = double(get(gcbo,'CurrentCharacter'));
+	if length(val) ~= 1
+        return
+	end	if isempty(findobj(gcf, 'Type', 'axes'))		return	end	switch val		case 2	%CTRL+B			ud=get(gca, 'UserData');			if ud.autoScale==1				rescaleAxis(gca);			elseif ud.autoScale==2		        set(gca,'XLimMode','auto', 'YLimMode','auto');			end		case 12 % CTRL+L			ud=get(gca, 'UserData');			if ud.autoScale==2		        set(gca,'XLimMode','manual', 'YLimMode','manual');			elseif ud.autoScale==1				freeze;			end		case 24	%CTRL+X			ud=get(gca, 'UserData');			if ud.autoScale==1				rescaleAxis(gca);			elseif ud.autoScale==2		        set(gca,'XLimMode','auto');			end		case 25	%CTRL+Y			ud=get(gca, 'UserData');			if ud.autoScale==1				rescaleAxis(gca);			elseif ud.autoScale==2		        set(gca,'YLimMode','auto');			end        case 6	%CTRL+F			freeze(gca);        case 18	%CTRL+R			release(gca);		case 13 %CTRL+M			release(gca,'autoscale',2);	end

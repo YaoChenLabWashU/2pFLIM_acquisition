@@ -1,0 +1,83 @@
+structure state
+	structure tiler
+		abort=0
+		
+		inputRate=10000
+		outputRate=10000
+		
+		mirrorActualInputRate=10000
+		physActualInputRate==10000
+		pcellActualOutputRate=10000
+		mirrorActualOutputRate=10000
+		
+		statusString=''	Gui gh.tilerControls.statusString
+
+		duration=40    Gui gh.tilerControls.duration Numeric 1 Min 1
+		pulseSeparation=100 
+		
+		offset1=0		Gui gh.tilerControls.offset1 Numeric 1 Min -10 Max 10
+		amplitude1=0	Gui gh.tilerControls.amplitude1 Numeric 1 Min -10 Max 10
+		startPulse1=10	Gui gh.tilerControls.start1 Numeric 1 Min 1
+		pulseLength1=3	Gui gh.tilerControls.length1 Numeric 1 Min 0
+
+		offset2=0		Gui gh.tilerControls.offset2 Numeric 1 Min -10 Max 10
+		amplitude2=20	Gui gh.tilerControls.amplitude2 Numeric 1 Min -10 Max 10
+		startPulse2=10	Gui gh.tilerControls.start2 Numeric 1 Min 1
+		pulseLength2=.2	Gui gh.tilerControls.length2 Numeric 1 Min 0
+		
+		repeats=1
+		yscaleFactor=1
+		
+		X=0				Gui gh.tilerControls.X Numeric 1 Min -2.5 Max 2.5	% X position of mirror
+		Y=0				Gui gh.tilerControls.Y Numeric 1 Min -2.5 Max 2.5	% Y position of mirror
+		
+		tiling=0
+		
+		nTilesX=10
+		nTilesY=10
+		tileSteps=10	Gui gh.tilerControls.tileSteps Numeric 1 Min 1
+
+		minX=-1
+		maxX=1
+		minY=-1
+		maxY=1
+		
+		XYLookup
+		primeStep=1
+		
+		tileX
+		tileY
+
+		tileImage1
+		tileImage2
+		tileImage3
+		tileImage4
+		
+		tileResult1=0	Gui gh.tilerControls.tileResult1 Numeric 1
+		tileResult2=0	Gui gh.tilerControls.tileResult2 Numeric 1
+		tileCounter=1	Gui gh.tilerControls.tileCounter Gui gh.tilerControls.counterSlider Numeric 1 Min 1 Max 1001
+		
+		tileRepetitions
+				
+		mirrorOutputObj
+		pcellOutputObj
+
+		physInputObj
+		mirrorInputObj
+		
+		mirrorAcq0=0	Gui gh.tilerLineControls.mirrorAcq0
+		mirrorAcq1=0	Gui gh.tilerLineControls.mirrorAcq1
+		mirrorAcq2=0	Gui gh.tilerLineControls.mirrorAcq2
+		mirrorAcq3=0	Gui gh.tilerLineControls.mirrorAcq3
+		
+		physAcq0=0		Gui gh.tilerLineControls.physAcq0
+		physAcq1=0		Gui gh.tilerLineControls.physAcq1
+		physAcq2=0		Gui gh.tilerLineControls.physAcq2
+		physAcq3=0		Gui gh.tilerLineControls.physAcq3
+		physAcq4=0		Gui gh.tilerLineControls.physAcq4
+		physAcq5=0		Gui gh.tilerLineControls.physAcq5
+		physAcq6=0		Gui gh.tilerLineControls.physAcq6
+		physAcq7=0		Gui gh.tilerLineControls.physAcq7
+
+	endstructure
+endstructure

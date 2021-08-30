@@ -1,0 +1,33 @@
+function spc_calcSpecialChannel(chan)
+% called to calculate special channels 5 or 6
+% right now, only from spc_redrawSetting
+
+global state spc gui
+
+% if we're called, it means that this channel is enabled for both
+% calculation and display
+% need to:  calculate appropriately
+%           populate spc.projects{chan}
+
+
+switch chan
+    case 5   % make this one sum of 1+2
+        src1=1;
+        src2=2;
+    case 6
+        src1=3;
+        src2=4;
+    otherwise
+        disp(['spc_calcSpecialChannel ERROR ' num2str(chan)]);
+        return
+end
+
+spc.projects{chan}=spc.projects{src1}+spc.projects{src2};
+
+% take care of default Lifetime Map values here (this is called
+% infrequently)
+
+s
+
+    
+

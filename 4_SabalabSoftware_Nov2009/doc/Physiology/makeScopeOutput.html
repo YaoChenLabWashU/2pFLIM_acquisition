@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of makeScopeOutput</title>
+  <meta name="keywords" content="makeScopeOutput">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">Physiology</a> &gt; makeScopeOutput.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Physiology&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>makeScopeOutput
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function makeScopeOutput </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="stopScope.html" class="code" title="function stopScope(update)">stopScope</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="initPhys.html" class="code" title="function initPhys(userFile, analysisMode)">initPhys</a>	</li><li><a href="startScopeLoop.html" class="code" title="function startScopeLoop">startScopeLoop</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function makeScopeOutput</a>
+0002     <span class="keyword">global</span> state 
+0003 
+0004     <span class="keyword">if</span> state.phys.scope.channel==0
+0005         state.phys.scope.channelUsed=0;
+0006         <span class="keyword">if</span> state.phys.settings.currentClamp0
+0007             state.phys.scope.ampUsed=state.phys.scope.pulseAmpCC;
+0008             state.phys.scope.ccUsed=1;
+0009             amp=state.phys.scope.pulseAmpCC/state.phys.settings.pAPerVOut0;
+0010             width=state.phys.scope.pulseWidthCC;
+0011         <span class="keyword">else</span>
+0012             state.phys.scope.ampUsed=state.phys.scope.pulseAmpVC;
+0013             state.phys.scope.ccUsed=0;
+0014             amp=state.phys.scope.pulseAmpVC/state.phys.settings.mVPerVOut0;
+0015             width=state.phys.scope.pulseWidthVC;
+0016         <span class="keyword">end</span>
+0017     <span class="keyword">elseif</span> state.phys.scope.channel==1
+0018         state.phys.scope.channelUsed=1;
+0019         <span class="keyword">if</span> state.phys.settings.currentClamp1
+0020             state.phys.scope.ampUsed=state.phys.scope.pulseAmpCC;
+0021             state.phys.scope.ccUsed=1;
+0022             amp=state.phys.scope.pulseAmpCC/state.phys.settings.pAPerVOut1;
+0023             width=state.phys.scope.pulseWidthCC;
+0024         <span class="keyword">else</span>
+0025             state.phys.scope.ampUsed=state.phys.scope.pulseAmpVC;
+0026             state.phys.scope.ccUsed=0;
+0027             amp=state.phys.scope.pulseAmpVC/state.phys.settings.mVPerVOut1;
+0028             width=state.phys.scope.pulseWidthVC;
+0029         <span class="keyword">end</span>
+0030     <span class="keyword">else</span>
+0031         <a href="stopScope.html" class="code" title="function stopScope(update)">stopScope</a>;
+0032         disp(<span class="string">'*** makeScopeOutput: Scope channel out of range'</span>);
+0033         beep;
+0034         setPhysStatus(<span class="string">'ERROR'</span>);
+0035         <span class="keyword">return</span>;
+0036     <span class="keyword">end</span>
+0037     
+0038     state.phys.scope.pointsUntilOutputPulse=round(width*state.phys.scope.actualOutputRate/2000);
+0039     state.phys.scope.pointsUntilInputPulse=round(width*state.phys.scope.actualInputRate/2000);
+0040     
+0041     state.phys.scope.output=zeros(4*state.phys.scope.pointsUntilOutputPulse,1);
+0042     state.phys.scope.output(state.phys.scope.pointsUntilOutputPulse : 3*state.phys.scope.pointsUntilOutputPulse) = amp;
+0043     
+0044     setWave(<span class="string">'scopeInputFit'</span>, <span class="string">'xscale'</span>, [width/2-1000/state.phys.scope.actualOutputRate 1000/state.phys.scope.actualInputRate]);
+0045 
+0046</pre></div>
+<hr><address>Generated on Fri 17-Aug-2012 10:39:43 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

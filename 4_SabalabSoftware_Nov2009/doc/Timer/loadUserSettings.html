@@ -1,0 +1,175 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of loadUserSettings</title>
+  <meta name="keywords" content="loadUserSettings">
+  <meta name="description" content="Allows user to select a settings file (*.ini) from disk and loads it">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">Timer</a> &gt; loadUserSettings.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Timer&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>loadUserSettings
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>Allows user to select a settings file (*.ini) from disk and loads it</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function loadUserSettings(pname, fname) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> Allows user to select a settings file (*.ini) from disk and loads it
+ Author: Bernardo Sabatini</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>	This function sets the status field in mainControls.</li><li><a href="../Imaging/io/file_io/initialization/initGUIs.html" class="code" title="function [out,fname,pname,ext]=initGUIs(fileName, callCallbacks, file)">initGUIs</a>	opens and interprets and initialization file</li><li><a href="../Imaging/io/file_io/users/saveUserSettingsPath.html" class="code" title="function saveUserSettingsPath(userPath)">saveUserSettingsPath</a>	</li><li><a href="loadAnalysisSetup.html" class="code" title="function loadCycle(pname, fname)">loadAnalysisSetup</a>	</li><li><a href="loadCycle.html" class="code" title="function loadCycle(pname, fname)">loadCycle</a>	</li><li><a href="loadFiguresFromPath.html" class="code" title="function loadFiguresFromPath(path)">loadFiguresFromPath</a>	</li><li><a href="timerCallPackageFunctions.html" class="code" title="function status=timerCallPackageFunctions(type, package)">timerCallPackageFunctions</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="initTimer.html" class="code" title="function initTimer(analysisMode, packages)">initTimer</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function loadUserSettings(pname, fname)</a>
+0002 <span class="comment">% Allows user to select a settings file (*.ini) from disk and loads it</span>
+0003 <span class="comment">% Author: Bernardo Sabatini</span>
+0004 
+0005     <span class="keyword">global</span> state gh
+0006     <a href="../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Loading user settings...'</span>);
+0007 
+0008     <span class="keyword">if</span> nargin&lt;2
+0009         <span class="keyword">if</span> ~isempty(state.userSettingsPath)
+0010             <span class="keyword">try</span>
+0011                 cd(state.userSettingsPath);
+0012             <span class="keyword">catch</span>
+0013             <span class="keyword">end</span>            
+0014         <span class="keyword">end</span>
+0015         
+0016         [fname, pname]=uigetfile(<span class="string">'*.usr'</span>, <span class="string">'Choose user settings file to load'</span>);
+0017     <span class="keyword">end</span>
+0018 
+0019     <span class="keyword">if</span> ~isnumeric(fname)
+0020         periods=findstr(fname, <span class="string">'.'</span>);
+0021         <span class="keyword">if</span> any(periods)                                
+0022             fname=fname(1:periods(1)-1);
+0023         <span class="keyword">else</span>
+0024             disp(<span class="string">'loadUserSettings: Error: found file name without extension'</span>);
+0025             <a href="../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Can''t open file...'</span>);
+0026             <span class="keyword">return</span>
+0027         <span class="keyword">end</span>        
+0028         
+0029         fileName=fullfile(pname, [fname <span class="string">'.usr'</span>]);
+0030         
+0031         [fid, message]=fopen(fileName);
+0032         <span class="keyword">if</span> fid&lt;0
+0033             disp([<span class="string">'loadUserSettings: Error opening '</span> fileName <span class="string">': '</span> message]);
+0034             <span class="keyword">return</span>
+0035         <span class="keyword">end</span>
+0036         [fileName,permission, machineormat] = fopen(fid);
+0037         fclose(fid);
+0038 
+0039         <a href="../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Reading User Settings...'</span>);
+0040         
+0041         disp([<span class="string">'*** CURRENT USER SETTINGS FILE = '</span> fileName <span class="string">' ***'</span>]);
+0042         <a href="../Imaging/io/file_io/initialization/initGUIs.html" class="code" title="function [out,fname,pname,ext]=initGUIs(fileName, callCallbacks, file)">initGUIs</a>(fileName);
+0043 
+0044         [path,name,ext] = fileparts(fileName);
+0045         
+0046         <span class="keyword">global</span> state
+0047         state.userSettingsName=name;
+0048         state.userSettingsPath=pname;
+0049 
+0050         <a href="../Imaging/io/file_io/users/saveUserSettingsPath.html" class="code" title="function saveUserSettingsPath(userPath)">saveUserSettingsPath</a>;
+0051         makeUserSettingsMenu;
+0052         initialActivePackages = state.timer.activePackages;
+0053         
+0054         <a href="loadCycle.html" class="code" title="function loadCycle(pname, fname)">loadCycle</a>(state.cycle.cyclePath, state.cycle.cycleName);
+0055         cycleActivePackages = state.timer.activePackages;
+0056         loadPulseSet(state.pulses.pulseSetPath, state.pulses.pulseSetName);        
+0057         
+0058         <span class="keyword">if</span> ~isempty(state.analysis.setupName) &amp;&amp; ~isempty(state.analysis.setupPath)
+0059             <a href="loadAnalysisSetup.html" class="code" title="function loadCycle(pname, fname)">loadAnalysisSetup</a>(state.analysis.setupPath, state.analysis.setupName)
+0060         <span class="keyword">end</span>
+0061         
+0062         state.timer.activePackages = initialActivePackages;
+0063         <a href="timerCallPackageFunctions.html" class="code" title="function status=timerCallPackageFunctions(type, package)">timerCallPackageFunctions</a>(<span class="string">'UserSettings'</span>);
+0064         state.timer.activePackages = cycleActivePackages;
+0065 
+0066 
+0067         <span class="keyword">if</span> ~isempty(state.figurePath)
+0068             <span class="keyword">try</span>
+0069                 <a href="loadFiguresFromPath.html" class="code" title="function loadFiguresFromPath(path)">loadFiguresFromPath</a>(state.figurePath);
+0070             <span class="keyword">catch</span>
+0071                 disp(<span class="string">'loadUserSettings : *** Error loading figure set ***'</span>);
+0072             <span class="keyword">end</span>    
+0073         <span class="keyword">end</span>
+0074     
+0075         <span class="keyword">global</span> gh    <span class="comment">% BSMOD added 1/30/1 with lines below</span>
+0076 
+0077         wins=fieldnames(gh);
+0078     
+0079         <span class="keyword">for</span> winCount=1:length(wins)
+0080             winName=wins{winCount};
+0081             <span class="keyword">if</span> isfield(state.windowPositions, [winName <span class="string">'_position'</span>])  
+0082                 <span class="keyword">if</span> (length(getfield(state.windowPositions, [winName <span class="string">'_position'</span>]))==4) <span class="keyword">...</span>
+0083                         &amp;&amp; ishandle(getfield(getfield(gh, winName), <span class="string">'figure1'</span>))
+0084                     oldPos=get(getfield(getfield(gh, winName), <span class="string">'figure1'</span>), <span class="string">'Position'</span>);
+0085                     newPos=getfield(state.windowPositions, [winName <span class="string">'_position'</span>]);
+0086                     newPos(3)=oldPos(3);
+0087                     newPos(4)=oldPos(4);
+0088                     set(getfield(getfield(gh, winName), <span class="string">'figure1'</span>), <span class="string">'Position'</span>, newPos);
+0089                 <span class="keyword">end</span>
+0090             <span class="keyword">end</span>
+0091             <span class="keyword">if</span> isfield(state.windowPositions, [winName <span class="string">'_visible'</span>]) <span class="keyword">...</span><span class="comment"> </span>
+0092                     &amp;&amp; ishandle(getfield(getfield(gh, winName), <span class="string">'figure1'</span>))
+0093                 vis=getfield(state.windowPositions, [winName <span class="string">'_visible'</span>]);
+0094                 set(getfield(getfield(gh, winName), <span class="string">'figure1'</span>), <span class="string">'Visible'</span>, vis);
+0095             <span class="keyword">end</span>
+0096         <span class="keyword">end</span>
+0097         <span class="comment">% GY 20110127 added to position the image windows</span>
+0098          <span class="keyword">try</span>
+0099                 <span class="keyword">for</span> channelCounter = 1:state.init.maximumNumberOfInputChannels
+0100                     eval([<span class="string">'set(state.internal.GraphFigure(channelCounter), ''Position'',state.windowPositions.image'</span> num2str(channelCounter) <span class="string">'_position);'</span>]);
+0101                     eval([<span class="string">'set(state.internal.MaxFigure(channelCounter), ''Position'',state.windowPositions.maxImage'</span> num2str(channelCounter) <span class="string">'_position);'</span>]);
+0102                 <span class="keyword">end</span>
+0103          <span class="keyword">catch</span>
+0104          <span class="keyword">end</span>
+0105 
+0106         <span class="keyword">try</span>
+0107             <span class="keyword">if</span> ishandle(state.phys.internal.scopeHandle) &amp;&amp; isfield(state.windowPositions, <span class="string">'scopeWindow_position'</span>) 
+0108                 <span class="keyword">if</span> length(state.windowPositions.scopeWindow_position)==4
+0109                     set(state.phys.internal.scopeHandle, <span class="string">'Position'</span>, state.windowPositions.scopeWindow_position);
+0110                 <span class="keyword">end</span>
+0111             <span class="keyword">end</span>
+0112         <span class="keyword">catch</span>
+0113         <span class="keyword">end</span>
+0114         
+0115         <span class="keyword">try</span>    
+0116             <span class="keyword">if</span> ishandle(state.phys.internal.pulsePatternPlot) &amp;&amp; isfield(state.windowPositions, <span class="string">'pulsePatternPlotWindow_position'</span>) 
+0117                 <span class="keyword">if</span> length(state.windowPositions.pulsePatternPlotWindow_position)==4
+0118                     set(state.phys.internal.pulsePatternPlot, <span class="string">'Position'</span>, state.windowPositions.pulsePatternPlotWindow_position);
+0119                 <span class="keyword">end</span>
+0120             <span class="keyword">end</span>
+0121         <span class="keyword">catch</span>
+0122         <span class="keyword">end</span>
+0123                     
+0124         <a href="../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'User Settings Loaded'</span>);
+0125     <span class="keyword">end</span>
+0126     
+0127</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

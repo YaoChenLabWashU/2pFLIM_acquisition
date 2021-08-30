@@ -1,0 +1,13 @@
+function spc_closereq
+global spcs
+global spc
+global gui
+% added GY:
+spc_saveSPCSetting;
+close(gui.spc.figure.project);
+close(gui.spc.figure.lifetime);
+close(gui.spc.figure.life
+
+spcs = [];
+spc = [];
+closereq;

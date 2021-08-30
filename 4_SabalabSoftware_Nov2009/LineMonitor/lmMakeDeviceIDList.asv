@@ -1,0 +1,23 @@
+function lmMakeDeviceIDList
+	global state gh
+	
+	devs=DAQHWINFO('nidaq');
+	
+	state.lm.deviceIDs=cell(1, length(devs.BoardNames));
+	
+	for counter=1:length(state.lm.deviceIDs)
+		state.lm.deviceIDs{counter}=[devs.InstalledBoardIds{counter} ' ' devs.BoardNames{counter}];
+	end
+	
+	counter=1;
+
+	while isfield(state.lm, ['paramName' num2str(counter)])
+		h=getfield(gh.lmSettings, ['dev' num2str(counter)]);
+		if ishandle(h)
+			set(h, 'String', state.lm.deviceIDs);
+			if get(h, 'Value')>length(state.lm.deviceIDs)
+				set(h, 'Value', 1);
+				eval((gh.lmSettings, ['dev' num2str(counter)]);
+		end
+		counter=counter+1;
+	end

@@ -1,0 +1,34 @@
+function startFocus
+	global state
+	global focusInput focusOutput pcellFocusOutput
+	
+	state.internal.status=2;
+	state.internal.lastTaskDone=2;
+    
+	putDataFocus
+	
+    set(focusInput, 'TriggerType', 'Manual');
+    set(focusInput, 'ExternalTriggerDriveLine', 'PFI0');
+    set(focusInput, 'ManualTriggerHwOn', 'Trigger');
+    
+    set(focusOutput, 'TriggerType', 'HwDigital');
+    set(focusOutput, 'HwDigitalTriggerSource', 'PFI0');
+    set(focusOutput, 'TriggerCondition', 'PositiveEdge');
+	set(focusOutput, 'ExternalClockDriveLine', 'RTSI5');
+	
+    if state.pcell.pcellOn
+		set(pcellFocusOutput, 'ClockSource', 'External')
+		set(pcellFocusOutput, 'ExternalClockSource', 'RTSI5')
+        set(pcellFocusOutput, 'TriggerType', 'HwDigital');
+        set(pcellFocusOutput, 'HwDigitalTriggerSource', 'PFI6');
+        set(pcellFocusOutput, 'TriggerCondition', 'PositiveEdge');
+		start(focusInput);
+		start([focusOutput pcellFocusOutput]);
+	else
+		start(focusOutput);
+    end
+    
+    trigger(focusInput);
+
+
+ 

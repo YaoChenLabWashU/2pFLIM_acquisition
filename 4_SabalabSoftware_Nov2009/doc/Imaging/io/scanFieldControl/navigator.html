@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of navigator</title>
+  <meta name="keywords" content="navigator">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Imaging</a> &gt; <a href="../index.html">io</a> &gt; <a href="index.html">scanFieldControl</a> &gt; navigator.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\io\scanFieldControl&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>navigator
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function navigator </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function navigator</a>
+0002 
+0003     <span class="keyword">global</span> state imageData projectionData
+0004     
+0005     hires_cfg=<span class="string">'512x512 red max.cfg'</span>;
+0006     lores_cfg=<span class="string">'128x128 2 chan no max.cfg'</span>;
+0007     
+0008     state.navigator.navChannel=2;
+0009     
+0010     axisPosition = [0 0 1 1];
+0011     aspectRatio = state.internal.imageAspectRatioBias*state.acq.scanAmplitudeY/state.acq.scanAmplitudeX; 
+0012 
+0013     state.navigator.usingNav=1;
+0014     
+0015     state.navigator.navFigure = figure(<span class="keyword">...</span>
+0016         <span class="string">'Position'</span>, state.windowPositions.compositeImage_position, <span class="keyword">...</span>
+0017         <span class="string">'doublebuffer'</span>, <span class="string">'on'</span>,<span class="keyword">...</span>
+0018         <span class="string">'Tag'</span>,  <span class="string">'NavFigure'</span>, <span class="keyword">...</span>
+0019         <span class="string">'Name'</span>,  <span class="string">'Navigator'</span>, <span class="keyword">...</span>
+0020         <span class="string">'NumberTitle'</span>, <span class="string">'off'</span>,  <span class="keyword">...</span>
+0021         <span class="string">'CloseRequestFcn'</span>, <span class="string">'set(gcf, ''visible'', ''off'')'</span>, <span class="keyword">...</span>
+0022         <span class="string">'visible'</span>, <span class="string">'on'</span> <span class="keyword">...</span>
+0023         );
+0024         
+0025     state.navigator.navAxis = axes(<span class="keyword">...</span>
+0026         <span class="string">'YDir'</span>, <span class="string">'Reverse'</span>,<span class="keyword">...</span>
+0027         <span class="string">'NextPlot'</span>, <span class="string">'add'</span>, <span class="keyword">...</span>
+0028         <span class="string">'XLim'</span>, [0 state.acq.pixelsPerLine], <span class="keyword">...</span>
+0029         <span class="string">'YLim'</span>, [0 state.acq.linesPerFrame], <span class="keyword">...</span>
+0030         <span class="string">'CLim'</span>, [0 1], <span class="keyword">...</span>
+0031         <span class="string">'Parent'</span>, state.navigator.navFigure, <span class="keyword">...</span>
+0032         <span class="string">'YTickLabelMode'</span>, <span class="string">'manual'</span>, <span class="keyword">...</span>
+0033         <span class="string">'XTickLabelMode'</span>, <span class="string">'manual'</span>, <span class="keyword">...</span>
+0034         <span class="string">'Position'</span>, axisPosition,  <span class="keyword">...</span>
+0035         <span class="string">'XTickLabel'</span>, [], <span class="keyword">...</span>
+0036         <span class="string">'YTickLabel'</span>, [], <span class="keyword">...</span>
+0037         <span class="string">'DataAspectRatioMode'</span>, <span class="string">'manual'</span>,  <span class="keyword">...</span>
+0038         <span class="string">'DataAspectRatio'</span>, [aspectRatio 1 1]<span class="keyword">...</span>
+0039         );
+0040     
+0041       <span class="comment">%startImage=    zeros(state.acq.linesPerFrame, state.acq.pixelsPerLine, 3);</span>
+0042 
+0043     startImage=projectionData{state.navigator.navChannel};
+0044     
+0045     state.navigator.storedMaxImage=startImage;
+0046     
+0047     state.navigator.storedAllImages=imageData{state.navigator.navChannel};
+0048     
+0049     state.navigator.navImage = image(<span class="keyword">...</span>
+0050             startImage, <span class="keyword">...</span>
+0051             <span class="string">'Parent'</span>, state.navigator.navAxis<span class="keyword">...</span>
+0052         );
+0053     
+0054     set(state.navigator.navAxis, <span class="string">'DataAspectRatioMode'</span>, <span class="string">'auto'</span>);
+0055     
+0056     state.navigator.navZoom=state.acq.zoomFactor;
+0057     state.navigator.numberOfZSlices=state.acq.numberOfZSlices;
+0058     state.navigator.numberOfFrames=state.acq.numberOfFrames;
+0059     
+0060     state.navigator.repeatedMirrorData=state.acq.repeatedMirrorData;
+0061     state.navigator.lengthOfXData=state.internal.lengthOfXData;
+0062     state.navigator.fractionStart=state.internal.fractionStart;
+0063     state.navigator.fractionPerPixel=state.internal.fractionPerPixel;
+0064     
+0065     state.navigator.maxMirrorX=max(state.acq.repeatedMirrorData(:, 1));
+0066     state.navigator.minMirrorX=min(state.acq.repeatedMirrorData(:, 1));
+0067     state.navigator.maxMirrorY=max(state.acq.repeatedMirrorData(:, 2));
+0068     state.navigator.minMirrorY=min(state.acq.repeatedMirrorData(:, 2));
+0069     
+0070     setColorMap(<span class="string">'gray'</span>);
+0071     
+0072     <span class="comment">% switch to low-res configuration</span>
+0073     
+0074     <span class="comment">%selectConfigurationFromMenu(lores_cfg);</span>
+0075     
+0076     <span class="comment">%displayReferenceImage;</span>
+0077     
+0078</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

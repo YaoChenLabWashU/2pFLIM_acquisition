@@ -1,0 +1,4 @@
+function imSetScannginstate.pcell.pcellScanning1=20;
+updateGUIByGlobal('state.pcell.pcellScanning1');
+state.internal.needNewPcellPowerOutput=1;
+applyChangesToOutput;

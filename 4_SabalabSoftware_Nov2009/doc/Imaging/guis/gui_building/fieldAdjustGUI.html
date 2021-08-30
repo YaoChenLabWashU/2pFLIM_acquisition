@@ -1,0 +1,873 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of fieldAdjustGUI</title>
+  <meta name="keywords" content="fieldAdjustGUI">
+  <meta name="description" content="FIELDADJUSTGUI M-file for fieldAdjustGUI.fig">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Imaging</a> &gt; <a href="../index.html">guis</a> &gt; <a href="index.html">gui_building</a> &gt; fieldAdjustGUI.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\guis\gui_building&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>fieldAdjustGUI
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>FIELDADJUSTGUI M-file for fieldAdjustGUI.fig</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function varargout = fieldAdjustGUI(varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> FIELDADJUSTGUI M-file for fieldAdjustGUI.fig
+      FIELDADJUSTGUI, by itself, creates a new FIELDADJUSTGUI or raises the existing
+      singleton*.
+
+      H = FIELDADJUSTGUI returns the handle to a new FIELDADJUSTGUI or the handle to
+      the existing singleton*.
+
+      FIELDADJUSTGUI('CALLBACK',hObject,eventData,handles,...) calls the local
+      function named CALLBACK in FIELDADJUSTGUI.M with the given input arguments.
+
+      FIELDADJUSTGUI('Property','Value',...) creates a new FIELDADJUSTGUI or raises the
+      existing singleton*.  Starting from the left, property value pairs are
+      applied to the GUI before fieldAdjustGUI_OpeningFunction gets called.  An
+      unrecognized property name or invalid value makes property application
+      stop.  All inputs are passed to fieldAdjustGUI_OpeningFcn via varargin.
+
+      *See GUI Options on GUIDE's Tools menu.  Choose &quot;GUI allows only one
+      instance to run (singleton)&quot;.
+
+ See also: GUIDE, GUIDATA, GUIHANDLES</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Imaging/guis/gui_callbacks/executeFocusCallback.html" class="code" title="function executeFocusCallback">executeFocusCallback</a>	</li><li><a href="../../../Imaging/guis/gui_callbacks/setAcquisitionParameters.html" class="code" title="function setAcquisitionParameters">setAcquisitionParameters</a>	</li><li><a href="../../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>	</li><li><a href="../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>	This function sets the status field in mainControls.</li><li><a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>	given the name of a global variable, find and update the GUI that contains it</li><li><a href="../../../Imaging/guis/siSelectionChannelToFront.html" class="code" title="function siSelectionChannelToFront">siSelectionChannelToFront</a>	</li><li><a href="../../../Imaging/io/Piezo/piezoUpdatePosition.html" class="code" title="function piezoUpdatePosition()">piezoUpdatePosition</a>	</li><li><a href="../../../Imaging/io/applyChangesToOutput.html" class="code" title="function applyChangesToOutput(force)">applyChangesToOutput</a>	</li><li><a href="../../../Imaging/io/file_io/data/updateHeaderString.html" class="code" title="function updateHeaderString(globalName)">updateHeaderString</a>	</li><li><a href="../../../Imaging/io/motors/setMotorPosition.html" class="code" title="function setMotorPosition(newPos)">setMotorPosition</a>	</li><li><a href="../../../Imaging/io/motors/updateMotorPosition.html" class="code" title="function out=updateMotorPosition(updateHeader)">updateMotorPosition</a>	</li><li><a href="../../../Imaging/io/motors/updateRelativeMotorPosition.html" class="code" title="function updateRelativeMotorPosition(update)">updateRelativeMotorPosition</a>	</li><li><a href="../../../Imaging/io/scanFieldControl/setTrackerReference.html" class="code" title="function setTrackerReference">setTrackerReference</a>	</li><li><a href="../../../Imaging/io/scanFieldControl/updateNavigator.html" class="code" title="function updateNavigator">updateNavigator</a>	</li><li><a href="../../../Imaging/io/scanFieldControl/updateReferenceImage.html" class="code" title="function updateReferenceImage">updateReferenceImage</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Imaging/io/initImaging.html" class="code" title="function initImaging(userFile, analysisMode)">initImaging</a>	</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function fieldAdjustGUI_OpeningFcn(hObject, eventdata, handles, varargin)</a></li><li><a href="#_sub2" class="code">function varargout = fieldAdjustGUI_OutputFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub3" class="code">function preRotRight_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub4" class="code">function preRotLeft_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub5" class="code">function preRotUp_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub6" class="code">function preRotDown_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub7" class="code">function preRotReset_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub8" class="code">function mainZoomSlider_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub9" class="code">function mainZoomSlider_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub10" class="code">function mainZoom_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub11" class="code">function mainZoom_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub12" class="code">function scanRotationSlider_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub13" class="code">function scanRotationSlider_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub14" class="code">function scanRotation_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub15" class="code">function scanRotation_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub16" class="code">function resetAllButton_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub17" class="code">function lineScanCB_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub18" class="code">function postStep_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub19" class="code">function postStep_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub20" class="code">function preStep_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub21" class="code">function preStep_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub22" class="code">function focusButton_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub23" class="code">function fieldSizeX_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub24" class="code">function fieldSizeX_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub25" class="code">function fieldSizeY_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub26" class="code">function fieldSizeY_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub27" class="code">function centerLineButton_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub28" class="code">function centerButton_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub29" class="code">function moveButton_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub30" class="code">function zoomInButton_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub31" class="code">function zoomOutButton_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub32" class="code">function undoButton_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub33" class="code">function saveCurrentSettings</a></li><li><a href="#_sub34" class="code">function selectionChannel_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub35" class="code">function selectionChannel_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub36" class="code">function zeroRotation_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub37" class="code">function handleScanChange</a></li><li><a href="#_sub38" class="code">function autoTrack_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub39" class="code">function setReference_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub40" class="code">function maxShift_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub41" class="code">function trackerChannel_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub42" class="code">function zoom1_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub43" class="code">function zoom5_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub44" class="code">function zoom10_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub45" class="code">function zoom30_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub46" class="code">function zoom35_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub47" class="code">function sliceShift_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub48" class="code">function sliceShift_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub49" class="code">function piezoZslider_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub50" class="code">function piezoZ_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub51" class="code">function piezoZ_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub52" class="code">function mirrorLag_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub53" class="code">function mirrorLag_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub54" class="code">function mirrorLagSlider_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub55" class="code">function mirrorLagSlider_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub56" class="code">function rotateTo90_Callback(hObject, eventdata, handles)</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function varargout = fieldAdjustGUI(varargin)</a>
+0002 <span class="comment">% FIELDADJUSTGUI M-file for fieldAdjustGUI.fig</span>
+0003 <span class="comment">%      FIELDADJUSTGUI, by itself, creates a new FIELDADJUSTGUI or raises the existing</span>
+0004 <span class="comment">%      singleton*.</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">%      H = FIELDADJUSTGUI returns the handle to a new FIELDADJUSTGUI or the handle to</span>
+0007 <span class="comment">%      the existing singleton*.</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">%      FIELDADJUSTGUI('CALLBACK',hObject,eventData,handles,...) calls the local</span>
+0010 <span class="comment">%      function named CALLBACK in FIELDADJUSTGUI.M with the given input arguments.</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">%      FIELDADJUSTGUI('Property','Value',...) creates a new FIELDADJUSTGUI or raises the</span>
+0013 <span class="comment">%      existing singleton*.  Starting from the left, property value pairs are</span>
+0014 <span class="comment">%      applied to the GUI before fieldAdjustGUI_OpeningFunction gets called.  An</span>
+0015 <span class="comment">%      unrecognized property name or invalid value makes property application</span>
+0016 <span class="comment">%      stop.  All inputs are passed to fieldAdjustGUI_OpeningFcn via varargin.</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">%      *See GUI Options on GUIDE's Tools menu.  Choose &quot;GUI allows only one</span>
+0019 <span class="comment">%      instance to run (singleton)&quot;.</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">% See also: GUIDE, GUIDATA, GUIHANDLES</span>
+0022 
+0023 <span class="comment">% Edit the above text to modify the response to help fieldAdjustGUI</span>
+0024 
+0025 <span class="comment">% Last Modified by GUIDE v2.5 15-Sep-2009 16:46:17</span>
+0026 
+0027 <span class="comment">% Begin initialization code - DO NOT EDIT</span>
+0028 gui_Singleton = 1;
+0029 gui_State = struct(<span class="string">'gui_Name'</span>,       mfilename, <span class="keyword">...</span>
+0030                    <span class="string">'gui_Singleton'</span>,  gui_Singleton, <span class="keyword">...</span>
+0031                    <span class="string">'gui_OpeningFcn'</span>, @<a href="#_sub1" class="code" title="subfunction fieldAdjustGUI_OpeningFcn(hObject, eventdata, handles, varargin)">fieldAdjustGUI_OpeningFcn</a>, <span class="keyword">...</span>
+0032                    <span class="string">'gui_OutputFcn'</span>,  @<a href="#_sub2" class="code" title="subfunction varargout = fieldAdjustGUI_OutputFcn(hObject, eventdata, handles)">fieldAdjustGUI_OutputFcn</a>, <span class="keyword">...</span>
+0033                    <span class="string">'gui_LayoutFcn'</span>,  [] , <span class="keyword">...</span>
+0034                    <span class="string">'gui_Callback'</span>,   []);
+0035 <span class="keyword">if</span> nargin &amp;&amp; isstr(varargin{1})
+0036     gui_State.gui_Callback = str2func(varargin{1});
+0037 <span class="keyword">end</span>
+0038 
+0039 <span class="keyword">if</span> nargout
+0040     [varargout{1:nargout}] = gui_mainfcn(gui_State, varargin{:});
+0041 <span class="keyword">else</span>
+0042     gui_mainfcn(gui_State, varargin{:});
+0043 <span class="keyword">end</span>
+0044 <span class="comment">% End initialization code - DO NOT EDIT</span>
+0045 
+0046 
+0047 <span class="comment">% --- Executes just before fieldAdjustGUI is made visible.</span>
+0048 <a name="_sub1" href="#_subfunctions" class="code">function fieldAdjustGUI_OpeningFcn(hObject, eventdata, handles, varargin)</a>
+0049 <span class="comment">% This function has no output args, see OutputFcn.</span>
+0050 <span class="comment">% hObject    handle to figure</span>
+0051 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0052 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0053 <span class="comment">% varargin   command line arguments to fieldAdjustGUI (see VARARGIN)</span>
+0054 
+0055 <span class="comment">% Choose default command line output for fieldAdjustGUI</span>
+0056 handles.output = hObject;
+0057 
+0058 <span class="comment">% Update handles structure</span>
+0059 guidata(hObject, handles);
+0060 
+0061 <span class="comment">% UIWAIT makes fieldAdjustGUI wait for user response (see UIRESUME)</span>
+0062 <span class="comment">% uiwait(handles.figure1);</span>
+0063 
+0064 
+0065 <span class="comment">% --- Outputs from this function are returned to the command line.</span>
+0066 <a name="_sub2" href="#_subfunctions" class="code">function varargout = fieldAdjustGUI_OutputFcn(hObject, eventdata, handles)</a>
+0067 <span class="comment">% varargout  cell array for returning output args (see VARARGOUT);</span>
+0068 <span class="comment">% hObject    handle to figure</span>
+0069 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0070 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0071 
+0072 <span class="comment">% Get default command line output from handles structure</span>
+0073 varargout{1} = handles.output;
+0074 
+0075 
+0076 <span class="comment">% --- Executes on button press in preRotRight.</span>
+0077 <a name="_sub3" href="#_subfunctions" class="code">function preRotRight_Callback(hObject, eventdata, handles)</a>
+0078 <span class="comment">% hObject    handle to preRotRight (see GCBO)</span>
+0079 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0080 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0081 <span class="comment">%    set(hObject, 'Enable', 'off');</span>
+0082     <a href="#_sub33" class="code" title="subfunction saveCurrentSettings">saveCurrentSettings</a>;
+0083     <span class="keyword">global</span> state
+0084     state.acq.postRotOffsetX = state.acq.postRotOffsetX <span class="keyword">...</span>
+0085         + cos(state.acq.scanRotation*pi/180) * state.acq.scanAmplitudeX * (-1 * state.acq.preStep/state.acq.zoomFactor);
+0086     state.acq.postRotOffsetY = state.acq.postRotOffsetY <span class="keyword">...</span>
+0087         - sin(state.acq.scanRotation*pi/180) * state.acq.scanAmplitudeX * (-1 * state.acq.preStep/state.acq.zoomFactor);
+0088     <a href="../../../Imaging/io/file_io/data/updateHeaderString.html" class="code" title="function updateHeaderString(globalName)">updateHeaderString</a>(<span class="string">'state.acq.postRotOffsetX'</span>);
+0089     <a href="../../../Imaging/io/file_io/data/updateHeaderString.html" class="code" title="function updateHeaderString(globalName)">updateHeaderString</a>(<span class="string">'state.acq.postRotOffsetY'</span>);
+0090     <a href="../../../Imaging/io/scanFieldControl/updateNavigator.html" class="code" title="function updateNavigator">updateNavigator</a>;
+0091     <span class="keyword">try</span>
+0092         <a href="#_sub37" class="code" title="subfunction handleScanChange        ">handleScanChange</a>;
+0093     <span class="keyword">catch</span>
+0094         disp([<span class="string">'*** ERROR in handleScanChange: '</span> lasterr]);
+0095     <span class="keyword">end</span>
+0096 <span class="comment">%    set(hObject, 'Enable', 'on');</span>
+0097 
+0098 
+0099 <span class="comment">% --- Executes on button press in preRotLeft.</span>
+0100 <a name="_sub4" href="#_subfunctions" class="code">function preRotLeft_Callback(hObject, eventdata, handles)</a>
+0101 <span class="comment">% hObject    handle to preRotLeft (see GCBO)</span>
+0102 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0103 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0104 <span class="comment">%    set(hObject, 'Enable', 'off');</span>
+0105     <a href="#_sub33" class="code" title="subfunction saveCurrentSettings">saveCurrentSettings</a>;
+0106     <span class="keyword">global</span> state
+0107     state.acq.postRotOffsetX = state.acq.postRotOffsetX <span class="keyword">...</span>
+0108         + cos(state.acq.scanRotation*pi/180) * state.acq.scanAmplitudeX * (state.acq.preStep/state.acq.zoomFactor);
+0109     state.acq.postRotOffsetY = state.acq.postRotOffsetY <span class="keyword">...</span>
+0110         - sin(state.acq.scanRotation*pi/180) * state.acq.scanAmplitudeX * (state.acq.preStep/state.acq.zoomFactor);
+0111     <a href="../../../Imaging/io/file_io/data/updateHeaderString.html" class="code" title="function updateHeaderString(globalName)">updateHeaderString</a>(<span class="string">'state.acq.postRotOffsetX'</span>);
+0112     <a href="../../../Imaging/io/file_io/data/updateHeaderString.html" class="code" title="function updateHeaderString(globalName)">updateHeaderString</a>(<span class="string">'state.acq.postRotOffsetY'</span>);
+0113     <a href="../../../Imaging/io/scanFieldControl/updateNavigator.html" class="code" title="function updateNavigator">updateNavigator</a>;
+0114     <span class="keyword">try</span>
+0115         <a href="#_sub37" class="code" title="subfunction handleScanChange        ">handleScanChange</a>;
+0116     <span class="keyword">catch</span>
+0117         disp([<span class="string">'*** ERROR in handleScanChange: '</span> lasterr]);
+0118     <span class="keyword">end</span>
+0119 
+0120 <span class="comment">%     set(hObject, 'Enable', 'on');</span>
+0121 
+0122 
+0123 <span class="comment">% --- Executes on button press in preRotUp.</span>
+0124 <a name="_sub5" href="#_subfunctions" class="code">function preRotUp_Callback(hObject, eventdata, handles)</a>
+0125 <span class="comment">% hObject    handle to preRotUp (see GCBO)</span>
+0126 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0127 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0128 <span class="comment">%    set(hObject, 'Enable', 'off');</span>
+0129     <a href="#_sub33" class="code" title="subfunction saveCurrentSettings">saveCurrentSettings</a>;
+0130     <span class="keyword">global</span> state
+0131     state.acq.postRotOffsetX = state.acq.postRotOffsetX <span class="keyword">...</span>
+0132         + sin(state.acq.scanRotation*pi/180) * state.acq.scanAmplitudeY * (state.acq.preStep/state.acq.zoomFactor);
+0133     state.acq.postRotOffsetY = state.acq.postRotOffsetY <span class="keyword">...</span>
+0134         + cos(state.acq.scanRotation*pi/180) * state.acq.scanAmplitudeY * (state.acq.preStep/state.acq.zoomFactor);
+0135      <a href="../../../Imaging/io/file_io/data/updateHeaderString.html" class="code" title="function updateHeaderString(globalName)">updateHeaderString</a>(<span class="string">'state.acq.postRotOffsetX'</span>);
+0136     <a href="../../../Imaging/io/file_io/data/updateHeaderString.html" class="code" title="function updateHeaderString(globalName)">updateHeaderString</a>(<span class="string">'state.acq.postRotOffsetY'</span>);
+0137     <a href="../../../Imaging/io/scanFieldControl/updateNavigator.html" class="code" title="function updateNavigator">updateNavigator</a>;
+0138     <span class="keyword">try</span>
+0139         <a href="#_sub37" class="code" title="subfunction handleScanChange        ">handleScanChange</a>;
+0140     <span class="keyword">catch</span>
+0141         disp([<span class="string">'*** ERROR in handleScanChange: '</span> lasterr]);
+0142     <span class="keyword">end</span>
+0143 
+0144     set(hObject, <span class="string">'Enable'</span>, <span class="string">'on'</span>);
+0145 
+0146 
+0147 <span class="comment">% --- Executes on button press in preRotDown.</span>
+0148 <a name="_sub6" href="#_subfunctions" class="code">function preRotDown_Callback(hObject, eventdata, handles)</a>
+0149 <span class="comment">% hObject    handle to preRotDown (see GCBO)</span>
+0150 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0151 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0152 <span class="comment">%    set(hObject, 'Enable', 'off');</span>
+0153     <a href="#_sub33" class="code" title="subfunction saveCurrentSettings">saveCurrentSettings</a>;
+0154     <span class="keyword">global</span> state
+0155     state.acq.postRotOffsetX = state.acq.postRotOffsetX <span class="keyword">...</span>
+0156         + sin(state.acq.scanRotation*pi/180) * state.acq.scanAmplitudeY * (-1 * state.acq.preStep/state.acq.zoomFactor);
+0157     state.acq.postRotOffsetY = state.acq.postRotOffsetY <span class="keyword">...</span>
+0158         + cos(state.acq.scanRotation*pi/180) * state.acq.scanAmplitudeY * (-1 * state.acq.preStep/state.acq.zoomFactor);
+0159     <a href="../../../Imaging/io/file_io/data/updateHeaderString.html" class="code" title="function updateHeaderString(globalName)">updateHeaderString</a>(<span class="string">'state.acq.postRotOffsetX'</span>);
+0160     <a href="../../../Imaging/io/file_io/data/updateHeaderString.html" class="code" title="function updateHeaderString(globalName)">updateHeaderString</a>(<span class="string">'state.acq.postRotOffsetY'</span>);
+0161     <a href="../../../Imaging/io/scanFieldControl/updateNavigator.html" class="code" title="function updateNavigator">updateNavigator</a>;
+0162     <span class="keyword">try</span>
+0163         <a href="#_sub37" class="code" title="subfunction handleScanChange        ">handleScanChange</a>;
+0164     <span class="keyword">catch</span>
+0165         disp([<span class="string">'*** ERROR in handleScanChange: '</span> lasterr]);
+0166     <span class="keyword">end</span>
+0167 
+0168     set(hObject, <span class="string">'Enable'</span>, <span class="string">'on'</span>);
+0169     
+0170 
+0171 <span class="comment">% --- Executes on button press in preRotReset.</span>
+0172 <a name="_sub7" href="#_subfunctions" class="code">function preRotReset_Callback(hObject, eventdata, handles)</a>
+0173 <span class="comment">% hObject    handle to preRotReset (see GCBO)</span>
+0174 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0175 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0176 <span class="comment">%    set(hObject, 'Enable', 'off');</span>
+0177     <a href="#_sub33" class="code" title="subfunction saveCurrentSettings">saveCurrentSettings</a>;
+0178     <span class="keyword">global</span> state
+0179     state.acq.postRotOffsetX = 0;
+0180     state.acq.postRotOffsetY = 0;
+0181     <a href="../../../Imaging/io/file_io/data/updateHeaderString.html" class="code" title="function updateHeaderString(globalName)">updateHeaderString</a>(<span class="string">'state.acq.postRotOffsetX'</span>);
+0182     <a href="../../../Imaging/io/file_io/data/updateHeaderString.html" class="code" title="function updateHeaderString(globalName)">updateHeaderString</a>(<span class="string">'state.acq.postRotOffsetY'</span>);
+0183      <a href="../../../Imaging/io/scanFieldControl/updateNavigator.html" class="code" title="function updateNavigator">updateNavigator</a>;
+0184    <span class="keyword">try</span>
+0185         <a href="#_sub37" class="code" title="subfunction handleScanChange        ">handleScanChange</a>;
+0186     <span class="keyword">catch</span>
+0187         disp([<span class="string">'*** ERROR in handleScanChange: '</span> lasterr]);
+0188     <span class="keyword">end</span>
+0189 
+0190     set(hObject, <span class="string">'Enable'</span>, <span class="string">'on'</span>);
+0191     
+0192 
+0193 
+0194 
+0195 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0196 <a name="_sub8" href="#_subfunctions" class="code">function mainZoomSlider_CreateFcn(hObject, eventdata, handles)</a>
+0197 usewhitebg = 1;
+0198 <span class="keyword">if</span> usewhitebg
+0199     set(hObject,<span class="string">'BackgroundColor'</span>,[.9 .9 .9]);
+0200 <span class="keyword">else</span>
+0201     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0202 <span class="keyword">end</span>
+0203 
+0204 
+0205 <span class="comment">% --- Executes on slider movement.</span>
+0206 <a name="_sub9" href="#_subfunctions" class="code">function mainZoomSlider_Callback(hObject, eventdata, handles)</a>
+0207 <span class="comment">%    set(hObject, 'Enable', 'off');</span>
+0208     <a href="#_sub33" class="code" title="subfunction saveCurrentSettings">saveCurrentSettings</a>;
+0209     <a href="../../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0210     <span class="keyword">try</span>
+0211         <a href="#_sub37" class="code" title="subfunction handleScanChange        ">handleScanChange</a>;
+0212     <span class="keyword">catch</span>
+0213         disp([<span class="string">'*** ERROR in handleScanChange: '</span> lasterr]);
+0214     <span class="keyword">end</span>
+0215 
+0216     set(hObject, <span class="string">'Enable'</span>, <span class="string">'on'</span>);
+0217 
+0218 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0219 <a name="_sub10" href="#_subfunctions" class="code">function mainZoom_CreateFcn(hObject, eventdata, handles)</a>
+0220 <span class="keyword">if</span> ispc
+0221     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0222 <span class="keyword">else</span>
+0223     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0224 <span class="keyword">end</span>
+0225 
+0226 
+0227 
+0228 <a name="_sub11" href="#_subfunctions" class="code">function mainZoom_Callback(hObject, eventdata, handles)</a>
+0229 <span class="comment">%    set(hObject, 'Enable', 'off');</span>
+0230     <a href="#_sub33" class="code" title="subfunction saveCurrentSettings">saveCurrentSettings</a>;
+0231     <a href="../../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0232     <span class="keyword">try</span>
+0233         <a href="#_sub37" class="code" title="subfunction handleScanChange        ">handleScanChange</a>;
+0234     <span class="keyword">catch</span>
+0235         disp([<span class="string">'*** ERROR in handleScanChange: '</span> lasterr]);
+0236     <span class="keyword">end</span>
+0237 
+0238     set(hObject, <span class="string">'Enable'</span>, <span class="string">'on'</span>);
+0239 
+0240 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0241 <a name="_sub12" href="#_subfunctions" class="code">function scanRotationSlider_CreateFcn(hObject, eventdata, handles)</a>
+0242 usewhitebg = 1;
+0243 <span class="keyword">if</span> usewhitebg
+0244     set(hObject,<span class="string">'BackgroundColor'</span>,[.9 .9 .9]);
+0245 <span class="keyword">else</span>
+0246     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0247 <span class="keyword">end</span>
+0248 
+0249 
+0250 <span class="comment">% --- Executes on slider movement.</span>
+0251 <a name="_sub13" href="#_subfunctions" class="code">function scanRotationSlider_Callback(hObject, eventdata, handles)</a>
+0252 <span class="comment">%    set(hObject, 'Enable', 'off');</span>
+0253     <a href="#_sub33" class="code" title="subfunction saveCurrentSettings">saveCurrentSettings</a>;
+0254     <a href="../../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0255     <span class="keyword">try</span>
+0256         <a href="#_sub37" class="code" title="subfunction handleScanChange        ">handleScanChange</a>;
+0257     <span class="keyword">catch</span>
+0258         disp([<span class="string">'*** ERROR in handleScanChange: '</span> lasterr]);
+0259     <span class="keyword">end</span>
+0260     set(hObject, <span class="string">'Enable'</span>, <span class="string">'on'</span>);
+0261 
+0262 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0263 <a name="_sub14" href="#_subfunctions" class="code">function scanRotation_CreateFcn(hObject, eventdata, handles)</a>
+0264 <span class="keyword">if</span> ispc
+0265     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0266 <span class="keyword">else</span>
+0267     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0268 <span class="keyword">end</span>
+0269 
+0270 
+0271 
+0272 <a name="_sub15" href="#_subfunctions" class="code">function scanRotation_Callback(hObject, eventdata, handles)</a>
+0273 <span class="comment">%    set(hObject, 'Enable', 'off');</span>
+0274     <a href="#_sub33" class="code" title="subfunction saveCurrentSettings">saveCurrentSettings</a>;
+0275     <a href="../../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0276     <span class="keyword">try</span>
+0277         <a href="#_sub37" class="code" title="subfunction handleScanChange        ">handleScanChange</a>;
+0278     <span class="keyword">catch</span>
+0279         disp([<span class="string">'*** ERROR in handleScanChange: '</span> lasterr]);
+0280     <span class="keyword">end</span>
+0281     set(hObject, <span class="string">'Enable'</span>, <span class="string">'on'</span>);
+0282 
+0283 
+0284 <span class="comment">% --- Executes on button press in resetAllButton.</span>
+0285 <a name="_sub16" href="#_subfunctions" class="code">function resetAllButton_Callback(hObject, eventdata, handles)</a>
+0286 <span class="comment">%    set(hObject, 'Enable', 'off');</span>
+0287     <a href="#_sub33" class="code" title="subfunction saveCurrentSettings">saveCurrentSettings</a>;
+0288     <span class="keyword">global</span> state
+0289     state.acq.zoomFactor=1;
+0290     state.acq.scanRotation = 0;
+0291     state.acq.postRotOffsetX = 0;
+0292     state.acq.postRotOffsetY = 0;
+0293     state.acq.preRotOffsetX = 0;
+0294     state.acq.preRotOffsetY = 0;
+0295     state.acq.lineScan=0;
+0296     <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.zoomFactor'</span>);
+0297     <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.scanRotation'</span>);
+0298     <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.lineScan'</span>);
+0299     <a href="../../../Imaging/io/file_io/data/updateHeaderString.html" class="code" title="function updateHeaderString(globalName)">updateHeaderString</a>(<span class="string">'state.acq.postRotOffsetX'</span>);
+0300     <a href="../../../Imaging/io/file_io/data/updateHeaderString.html" class="code" title="function updateHeaderString(globalName)">updateHeaderString</a>(<span class="string">'state.acq.postRotOffsetY'</span>);
+0301     <span class="keyword">try</span>
+0302         <a href="#_sub37" class="code" title="subfunction handleScanChange        ">handleScanChange</a>;
+0303     <span class="keyword">catch</span>
+0304         disp([<span class="string">'*** ERROR in handleScanChange: '</span> lasterr]);
+0305     <span class="keyword">end</span>
+0306     set(hObject, <span class="string">'Enable'</span>, <span class="string">'on'</span>);
+0307     
+0308 <span class="comment">% --- Executes on button press in lineScanCB.</span>
+0309 <a name="_sub17" href="#_subfunctions" class="code">function lineScanCB_Callback(hObject, eventdata, handles)</a>
+0310 <span class="comment">%    set(hObject, 'Enable', 'off');</span>
+0311     <a href="#_sub33" class="code" title="subfunction saveCurrentSettings">saveCurrentSettings</a>;
+0312     <a href="../../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0313     <span class="keyword">try</span>
+0314         <a href="#_sub37" class="code" title="subfunction handleScanChange        ">handleScanChange</a>;
+0315     <span class="keyword">catch</span>
+0316         disp([<span class="string">'*** ERROR in handleScanChange: '</span> lasterr]);
+0317     <span class="keyword">end</span>
+0318     set(hObject, <span class="string">'Enable'</span>, <span class="string">'on'</span>);
+0319 
+0320 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0321 <a name="_sub18" href="#_subfunctions" class="code">function postStep_CreateFcn(hObject, eventdata, handles)</a>
+0322 <span class="keyword">if</span> ispc
+0323     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0324 <span class="keyword">else</span>
+0325     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0326 <span class="keyword">end</span>
+0327 
+0328 
+0329 
+0330 <a name="_sub19" href="#_subfunctions" class="code">function postStep_Callback(hObject, eventdata, handles)</a>
+0331     <a href="../../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0332 
+0333 
+0334 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0335 <a name="_sub20" href="#_subfunctions" class="code">function preStep_CreateFcn(hObject, eventdata, handles)</a>
+0336 <span class="keyword">if</span> ispc
+0337     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0338 <span class="keyword">else</span>
+0339     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0340 <span class="keyword">end</span>
+0341 
+0342 
+0343 
+0344 <a name="_sub21" href="#_subfunctions" class="code">function preStep_Callback(hObject, eventdata, handles)</a>
+0345     <a href="../../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0346 
+0347 
+0348 <span class="comment">% --- Executes on button press in focusButton.</span>
+0349 <a name="_sub22" href="#_subfunctions" class="code">function focusButton_Callback(hObject, eventdata, handles)</a>
+0350     <a href="../../../Imaging/guis/gui_callbacks/executeFocusCallback.html" class="code" title="function executeFocusCallback">executeFocusCallback</a>;
+0351 
+0352 
+0353 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0354 <a name="_sub23" href="#_subfunctions" class="code">function fieldSizeX_CreateFcn(hObject, eventdata, handles)</a>
+0355 <span class="keyword">if</span> ispc
+0356     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0357 <span class="keyword">else</span>
+0358     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0359 <span class="keyword">end</span>
+0360 
+0361 
+0362 
+0363 <a name="_sub24" href="#_subfunctions" class="code">function fieldSizeX_Callback(hObject, eventdata, handles)</a>
+0364 
+0365 
+0366 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0367 <a name="_sub25" href="#_subfunctions" class="code">function fieldSizeY_CreateFcn(hObject, eventdata, handles)</a>
+0368 <span class="keyword">if</span> ispc
+0369     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0370 <span class="keyword">else</span>
+0371     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0372 <span class="keyword">end</span>
+0373 
+0374 
+0375 
+0376 <a name="_sub26" href="#_subfunctions" class="code">function fieldSizeY_Callback(hObject, eventdata, handles)</a>
+0377 
+0378 
+0379 <span class="comment">% --- Executes on button press in centerLineButton.</span>
+0380 <a name="_sub27" href="#_subfunctions" class="code">function centerLineButton_Callback(hObject, eventdata, handles)</a>
+0381     <span class="keyword">global</span> state
+0382     <a href="#_sub33" class="code" title="subfunction saveCurrentSettings">saveCurrentSettings</a>;
+0383     <span class="keyword">if</span> (state.internal.status==2) || (state.internal.status==3)
+0384         <span class="keyword">return</span>
+0385     <span class="keyword">end</span>
+0386 <span class="comment">%    set(hObject, 'Enable', 'off');</span>
+0387     <span class="keyword">try</span>
+0388         <a href="../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Click line ends'</span>);
+0389         <a href="../../../Imaging/guis/siSelectionChannelToFront.html" class="code" title="function siSelectionChannelToFront">siSelectionChannelToFront</a>
+0390 
+0391         [x,y]=ginput(2);
+0392         <span class="keyword">if</span> size(x,1)~=2
+0393             <span class="keyword">return</span>
+0394         <span class="keyword">end</span>
+0395     
+0396 
+0397         index = round(mean(y)-1) * state.internal.lengthOfXData + <span class="keyword">...</span>
+0398             round(state.internal.lengthOfXData*<span class="keyword">...</span>
+0399             (state.internal.fractionStart+mean(x)*state.internal.fractionPerPixel));
+0400             
+0401         <span class="comment">% slide center over</span>
+0402         state.acq.postRotOffsetX = (state.acq.repeatedMirrorData(index,1) - state.acq.scanOffsetX);
+0403         state.acq.postRotOffsetY = (state.acq.repeatedMirrorData(index,2) - state.acq.scanOffsetY);
+0404         
+0405         <span class="comment">% calculate angle</span>
+0406         state.acq.scanRotation = state.acq.scanRotation - atan2((y(2)-y(1)), (x(2)-x(1)))*180/pi;
+0407         <span class="keyword">if</span> (state.acq.scanRotation&lt;-180)
+0408             state.acq.scanRotation=state.acq.scanRotation+360;
+0409         <span class="keyword">elseif</span> (state.acq.scanRotation&gt;180)
+0410             state.acq.scanRotation=state.acq.scanRotation-360;
+0411         <span class="keyword">end</span>
+0412         state.acq.scanRotation=round(state.acq.scanRotation*10)/10;
+0413         <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.scanRotation'</span>);
+0414         
+0415         <span class="keyword">try</span>
+0416             <a href="#_sub37" class="code" title="subfunction handleScanChange        ">handleScanChange</a>;
+0417         <span class="keyword">catch</span>
+0418             disp([<span class="string">'*** ERROR in handleScanChange: '</span> lasterr]);
+0419         <span class="keyword">end</span>
+0420     <span class="keyword">catch</span>
+0421          disp([<span class="string">'*** ERROR in selection: '</span> lasterr]);
+0422     <span class="keyword">end</span>        
+0423     set(hObject, <span class="string">'Enable'</span>, <span class="string">'on'</span>);
+0424     <a href="../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">''</span>);
+0425     
+0426 
+0427 <span class="comment">% --- Executes on button press in centerButton.</span>
+0428 <a name="_sub28" href="#_subfunctions" class="code">function centerButton_Callback(hObject, eventdata, handles)</a>
+0429     <span class="keyword">global</span> state
+0430     <a href="#_sub33" class="code" title="subfunction saveCurrentSettings">saveCurrentSettings</a>;
+0431     <span class="keyword">if</span> state.internal.status==2 | state.internal.status==3
+0432         <span class="keyword">return</span>
+0433     <span class="keyword">end</span>
+0434 <span class="comment">%    set(hObject, 'Enable', 'off');</span>
+0435     <span class="keyword">try</span>
+0436         <a href="../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Click image center'</span>);
+0437         <a href="../../../Imaging/guis/siSelectionChannelToFront.html" class="code" title="function siSelectionChannelToFront">siSelectionChannelToFront</a>
+0438 
+0439         [x,y]=ginput(1);
+0440         <span class="keyword">if</span> isempty(findobj(gcf, <span class="string">'Type'</span>, <span class="string">'axes'</span>))
+0441             disp(<span class="string">'*** NO axes***'</span>);
+0442             set(hObject, <span class="string">'Enable'</span>, <span class="string">'on'</span>);    
+0443             <span class="keyword">return</span>
+0444         <span class="keyword">end</span>
+0445     
+0446         index = round(y-1) * state.internal.lengthOfXData + round(state.internal.lengthOfXData*(state.internal.fractionStart+x*state.internal.fractionPerPixel));
+0447     
+0448         state.acq.postRotOffsetX = (state.acq.repeatedMirrorData(index,1) - state.acq.scanOffsetX);
+0449         state.acq.postRotOffsetY = (state.acq.repeatedMirrorData(index,2) - state.acq.scanOffsetY);
+0450         <span class="keyword">try</span>
+0451             <a href="#_sub37" class="code" title="subfunction handleScanChange        ">handleScanChange</a>;
+0452         <span class="keyword">catch</span>
+0453             disp([<span class="string">'*** ERROR in handleScanChange: '</span> lasterr]);
+0454         <span class="keyword">end</span>
+0455     <span class="keyword">catch</span>
+0456          disp([<span class="string">'*** ERROR in selection: '</span> lasterr]);
+0457     <span class="keyword">end</span>        
+0458 
+0459     set(hObject, <span class="string">'Enable'</span>, <span class="string">'on'</span>);
+0460     <a href="../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">''</span>);
+0461     
+0462 <span class="comment">% --- Executes on button press in centerButton.</span>
+0463 <a name="_sub29" href="#_subfunctions" class="code">function moveButton_Callback(hObject, eventdata, handles)</a>
+0464     <span class="keyword">global</span> state
+0465 
+0466     <span class="keyword">try</span>
+0467         <a href="../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Click on center'</span>);
+0468         <a href="../../../Imaging/guis/siSelectionChannelToFront.html" class="code" title="function siSelectionChannelToFront">siSelectionChannelToFront</a>
+0469 
+0470         [x,y]=ginput(1);
+0471         <span class="keyword">if</span> isempty(findobj(gcf, <span class="string">'Type'</span>, <span class="string">'axes'</span>))
+0472             disp(<span class="string">'*** NO axes***'</span>);
+0473             set(hObject, <span class="string">'Enable'</span>, <span class="string">'on'</span>);    
+0474             <span class="keyword">return</span>
+0475         <span class="keyword">end</span>
+0476     
+0477         index = round(y-1) * state.internal.lengthOfXData + round(state.internal.lengthOfXData*(state.internal.fractionStart+x*state.internal.fractionPerPixel));
+0478     
+0479           shiftX = (state.acq.repeatedMirrorData(index,1) - state.acq.scanOffsetX) <span class="keyword">...</span>
+0480             * state.internal.unitFieldSizeX * state.internal.definingObjective/state.internal.currentObjective;
+0481         shiftY = (state.acq.repeatedMirrorData(index,2) - state.acq.scanOffsetY) <span class="keyword">...</span>
+0482             * state.internal.unitFieldSizeY * state.internal.definingObjective/state.internal.currentObjective;
+0483         pos=<a href="../../../Imaging/io/motors/updateMotorPosition.html" class="code" title="function out=updateMotorPosition(updateHeader)">updateMotorPosition</a>(0);
+0484         
+0485         <a href="../../../Imaging/io/motors/setMotorPosition.html" class="code" title="function setMotorPosition(newPos)">setMotorPosition</a>(pos+[shiftX shiftY 0]);
+0486         <a href="../../../Imaging/io/motors/updateRelativeMotorPosition.html" class="code" title="function updateRelativeMotorPosition(update)">updateRelativeMotorPosition</a>;
+0487     <span class="keyword">catch</span>
+0488          disp([<span class="string">'*** ERROR in selection: '</span> lasterr]);
+0489     <span class="keyword">end</span>            
+0490 
+0491 <span class="comment">% --- Executes on button press in zoomInButton.</span>
+0492 <a name="_sub30" href="#_subfunctions" class="code">function zoomInButton_Callback(hObject, eventdata, handles)</a>
+0493 <span class="comment">% hObject    handle to zoomInButton (see GCBO)</span>
+0494 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0495 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0496 <span class="comment">%    set(hObject, 'Enable', 'off');</span>
+0497     <a href="#_sub33" class="code" title="subfunction saveCurrentSettings">saveCurrentSettings</a>;
+0498     <span class="keyword">global</span> state
+0499     state.acq.zoomFactor=max(state.acq.zoomFactor/1.2,0.5);
+0500     <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.zoomFactor'</span>);
+0501     <span class="keyword">try</span>
+0502         <a href="#_sub37" class="code" title="subfunction handleScanChange        ">handleScanChange</a>;
+0503     <span class="keyword">catch</span>
+0504         disp([<span class="string">'*** ERROR in handleScanChange: '</span> lasterr]);
+0505     <span class="keyword">end</span>
+0506 
+0507     set(hObject, <span class="string">'Enable'</span>, <span class="string">'on'</span>);
+0508 
+0509 
+0510 <span class="comment">% --- Executes on button press in zoomOutButton.</span>
+0511 <a name="_sub31" href="#_subfunctions" class="code">function zoomOutButton_Callback(hObject, eventdata, handles)</a>
+0512 <span class="comment">% hObject    handle to zoomOutButton (see GCBO)</span>
+0513 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0514 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0515 <span class="comment">%    set(hObject, 'Enable', 'off');</span>
+0516     <a href="#_sub33" class="code" title="subfunction saveCurrentSettings">saveCurrentSettings</a>;
+0517     <span class="keyword">global</span> state
+0518     state.acq.zoomFactor=state.acq.zoomFactor*1.2;
+0519     <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.zoomFactor'</span>);    
+0520     <span class="keyword">try</span>
+0521         <a href="#_sub37" class="code" title="subfunction handleScanChange        ">handleScanChange</a>;
+0522     <span class="keyword">catch</span>
+0523         disp([<span class="string">'*** ERROR in handleScanChange: '</span> lasterr]);
+0524     <span class="keyword">end</span>
+0525 
+0526     set(hObject, <span class="string">'Enable'</span>, <span class="string">'on'</span>);
+0527 
+0528 
+0529 <span class="comment">% --- Executes on button press in undoButton.</span>
+0530 <a name="_sub32" href="#_subfunctions" class="code">function undoButton_Callback(hObject, eventdata, handles)</a>
+0531 <span class="comment">% hObject    handle to undoButton (see GCBO)</span>
+0532 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0533 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0534 <span class="comment">%    set(hObject, 'Enable', 'off');</span>
+0535     <span class="keyword">global</span> state
+0536     <span class="keyword">if</span> length(state.internal.oldFieldSettings)==4
+0537         state.acq.zoomFactor = state.internal.oldFieldSettings(1);
+0538         state.acq.scanRotation = state.internal.oldFieldSettings(2);
+0539         state.acq.postRotOffsetX = state.internal.oldFieldSettings(3);
+0540         state.acq.postRotOffsetY = state.internal.oldFieldSettings(4);
+0541         <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.scanRotation'</span>);
+0542         <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.zoomFactor'</span>);
+0543         <span class="keyword">try</span>
+0544             <a href="#_sub37" class="code" title="subfunction handleScanChange        ">handleScanChange</a>;
+0545         <span class="keyword">catch</span>
+0546             disp([<span class="string">'*** ERROR in handleScanChange: '</span> lasterr]);
+0547         <span class="keyword">end</span>
+0548 
+0549     <span class="keyword">end</span>
+0550     set(hObject, <span class="string">'Enable'</span>, <span class="string">'on'</span>);
+0551 
+0552 <a name="_sub33" href="#_subfunctions" class="code">function saveCurrentSettings</a>
+0553     <span class="keyword">global</span> state
+0554     state.internal.oldFieldSettings=[state.acq.zoomFactor state.acq.scanRotation state.acq.postRotOffsetX state.acq.postRotOffsetY];
+0555 
+0556 
+0557 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0558 <a name="_sub34" href="#_subfunctions" class="code">function selectionChannel_CreateFcn(hObject, eventdata, handles)</a>
+0559 <span class="keyword">if</span> ispc
+0560     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0561 <span class="keyword">else</span>
+0562     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0563 <span class="keyword">end</span>
+0564 
+0565 
+0566 <span class="comment">% --- Executes on selection change in selectionChannel.</span>
+0567 <a name="_sub35" href="#_subfunctions" class="code">function selectionChannel_Callback(hObject, eventdata, handles)</a>
+0568     <a href="../../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0569 
+0570 
+0571 <span class="comment">% --- Executes on button press in zeroRotation.</span>
+0572 <a name="_sub36" href="#_subfunctions" class="code">function zeroRotation_Callback(hObject, eventdata, handles)</a>
+0573 <span class="comment">%    set(hObject, 'Enable', 'off');</span>
+0574     <a href="#_sub33" class="code" title="subfunction saveCurrentSettings">saveCurrentSettings</a>;
+0575     <span class="keyword">global</span> state
+0576     state.acq.scanRotation = 0;
+0577     <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.scanRotation'</span>);
+0578     <span class="keyword">try</span>
+0579         <a href="#_sub37" class="code" title="subfunction handleScanChange        ">handleScanChange</a>;
+0580     <span class="keyword">catch</span>
+0581         disp([<span class="string">'*** ERROR in handleScanChange: '</span> lasterr]);
+0582     <span class="keyword">end</span>
+0583     set(hObject, <span class="string">'Enable'</span>, <span class="string">'on'</span>);
+0584 
+0585 <a name="_sub37" href="#_subfunctions" class="code">function handleScanChange        </a><span class="comment">% call only routines to rotate output</span>
+0586     <span class="keyword">global</span> state
+0587     state.internal.needNewRotatedMirrorOutput=1;
+0588     <a href="../../../Imaging/io/applyChangesToOutput.html" class="code" title="function applyChangesToOutput(force)">applyChangesToOutput</a>;
+0589 
+0590 <a name="_sub38" href="#_subfunctions" class="code">function autoTrack_Callback(hObject, eventdata, handles)</a>
+0591     <a href="../../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0592 
+0593 <a name="_sub39" href="#_subfunctions" class="code">function setReference_Callback(hObject, eventdata, handles)</a>
+0594     <span class="keyword">global</span> state
+0595     <span class="keyword">if</span> state.internal.status==2 | state.internal.status==3
+0596         disp(<span class="string">'*** STOP IMAGING FIRST ***'</span>);
+0597         <span class="keyword">return</span>
+0598     <span class="keyword">else</span>
+0599         <a href="../../../Imaging/io/scanFieldControl/setTrackerReference.html" class="code" title="function setTrackerReference">setTrackerReference</a>;
+0600     <span class="keyword">end</span>
+0601 
+0602 <a name="_sub40" href="#_subfunctions" class="code">function maxShift_Callback(hObject, eventdata, handles)</a>
+0603     <a href="../../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0604 
+0605 
+0606 <a name="_sub41" href="#_subfunctions" class="code">function trackerChannel_Callback(hObject, eventdata, handles)</a>
+0607     <a href="../../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0608     <a href="../../../Imaging/io/scanFieldControl/updateReferenceImage.html" class="code" title="function updateReferenceImage">updateReferenceImage</a>;
+0609 
+0610 
+0611 <span class="comment">% --- Executes on button press in zoom1.</span>
+0612 <a name="_sub42" href="#_subfunctions" class="code">function zoom1_Callback(hObject, eventdata, handles)</a>
+0613     <a href="#_sub33" class="code" title="subfunction saveCurrentSettings">saveCurrentSettings</a>;
+0614     <span class="keyword">try</span>
+0615         <span class="keyword">global</span> state
+0616         state.acq.zoomFactor=1;
+0617          <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.zoomFactor'</span>);        
+0618         <a href="#_sub37" class="code" title="subfunction handleScanChange        ">handleScanChange</a>;
+0619     <span class="keyword">catch</span>
+0620         disp([<span class="string">'*** ERROR in handleScanChange: '</span> lasterr]);
+0621     <span class="keyword">end</span>
+0622 
+0623 
+0624 <span class="comment">% --- Executes on button press in zoom5.</span>
+0625 <a name="_sub43" href="#_subfunctions" class="code">function zoom5_Callback(hObject, eventdata, handles)</a>
+0626     <a href="#_sub33" class="code" title="subfunction saveCurrentSettings">saveCurrentSettings</a>;
+0627     <span class="keyword">try</span>
+0628         <span class="keyword">global</span> state
+0629         state.acq.zoomFactor=5;
+0630           <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.zoomFactor'</span>);        
+0631           <a href="#_sub37" class="code" title="subfunction handleScanChange        ">handleScanChange</a>;
+0632     <span class="keyword">catch</span>
+0633         disp([<span class="string">'*** ERROR in handleScanChange: '</span> lasterr]);
+0634     <span class="keyword">end</span>
+0635 
+0636 
+0637 <span class="comment">% --- Executes on button press in zoom10.</span>
+0638 <a name="_sub44" href="#_subfunctions" class="code">function zoom10_Callback(hObject, eventdata, handles)</a>
+0639     <a href="#_sub33" class="code" title="subfunction saveCurrentSettings">saveCurrentSettings</a>;
+0640     <span class="keyword">try</span>
+0641         <span class="keyword">global</span> state
+0642         state.acq.zoomFactor=10;
+0643          <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.zoomFactor'</span>);        
+0644          <a href="#_sub37" class="code" title="subfunction handleScanChange        ">handleScanChange</a>;
+0645     <span class="keyword">catch</span>
+0646         disp([<span class="string">'*** ERROR in handleScanChange: '</span> lasterr]);
+0647     <span class="keyword">end</span>
+0648 
+0649 
+0650 <span class="comment">% --- Executes on button press in zoom30.</span>
+0651 <a name="_sub45" href="#_subfunctions" class="code">function zoom30_Callback(hObject, eventdata, handles)</a>
+0652     <a href="#_sub33" class="code" title="subfunction saveCurrentSettings">saveCurrentSettings</a>;
+0653     <span class="keyword">try</span>
+0654         <span class="keyword">global</span> state
+0655         state.acq.zoomFactor=30;
+0656         <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.zoomFactor'</span>);        
+0657         <a href="#_sub37" class="code" title="subfunction handleScanChange        ">handleScanChange</a>;
+0658     <span class="keyword">catch</span>
+0659         disp([<span class="string">'*** ERROR in handleScanChange: '</span> lasterr]);
+0660     <span class="keyword">end</span>
+0661 
+0662 
+0663 <span class="comment">% --- Executes on button press in zoom35.</span>
+0664 <a name="_sub46" href="#_subfunctions" class="code">function zoom35_Callback(hObject, eventdata, handles)</a>
+0665     <a href="#_sub33" class="code" title="subfunction saveCurrentSettings">saveCurrentSettings</a>;
+0666     <span class="keyword">try</span>
+0667         <span class="keyword">global</span> state
+0668         state.acq.zoomFactor=35;
+0669         <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.zoomFactor'</span>);        
+0670         <a href="#_sub37" class="code" title="subfunction handleScanChange        ">handleScanChange</a>;
+0671     <span class="keyword">catch</span>
+0672         disp([<span class="string">'*** ERROR in handleScanChange: '</span> lasterr]);
+0673     <span class="keyword">end</span>
+0674 
+0675 
+0676 
+0677 
+0678 <a name="_sub47" href="#_subfunctions" class="code">function sliceShift_Callback(hObject, eventdata, handles)</a>
+0679 <span class="comment">% hObject    handle to sliceShift (see GCBO)</span>
+0680 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0681 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0682 
+0683 <span class="comment">% Hints: get(hObject,'String') returns contents of sliceShift as text</span>
+0684 <span class="comment">%        str2double(get(hObject,'String')) returns contents of sliceShift as a double</span>
+0685 
+0686 
+0687 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0688 <a name="_sub48" href="#_subfunctions" class="code">function sliceShift_CreateFcn(hObject, eventdata, handles)</a>
+0689 <span class="comment">% hObject    handle to sliceShift (see GCBO)</span>
+0690 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0691 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0692 
+0693 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0694 <span class="comment">%       See ISPC and COMPUTER.</span>
+0695 <span class="keyword">if</span> ispc &amp;&amp; isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+0696     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0697 <span class="keyword">end</span>
+0698 
+0699 
+0700 
+0701 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0702 <a name="_sub49" href="#_subfunctions" class="code">function piezoZslider_CreateFcn(hObject, eventdata, handles)</a>
+0703 <span class="comment">% hObject    handle to piezoZslider (see GCBO)</span>
+0704 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0705 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0706 
+0707 <span class="comment">% Hint: slider controls usually have a light gray background.</span>
+0708 <span class="keyword">if</span> isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+0709     set(hObject,<span class="string">'BackgroundColor'</span>,[.9 .9 .9]);
+0710 <span class="keyword">end</span>
+0711 
+0712 
+0713 <a name="_sub50" href="#_subfunctions" class="code">function piezoZ_Callback(hObject, eventdata, handles)</a>
+0714 <span class="comment">% hObject    handle to piezoZ (see GCBO)</span>
+0715 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0716 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0717 
+0718 <span class="comment">% Hints: get(hObject,'String') returns contents of piezoZ as text</span>
+0719 <span class="comment">%        str2double(get(hObject,'String')) returns contents of piezoZ as a double</span>
+0720     <a href="../../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0721     <span class="keyword">global</span> state
+0722     set(hObject, <span class="string">'Enable'</span>, <span class="string">'off'</span>);
+0723     <span class="keyword">if</span> state.piezo.usePiezo
+0724         <a href="../../../Imaging/io/Piezo/piezoUpdatePosition.html" class="code" title="function piezoUpdatePosition()">piezoUpdatePosition</a>;
+0725     <span class="keyword">end</span>;
+0726     set(hObject, <span class="string">'Enable'</span>, <span class="string">'on'</span>);
+0727 
+0728 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0729 <a name="_sub51" href="#_subfunctions" class="code">function piezoZ_CreateFcn(hObject, eventdata, handles)</a>
+0730 <span class="comment">% hObject    handle to piezoZ (see GCBO)</span>
+0731 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0732 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0733 
+0734 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0735 <span class="comment">%       See ISPC and COMPUTER.</span>
+0736 <span class="keyword">if</span> ispc &amp;&amp; isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+0737     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0738 <span class="keyword">end</span>
+0739 
+0740 
+0741 
+0742 
+0743 
+0744 <a name="_sub52" href="#_subfunctions" class="code">function mirrorLag_Callback(hObject, eventdata, handles)</a>
+0745 <span class="comment">% hObject    handle to mirrorLag (see GCBO)</span>
+0746 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0747 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0748 
+0749 <span class="comment">% Hints: get(hObject,'String') returns contents of mirrorLag as text</span>
+0750 <span class="comment">%        str2double(get(hObject,'String')) returns contents of mirrorLag as a double</span>
+0751     <a href="../../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0752     <a href="../../../Imaging/guis/gui_callbacks/setAcquisitionParameters.html" class="code" title="function setAcquisitionParameters">setAcquisitionParameters</a>
+0753 
+0754 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0755 <a name="_sub53" href="#_subfunctions" class="code">function mirrorLag_CreateFcn(hObject, eventdata, handles)</a>
+0756 <span class="comment">% hObject    handle to mirrorLag (see GCBO)</span>
+0757 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0758 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0759 
+0760 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0761 <span class="comment">%       See ISPC and COMPUTER.</span>
+0762 <span class="keyword">if</span> ispc &amp;&amp; isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+0763     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0764 <span class="keyword">end</span>
+0765 
+0766 
+0767 <span class="comment">% --- Executes on slider movement.</span>
+0768 <a name="_sub54" href="#_subfunctions" class="code">function mirrorLagSlider_Callback(hObject, eventdata, handles)</a>
+0769 <span class="comment">% hObject    handle to mirrorLagSlider (see GCBO)</span>
+0770 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0771 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0772 
+0773 <span class="comment">% Hints: get(hObject,'Value') returns position of slider</span>
+0774 <span class="comment">%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider</span>
+0775     <a href="../../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0776     <a href="../../../Imaging/guis/gui_callbacks/setAcquisitionParameters.html" class="code" title="function setAcquisitionParameters">setAcquisitionParameters</a>
+0777 
+0778 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0779 <a name="_sub55" href="#_subfunctions" class="code">function mirrorLagSlider_CreateFcn(hObject, eventdata, handles)</a>
+0780 <span class="comment">% hObject    handle to mirrorLagSlider (see GCBO)</span>
+0781 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0782 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0783 
+0784 <span class="comment">% Hint: slider controls usually have a light gray background.</span>
+0785 <span class="keyword">if</span> isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+0786     set(hObject,<span class="string">'BackgroundColor'</span>,[.9 .9 .9]);
+0787 <span class="keyword">end</span>
+0788 
+0789 
+0790 <span class="comment">% --- Executes on button press in rotateTo90.</span>
+0791 <a name="_sub56" href="#_subfunctions" class="code">function rotateTo90_Callback(hObject, eventdata, handles)</a>
+0792 <span class="comment">% hObject    handle to rotateTo90 (see GCBO)</span>
+0793 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0794 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0795     <a href="#_sub33" class="code" title="subfunction saveCurrentSettings">saveCurrentSettings</a>;
+0796     <span class="keyword">global</span> state
+0797     state.acq.scanRotation = 90;
+0798     <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.scanRotation'</span>);
+0799     <span class="keyword">try</span>
+0800         <a href="#_sub37" class="code" title="subfunction handleScanChange        ">handleScanChange</a>;
+0801     <span class="keyword">catch</span>
+0802         disp([<span class="string">'*** ERROR in handleScanChange: '</span> lasterr]);
+0803     <span class="keyword">end</span>
+0804 
+0805</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

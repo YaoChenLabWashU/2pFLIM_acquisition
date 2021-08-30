@@ -1,0 +1,23 @@
+function undoMotorAction(position)
+	global state
+
+    switch state.motor.lastAction
+        case 0
+          
+        case 1
+        
+            
+        case 2
+            
+        c
+
+
+
+	% state.motor.lastAction : 0, 1==define, 2==shiftXY, 3=shiftXYZ
+	% state.motor.oldParams={lastStagePositionNumber, values}
+	%		values	= last XYZ coords, if lastAction=1
+	%				= XY shift, if lastAction=2
+	%				= XYZ shift, if lastAction=3
+
+	
+	

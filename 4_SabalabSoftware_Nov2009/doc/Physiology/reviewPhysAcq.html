@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of reviewPhysAcq</title>
+  <meta name="keywords" content="reviewPhysAcq">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">Physiology</a> &gt; reviewPhysAcq.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Physiology&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>reviewPhysAcq
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function reviewPhysAcq(n) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="physTraceName.html" class="code" title="function out=physTraceName(channel, counter)">physTraceName</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="../Physiology/guis/physcontrols.html" class="code" title="function varargout = physcontrols(varargin)">physcontrols</a>	PHYSCONTROLS Application M-file for physControls.fig</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function reviewPhysAcq(n)</a>
+0002 
+0003     <span class="keyword">global</span> state
+0004     
+0005     <span class="keyword">if</span> nargin&lt;1
+0006         n=state.files.reviewCounter;
+0007     <span class="keyword">end</span>
+0008     
+0009     <span class="keyword">if</span> isempty(state.files.savePath)
+0010         disp(<span class="string">'*** reviewPhysAcq : No data save path set'</span>);
+0011         setStatusString(<span class="string">'SET SAVE PATH'</span>);
+0012         
+0013         <span class="keyword">return</span>;
+0014     <span class="keyword">end</span>
+0015     found=0;
+0016     
+0017     <span class="keyword">for</span> counter=0:7
+0018         <span class="keyword">try</span>
+0019             <span class="keyword">if</span> getfield(state.phys.settings, [<span class="string">'acq'</span> num2str(counter)])
+0020                 traceName=<a href="physTraceName.html" class="code" title="function out=physTraceName(channel, counter)">physTraceName</a>(counter,n);
+0021                 foundFile=retreive(traceName, state.files.savePath);
+0022                 
+0023                 <span class="keyword">if</span> foundFile
+0024                     <span class="keyword">if</span> evalin(<span class="string">'base'</span>, [<span class="string">'iswave('</span> traceName <span class="string">')'</span>])
+0025                         duplicateo(traceName, [<span class="string">'dataWave'</span> num2str(counter)]);
+0026                         found=1;
+0027                     <span class="keyword">elseif</span> evalin(<span class="string">'base'</span>, [<span class="string">'isstruct('</span> traceName <span class="string">')'</span>])
+0028                         waveStruct=[];
+0029                         waveStruct=setfield(waveStruct, traceName, evalin(<span class="string">'base'</span>, traceName));
+0030                         evalin(<span class="string">'base'</span>, [<span class="string">'clear '</span> traceName]);
+0031                         loadWaveFromStructureo(waveStruct, traceName);
+0032                         duplicateo(traceName, [<span class="string">'dataWave'</span> num2str(counter)]);
+0033                         found=1;
+0034                     <span class="keyword">else</span>
+0035                         disp(<span class="string">'*** reviewPhysAcq : found file but does not contain wave or readable struct ***'</span>);
+0036                     <span class="keyword">end</span>
+0037                 <span class="keyword">else</span>
+0038                     waveo([<span class="string">'dataWave'</span> num2str(counter)], []);
+0039                 <span class="keyword">end</span>
+0040             <span class="keyword">end</span>
+0041         <span class="keyword">catch</span>
+0042         <span class="keyword">end</span>
+0043     <span class="keyword">end</span>
+0044     
+0045     <span class="keyword">if</span> ~found
+0046         disp([<span class="string">'*** reviewPhysAcq: no files found for acq #'</span> num2str(n) <span class="string">' in '</span> state.files.savePath]);
+0047     <span class="keyword">end</span>
+0048</pre></div>
+<hr><address>Generated on Fri 17-Aug-2012 10:39:43 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

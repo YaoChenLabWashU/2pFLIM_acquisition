@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of setupImagingCyclePosition</title>
+  <meta name="keywords" content="setupImagingCyclePosition">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Imaging</a> &gt; <a href="index.html">io</a> &gt; setupImagingCyclePosition.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\io&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>setupImagingCyclePosition
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function setupImagingCyclePosition </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>	given the name of a global variable, find and update the GUI that contains it</li><li><a href="../../Imaging/io/ad_da/preallocateMemory.html" class="code" title="function preallocateMemory">preallocateMemory</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../Timer/applyAdvancedCyclePosition.html" class="code" title="function applyAdvancedCyclePosition(position)">applyAdvancedCyclePosition</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function setupImagingCyclePosition</a>
+0002     <span class="keyword">global</span> state
+0003     <span class="keyword">global</span> gh
+0004     
+0005     redo=0;
+0006     needToAllocate=0;
+0007     
+0008     state.acq.zStepSize = state.cycle.zStepSizeList(state.cycle.currentCyclePosition);
+0009     <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.zStepSize'</span>);
+0010     
+0011     <span class="keyword">if</span> state.acq.autoTrack ~= state.cycle.trackerList(state.cycle.currentCyclePosition)
+0012         state.acq.autoTrack=state.cycle.trackerList(state.cycle.currentCyclePosition);
+0013         <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.autoTrack'</span>);
+0014     <span class="keyword">end</span>
+0015         
+0016     <span class="keyword">if</span> state.cycle.blasterList(state.cycle.currentCyclePosition)&gt;0
+0017         <span class="keyword">if</span> ~state.blaster.active
+0018             state.blaster.active=1;
+0019             <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.blaster.active'</span>);
+0020             <span class="keyword">if</span> state.blaster.blankImaging
+0021                 state.internal.needNewPcellPowerOutput=1;
+0022             <span class="keyword">end</span>    
+0023             redo=1;
+0024         <span class="keyword">end</span>
+0025         <span class="keyword">if</span> state.blaster.currentConfig ~= state.cycle.blasterList(state.cycle.currentCyclePosition)
+0026             redo=1;
+0027             c=get(gh.blaster.Config, <span class="string">'Children'</span>);
+0028             set(c, <span class="string">'Checked'</span>, <span class="string">'off'</span>);
+0029             f=find(strcmp(get(c, <span class="string">'Label'</span>), [num2str(state.cycle.blasterList(state.cycle.currentCyclePosition))<span class="keyword">...</span>
+0030                     <span class="string">' '</span> state.blaster.allConfigs{state.cycle.blasterList(state.cycle.currentCyclePosition),1}]));
+0031             <span class="keyword">if</span> ~isempty(f)
+0032                 set(c(f(1)), <span class="string">'Checked'</span>, <span class="string">'on'</span>);
+0033             <span class="keyword">end</span>
+0034         <span class="keyword">end</span>
+0035     <span class="keyword">elseif</span> state.blaster.active
+0036         state.blaster.active=0;
+0037         <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.blaster.active'</span>);
+0038         <span class="keyword">if</span> state.blaster.blankImaging
+0039             state.internal.needNewPcellPowerOutput=1;
+0040         <span class="keyword">end</span>    
+0041         redo=1;
+0042     <span class="keyword">end</span>
+0043     state.blaster.currentConfig = state.cycle.blasterList(state.cycle.currentCyclePosition);
+0044         
+0045     <span class="comment">%% Added by TN Apr 01 2005</span>
+0046     <span class="keyword">try</span>
+0047         <span class="keyword">if</span> state.cycle.scanSetupList(state.cycle.currentCyclePosition) ~= 0 
+0048             <span class="keyword">if</span> state.acq.zoomFactor~=state.cycle.scanSetupList(state.cycle.currentCyclePosition);
+0049                 state.acq.zoomFactor=state.cycle.scanSetupList(state.cycle.currentCyclePosition);
+0050                 <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.zoomFactor'</span>);
+0051                 state.internal.needNewRotatedMirrorOutput=1;
+0052             <span class="keyword">end</span>
+0053             <span class="comment">%    restoreScan(state.cycle.scanSetupList(state.cycle.currentCyclePosition));</span>
+0054         <span class="keyword">end</span>
+0055     <span class="keyword">catch</span>
+0056         disp([<span class="string">'ERROR '</span> lasterr]);
+0057     <span class="keyword">end</span>
+0058     <span class="comment">%% End TN Apr 01 2005</span>
+0059     
+0060     <span class="keyword">if</span> state.acq.lineScan ~= state.cycle.linescanList(state.cycle.currentCyclePosition)
+0061         state.acq.lineScan = state.cycle.linescanList(state.cycle.currentCyclePosition);
+0062         state.internal.needNewRotatedMirrorOutput=1;
+0063         <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.lineScan'</span>);
+0064         redo=1;
+0065     <span class="keyword">end</span>
+0066     
+0067     <span class="keyword">if</span> state.acq.numberOfZSlices ~= state.cycle.numberOfZSlicesList(state.cycle.currentCyclePosition)
+0068         state.acq.numberOfZSlices = state.cycle.numberOfZSlicesList(state.cycle.currentCyclePosition);
+0069         <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.numberOfZSlices'</span>);
+0070         needToAllocate=1;
+0071     <span class="keyword">end</span>
+0072     
+0073     <span class="keyword">global</span> grabInput
+0074     <span class="keyword">if</span> state.acq.numberOfFrames ~= state.cycle.framesList(state.cycle.currentCyclePosition)
+0075         state.acq.numberOfFrames = state.cycle.framesList(state.cycle.currentCyclePosition);
+0076         <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.numberOfFrames'</span>);
+0077         set(grabInput, <span class="string">'SamplesPerTrigger'</span>, state.internal.samplesPerFrame*state.acq.numberOfFrames);
+0078         needToAllocate=1;
+0079         redo=1;
+0080     <span class="keyword">end</span>
+0081     
+0082     <span class="keyword">if</span> state.acq.averaging~=state.cycle.avgFramesList(state.cycle.currentCyclePosition)
+0083         state.acq.averaging=state.cycle.avgFramesList(state.cycle.currentCyclePosition);
+0084         <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.averaging'</span>);
+0085         needToAllocate=1;
+0086     <span class="keyword">end</span>
+0087 
+0088     <span class="keyword">if</span> needToAllocate
+0089         <a href="../../Imaging/io/ad_da/preallocateMemory.html" class="code" title="function preallocateMemory">preallocateMemory</a>;
+0090     <span class="keyword">end</span>
+0091 
+0092     <span class="keyword">if</span> redo
+0093         state.internal.needNewRepeatedMirrorOutput=1;
+0094         state.internal.needNewPcellRepeatedOutput=1;
+0095     <span class="keyword">end</span>
+0096     
+0097 
+0098 
+0099     
+0100</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

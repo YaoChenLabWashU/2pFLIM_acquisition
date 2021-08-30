@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of updateSavedScans</title>
+  <meta name="keywords" content="updateSavedScans">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Imaging</a> &gt; <a href="../index.html">io</a> &gt; <a href="index.html">scanFieldControl</a> &gt; updateSavedScans.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\io\scanFieldControl&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>updateSavedScans
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function updateSavedScans(shift, scanCounter) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function updateSavedScans(shift, scanCounter)</a>
+0002     <span class="keyword">global</span> state
+0003 
+0004  
+0005             zoomFactor = state.internal.saveScanInfo(scanCounter, 1);
+0006             scanRotation  = state.internal.saveScanInfo(scanCounter, 2);
+0007             postRotOffsetX = state.internal.saveScanInfo(scanCounter, 3);
+0008             postRotOffsetY  = state.internal.saveScanInfo(scanCounter, 4);
+0009             trackerX0 = state.internal.saveScanInfo(scanCounter, 5);
+0010             trackerY0 = state.internal.saveScanInfo(scanCounter, 6);
+0011             scanShiftX = state.internal.saveScanInfo(scanCounter, 7);
+0012             scanShiftY = state.internal.saveScanInfo(scanCounter, 8);
+0013             pixelShiftX = state.internal.saveScanInfo(scanCounter, 9);
+0014             pixelShiftY = state.internal.saveScanInfo(scanCounter, 10);
+0015             refShiftX = state.internal.saveScanInfo(scanCounter, 11);
+0016             refShiftY = state.internal.saveScanInfo(scanCounter, 12);
+0017             pzPos=state.internal.saveScanInfo(scanCounter, 13);
+0018             relZ=state.internal.saveScanInfo(scanCounter, 14);
+0019             
+0020             pixelShiftY=shift(1)-trackerY0+1;
+0021             pixelShiftX=shift(2)-trackerX0+1;
+0022             
+0023             DscanShiftX=2*state.acq.scanAmplitudeX*(pixelShiftX/state.acq.pixelsPerLine)/zoomFactor;
+0024             DscanShiftY=2*state.acq.scanAmplitudeY*(pixelShiftY/state.acq.linesPerFrame)/zoomFactor;
+0025 
+0026             c = cos(scanRotation*pi/180);
+0027             s = sin(scanRotation*pi/180);
+0028             scanShiftX =  c * DscanShiftX + s * DscanShiftY;
+0029             scanShiftY = -s * DscanShiftX + c * DscanShiftY;                
+0030 
+0031             postRotOffsetX=postRotOffsetX+scanShiftX;
+0032             postRotOffsetY=postRotOffsetY+scanShiftY;        
+0033 
+0034             refShiftX = refShiftX + scanShiftX;
+0035             refShiftY = refShiftY + scanShiftY;
+0036             state.internal.needNewRotatedMirrorOutput=1;
+0037             state.internal.needNewPcellRepeatedOutput=1;
+0038             
+0039             relevantInfo=[<span class="keyword">...</span>
+0040                 zoomFactor <span class="keyword">...</span>
+0041                 scanRotation <span class="keyword">...</span>
+0042                 postRotOffsetX <span class="keyword">...</span>
+0043                 postRotOffsetY<span class="keyword">...</span>
+0044                 trackerX0 <span class="keyword">...</span>
+0045                 trackerY0 <span class="keyword">...</span>
+0046                 scanShiftX <span class="keyword">...</span>
+0047                 scanShiftY <span class="keyword">...</span>
+0048                 pixelShiftX <span class="keyword">...</span>
+0049                 pixelShiftY <span class="keyword">...</span>
+0050                 refShiftX <span class="keyword">...</span>
+0051                 refShiftY <span class="keyword">...</span>
+0052                 pzPos <span class="keyword">...</span>
+0053                 relZ <span class="keyword">...</span>
+0054             ];
+0055 
+0056             state.internal.saveScanInfo(scanCounter, :)=relevantInfo;        
+0057 
+0058     <span class="comment">%catch</span>
+0059     <span class="comment">%    disp 'Error in updateSavedScans'</span>
+0060     <span class="comment">%end</span></pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

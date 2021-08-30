@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of updateBlasterConfigLineDisplay</title>
+  <meta name="keywords" content="updateBlasterConfigLineDisplay">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Imaging</a> &gt; <a href="index.html">blaster</a> &gt; updateBlasterConfigLineDisplay.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\blaster&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>updateBlasterConfigLineDisplay
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function updateBlasterConfigLineDisplay </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>	given the name of a global variable, find and update the GUI that contains it</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="blaster.html" class="code" title="function varargout = blaster(varargin)">blaster</a>	BLASTER M-file for blaster.fig</li><li><a href="updateBlasterConfigDisplay.html" class="code" title="function updateBlasterConfigDisplay">updateBlasterConfigDisplay</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function updateBlasterConfigLineDisplay</a>
+0002     <span class="keyword">global</span> state
+0003     state.blaster.linePos=state.blaster.allConfigs{state.blaster.displayConfig, 2}(state.blaster.line, 1);
+0004     state.blaster.linePat=state.blaster.allConfigs{state.blaster.displayConfig, 2}(state.blaster.line, 2);
+0005     state.blaster.lineWidth=state.blaster.allConfigs{state.blaster.displayConfig, 2}(state.blaster.line, 3);
+0006     state.blaster.linePower1=state.blaster.allConfigs{state.blaster.displayConfig, 2}(state.blaster.line, 4);
+0007     state.blaster.linePower2=state.blaster.allConfigs{state.blaster.displayConfig, 2}(state.blaster.line, 5);
+0008     <span class="keyword">try</span>
+0009         state.blaster.lineTilerActive=state.blaster.allConfigs{state.blaster.displayConfig, 2}(state.blaster.line, 6);
+0010     <span class="keyword">catch</span>
+0011         disp([<span class="string">'**** Incorrect blasterline format; using default: tiler off'</span>]);
+0012         state.blaster.lineTilerActive=0;
+0013     <span class="keyword">end</span>
+0014     <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.blaster.linePos'</span>);
+0015     <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.blaster.linePat'</span>);
+0016     <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.blaster.lineWidth'</span>);
+0017     <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.blaster.linePower1'</span>);
+0018     <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.blaster.linePower2'</span>);
+0019     <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.blaster.lineTilerActive'</span>);
+0020</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

@@ -1,0 +1,225 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of runFluorAnalysis</title>
+  <meta name="keywords" content="runFluorAnalysis">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Imaging</a> &gt; <a href="index.html">FluoProcessing</a> &gt; runFluorAnalysis.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\FluoProcessing&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>runFluorAnalysis
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function runFluorAnalysis(acqNumber) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="ROIScanName.html" class="code" title="function out=ROIScanName(channel, roi, acq)">ROIScanName</a>	</li><li><a href="avginROIScans.html" class="code" title="function avginROIScans(acqNumber, channels, rois)">avginROIScans</a>	</li><li><a href="runFrameAnalysis.html" class="code" title="function founderr=runFrameAnalysis">runFrameAnalysis</a>	</li><li><a href="runLineScanAnalysis.html" class="code" title="function founderr=runLineScanAnalysis">runLineScanAnalysis</a>	</li><li><a href="saveROIScans.html" class="code" title="function saveROIScans(acqNumber, channels, rois)">saveROIScans</a>	</li><li><a href="../../Timer/runTraceAnalyzer.html" class="code" title="function runTraceAnalyzer(phys)">runTraceAnalyzer</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="fluorAnalysisSettings.html" class="code" title="function varargout = fluorAnalysisSettings(varargin)">fluorAnalysisSettings</a>	FLUORANALYSISSETTINGS M-file for fluorAnalysisSettings.fig</li><li><a href="../../Imaging/timerFunctions/timerProcess_Imaging.html" class="code" title="function timerProcess_Imaging">timerProcess_Imaging</a>	</li><li><a href="../../Timer/traceAnalyzer.html" class="code" title="function varargout = traceAnalyzer(varargin)">traceAnalyzer</a>	TRACEANALYZER M-file for traceAnalyzer.fig</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function runFluorAnalysis(acqNumber)</a>
+0002     <span class="keyword">global</span> state
+0003     <span class="keyword">if</span> nargin&lt;1
+0004         acqNumber=[];
+0005     <span class="keyword">end</span>
+0006     
+0007     <span class="keyword">if</span> state.analysis.analysisMode==1
+0008         <span class="comment">% analysis is off</span>
+0009         <span class="keyword">return</span>
+0010     <span class="keyword">elseif</span> (state.analysis.analysisMode==2) || ((state.analysis.analysisMode==4) &amp;&amp; state.acq.lineScan)
+0011         <span class="comment">% linescan analysis or automatic</span>
+0012         lineScanAnalysis=1;    <span class="comment">% line scan</span>
+0013         <span class="keyword">if</span> state.acq.lineScan 
+0014             founderr=<a href="runLineScanAnalysis.html" class="code" title="function founderr=runLineScanAnalysis">runLineScanAnalysis</a>;
+0015         <span class="keyword">else</span>
+0016             disp(<span class="string">'*** runFluorAnalysis : data is 2d.  Skipping line scan analysis'</span>);
+0017             <span class="keyword">return</span>
+0018         <span class="keyword">end</span>
+0019     <span class="keyword">elseif</span> (state.analysis.analysisMode==3) || ((state.analysis.analysisMode==4) &amp;&amp; ~state.acq.lineScan)
+0020         lineScanAnalysis=0; <span class="comment">% frame scan</span>
+0021         <span class="keyword">if</span> ~state.acq.lineScan 
+0022             founderr=<a href="runFrameAnalysis.html" class="code" title="function founderr=runFrameAnalysis">runFrameAnalysis</a>;
+0023         <span class="keyword">else</span>
+0024             disp(<span class="string">'*** runFluorAnalysis : data is 1d.  Skipping frame analysis'</span>);
+0025             <span class="keyword">return</span>
+0026         <span class="keyword">end</span>    
+0027     <span class="keyword">end</span>
+0028         
+0029     <span class="keyword">if</span> founderr
+0030         <span class="keyword">return</span>
+0031     <span class="keyword">end</span>
+0032     
+0033     <span class="comment">% calculate baselines and means</span>
+0034     state.analysis.roiBaseline=cell(1, state.init.maximumNumberOfInputChannels+10);
+0035     state.analysis.roiMean=cell(1, state.init.maximumNumberOfInputChannels+10);
+0036     state.analysis.roiPeak=cell(1, state.init.maximumNumberOfInputChannels+10);
+0037 
+0038     baseLineStartPoint = round(1 + state.analysis.flBaseLineStart/state.analysis.deltax);
+0039     baseLineEndPoint = round(1 + state.analysis.flBaseLineEnd/state.analysis.deltax);
+0040     
+0041     <span class="keyword">for</span> channel=state.analysis.analyzedChannels
+0042         <span class="keyword">if</span> lineScanAnalysis
+0043             nROI=min(size(state.analysis.roiDefs, 1), state.analysis.numberOfROI);
+0044         <span class="keyword">else</span>
+0045             nROI=min(size(state.analysis.roiDefs2D, 1), state.analysis.numberOfROI);
+0046         <span class="keyword">end</span>
+0047         
+0048         <span class="keyword">for</span> roiCounter=1:nROI
+0049             <span class="keyword">if</span> state.analysis.flBaseLineEnd &lt; 1
+0050                 baseLineEndPoint = size(state.analysis.roiFluorData{channel},2);
+0051             <span class="keyword">end</span>
+0052             
+0053             state.analysis.roiBaseline{channel} = mean(<span class="keyword">...</span>
+0054                 state.analysis.roiFluorData{channel}(:, baseLineStartPoint:baseLineEndPoint), <span class="keyword">...</span>
+0055                 2);
+0056             state.analysis.roiMean{channel} = mean(<span class="keyword">...</span>
+0057                 state.analysis.roiFluorData{channel}, <span class="keyword">...</span>
+0058                 2);
+0059             
+0060             <span class="comment">% store baselines, means in waves</span>
+0061             <span class="keyword">if</span> ~isempty(acqNumber)
+0062                 <span class="keyword">for</span> roiCounter=1:length(state.analysis.roiBaseline{channel})
+0063                     <span class="keyword">if</span> ~iswave([<a href="ROIScanName.html" class="code" title="function out=ROIScanName(channel, roi, acq)">ROIScanName</a>(channel, roiCounter) <span class="string">'_f0'</span>])
+0064                         wave([<a href="ROIScanName.html" class="code" title="function out=ROIScanName(channel, roi, acq)">ROIScanName</a>(channel, roiCounter) <span class="string">'_f0'</span>], 0, <span class="string">'xscale'</span>, [1 1]);
+0065                     <span class="keyword">end</span>
+0066                     eval([<span class="string">'global '</span> <a href="ROIScanName.html" class="code" title="function out=ROIScanName(channel, roi, acq)">ROIScanName</a>(channel, roiCounter) <span class="string">'_f0'</span>]);
+0067                     eval([<a href="ROIScanName.html" class="code" title="function out=ROIScanName(channel, roi, acq)">ROIScanName</a>(channel, roiCounter) <span class="string">'_f0(acqNumber)=state.analysis.roiBaseline{channel}(roiCounter);'</span>]);
+0068                     
+0069                     <span class="keyword">if</span> ~iswave([<a href="ROIScanName.html" class="code" title="function out=ROIScanName(channel, roi, acq)">ROIScanName</a>(channel, roiCounter) <span class="string">'_favg'</span>])
+0070                         wave([<a href="ROIScanName.html" class="code" title="function out=ROIScanName(channel, roi, acq)">ROIScanName</a>(channel, roiCounter) <span class="string">'_favg'</span>], 0, <span class="string">'xscale'</span>, [1 1]);
+0071                     <span class="keyword">end</span>
+0072                     eval([<span class="string">'global '</span> <a href="ROIScanName.html" class="code" title="function out=ROIScanName(channel, roi, acq)">ROIScanName</a>(channel, roiCounter) <span class="string">'_favg'</span>]);
+0073                     eval([<a href="ROIScanName.html" class="code" title="function out=ROIScanName(channel, roi, acq)">ROIScanName</a>(channel, roiCounter) <span class="string">'_favg(acqNumber)=state.analysis.roiMean{channel}(roiCounter);'</span>]);
+0074                 <span class="keyword">end</span>
+0075             <span class="keyword">end</span>
+0076         <span class="keyword">end</span>
+0077     <span class="keyword">end</span>        
+0078     
+0079     <span class="comment">%     do ratioing</span>
+0080     <span class="keyword">for</span> channel=state.analysis.analyzedChannels
+0081         ratioMode=getfield(state.analysis, [<span class="string">'ratioMode'</span> num2str(channel)]);
+0082         ratioChannel=mod(ratioMode, 4);
+0083         <span class="keyword">if</span> ratioChannel==0
+0084             ratioChannel=4;
+0085         <span class="keyword">end</span>
+0086         <span class="keyword">if</span> (ratioMode~=13) &amp;&amp; ~getfield(state.analysis, [<span class="string">'anaChannel'</span> num2str(ratioChannel)])
+0087             disp([<span class="string">'ERROR: Inactive channel (#'</span> num2str(ratioChannel) <span class="string">') is selected for ratioing'</span>]);
+0088             disp([<span class="string">'       Data was not ratioed'</span>]);
+0089         <span class="keyword">else</span>
+0090             <span class="keyword">if</span> ratioMode&lt;=4
+0091                 <span class="comment">% normalize to baseline data</span>
+0092                 state.analysis.roiFluorData{channel} = state.analysis.roiFluorData{channel}./<span class="keyword">...</span>
+0093                     repmat(state.analysis.roiBaseline{ratioChannel}, 1, size(state.analysis.roiFluorData{channel},2));
+0094             <span class="keyword">elseif</span> ratioMode&lt;=8
+0095                 <span class="comment">% normalize to channel point by point</span>
+0096                 state.analysis.roiFluorData{channel} = state.analysis.roiFluorData{counter}./<span class="keyword">...</span>
+0097                     state.analysis.roiFluorData{ratioChannel};
+0098                 
+0099             <span class="keyword">elseif</span> ratioMode&lt;=12
+0100                 <span class="comment">% normalize to the channel mean</span>
+0101                 state.analysis.roiFluorData{channel} = state.analysis.roiFluorData{channel}./<span class="keyword">...</span>
+0102                     repmat(state.analysis.roiMean{ratioChannel}, 1, size(state.analysis.roiFluorData{channel},2));
+0103             <span class="keyword">end</span>
+0104         <span class="keyword">end</span>
+0105     <span class="keyword">end</span>
+0106 
+0107     <span class="comment">% recalculate baselines post ratioing</span>
+0108     state.analysis.roiBaselineR=cell(1, state.init.maximumNumberOfInputChannels);
+0109     <span class="keyword">for</span> channel=state.analysis.analyzedChannels
+0110         <span class="keyword">for</span> roiCounter=nROI
+0111             <span class="keyword">if</span> getfield(state.analysis, [<span class="string">'ratioMode'</span> num2str(channel)])&lt;=9
+0112                 state.analysis.roiBaselineR{channel} = mean(<span class="keyword">...</span>
+0113                     state.analysis.roiFluorData{channel}(:, baseLineStartPoint:baseLineEndPoint), <span class="keyword">...</span>
+0114                     2);
+0115             <span class="keyword">else</span>
+0116                 state.analysis.roiBaselineR{channel} = state.analysis.roiBaseline{channel};
+0117             <span class="keyword">end</span>
+0118             
+0119             <span class="comment">% store baselines, means, and peaks in waves</span>
+0120             <span class="keyword">if</span> ~isempty(acqNumber)
+0121                 <span class="keyword">for</span> roiCounter=1:length(state.analysis.roiBaseline{channel})
+0122                     <span class="keyword">if</span> ~iswave([<a href="ROIScanName.html" class="code" title="function out=ROIScanName(channel, roi, acq)">ROIScanName</a>(channel, roiCounter) <span class="string">'_rf0'</span>])
+0123                         wave([<a href="ROIScanName.html" class="code" title="function out=ROIScanName(channel, roi, acq)">ROIScanName</a>(channel, roiCounter) <span class="string">'_rf0'</span>], 0, <span class="string">'xscale'</span>, [1 1]);
+0124                     <span class="keyword">end</span>
+0125                     eval([<span class="string">'global '</span> <a href="ROIScanName.html" class="code" title="function out=ROIScanName(channel, roi, acq)">ROIScanName</a>(channel, roiCounter) <span class="string">'_rf0'</span>]);
+0126                     eval([<a href="ROIScanName.html" class="code" title="function out=ROIScanName(channel, roi, acq)">ROIScanName</a>(channel, roiCounter) <span class="string">'_rf0(acqNumber)=state.analysis.roiBaselineR{channel}(roiCounter);'</span>]);
+0127                 <span class="keyword">end</span>
+0128             <span class="keyword">end</span>
+0129         <span class="keyword">end</span>
+0130     <span class="keyword">end</span>
+0131     
+0132     <span class="comment">% produce waves with results</span>
+0133     <span class="keyword">for</span> channel=state.analysis.analyzedChannels
+0134         <span class="keyword">for</span> roiCounter=1:nROI
+0135             <span class="keyword">if</span> iswave(<a href="ROIScanName.html" class="code" title="function out=ROIScanName(channel, roi, acq)">ROIScanName</a>(channel, roiCounter))
+0136                 setWave(<a href="ROIScanName.html" class="code" title="function out=ROIScanName(channel, roi, acq)">ROIScanName</a>(channel, roiCounter), <span class="keyword">...</span>
+0137                     <span class="string">'data'</span>, state.analysis.roiFluorData{channel}(roiCounter, :), <span class="keyword">...</span>
+0138                     <span class="string">'xscale'</span>, [0 state.analysis.deltax]);
+0139             <span class="keyword">else</span>
+0140                 wave(<a href="ROIScanName.html" class="code" title="function out=ROIScanName(channel, roi, acq)">ROIScanName</a>(channel, roiCounter), state.analysis.roiFluorData{channel}(roiCounter, :), <span class="keyword">...</span>
+0141                     <span class="string">'xscale'</span>, [0 state.analysis.deltax]);
+0142             <span class="keyword">end</span>
+0143             <span class="comment">%    setWaveUserDataField(ROIScanName(channel, roiCounter), 'headerString', state.headerString);</span>
+0144             <span class="keyword">if</span> lineScanAnalysis
+0145                 setWaveUserDataField(<a href="ROIScanName.html" class="code" title="function out=ROIScanName(channel, roi, acq)">ROIScanName</a>(channel, roiCounter), <span class="string">'ROIDef'</span>, state.analysis.roiDefs(roiCounter,:));
+0146             <span class="keyword">else</span>
+0147                 setWaveUserDataField(<a href="ROIScanName.html" class="code" title="function out=ROIScanName(channel, roi, acq)">ROIScanName</a>(channel, roiCounter), <span class="string">'ROIDef'</span>, state.analysis.roiDefs2D(roiCounter,:));
+0148             <span class="keyword">end</span>
+0149             
+0150             <span class="keyword">if</span> ~isempty(acqNumber)
+0151                 duplicateo(<a href="ROIScanName.html" class="code" title="function out=ROIScanName(channel, roi, acq)">ROIScanName</a>(channel, roiCounter), <a href="ROIScanName.html" class="code" title="function out=ROIScanName(channel, roi, acq)">ROIScanName</a>(channel, roiCounter, acqNumber));
+0152             <span class="keyword">end</span>
+0153         <span class="keyword">end</span>
+0154     <span class="keyword">end</span>
+0155 
+0156     <a href="avginROIScans.html" class="code" title="function avginROIScans(acqNumber, channels, rois)">avginROIScans</a>(acqNumber);
+0157     <span class="keyword">if</span> state.files.autoSave
+0158         <a href="saveROIScans.html" class="code" title="function saveROIScans(acqNumber, channels, rois)">saveROIScans</a>(acqNumber);
+0159     <span class="keyword">end</span>
+0160     
+0161     <span class="keyword">try</span>
+0162         <span class="keyword">if</span> state.analysis.active
+0163             <a href="../../Timer/runTraceAnalyzer.html" class="code" title="function runTraceAnalyzer(phys)">runTraceAnalyzer</a>(0);
+0164         <span class="keyword">end</span>
+0165     <span class="keyword">catch</span>
+0166         disp([<span class="string">'runFluorAnalysis : '</span> lasterr]);
+0167         disp(<span class="string">'    when doing trace analysis'</span>);
+0168     <span class="keyword">end</span>
+0169     
+0170     <span class="keyword">if</span> ~state.analysis.keepInMemory
+0171          <span class="keyword">for</span> channel=[1:state.init.maximumNumberOfInputChannels 1:state.init.maximumNumberOfInputChannels+10]
+0172             <span class="keyword">for</span> roiCounter=nROI
+0173                 kill(<a href="ROIScanName.html" class="code" title="function out=ROIScanName(channel, roi, acq)">ROIScanName</a>(channel, roiCounter, acqNumber));
+0174             <span class="keyword">end</span>
+0175         <span class="keyword">end</span>
+0176     <span class="keyword">end</span>
+0177     
+0178 <span class="comment">%</span></pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

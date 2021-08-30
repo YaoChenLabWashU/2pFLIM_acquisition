@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of mergesort</title>
+  <meta name="keywords" content="mergesort">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Imaging</a> &gt; <a href="index.html">FluoProcessing</a> &gt; mergesort.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\FluoProcessing&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>mergesort
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [data, index, counter]=mergesort(data1, data2) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="findROI_LineScan.html" class="code" title="function [outx, outy]=findROI_LineScan(lineData, numROI, width, offset, minPeak, minDip)">findROI_LineScan</a>	find ROIs in lineData scanes</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [data, index, counter]=mergesort(data1, data2)</a>
+0002 
+0003 
+0004     done=0;
+0005 
+0006     counter1=1;
+0007     counter2=1;
+0008     
+0009     <span class="keyword">if</span> isempty(data1)
+0010         <span class="keyword">if</span> isempty(data2)
+0011             data=[];
+0012             index=[];
+0013             counter=[];
+0014             <span class="keyword">return</span>
+0015         <span class="keyword">else</span>
+0016             data=data2;
+0017             index=2*ones(1,length(data2));
+0018             counter=1:length(data2);
+0019             <span class="keyword">return</span>
+0020         <span class="keyword">end</span>
+0021     <span class="keyword">elseif</span> isempty(data2)
+0022         data=data1;
+0023         index=1*ones(1,length(data1));
+0024         counter=1:length(data1);
+0025         <span class="keyword">return</span>
+0026     <span class="keyword">end</span>
+0027     
+0028     data=zeros(1, length(data1)+length(data2));
+0029     index=data;
+0030     counter=data;
+0031     
+0032     <span class="keyword">while</span> ~done
+0033         <span class="keyword">if</span> data1(counter1)&lt;data2(counter2)
+0034             data(counter1+counter2-1)=data1(counter1);
+0035             index(counter1+counter2-1)=1;
+0036             counter(counter1+counter2-1)=counter1;
+0037             counter1=counter1+1;
+0038         <span class="keyword">else</span>
+0039             data(counter1+counter2-1)=data2(counter2);
+0040             index(counter1+counter2-1)=2;
+0041             counter(counter1+counter2-1)=counter2;
+0042             counter2=counter2+1;
+0043         <span class="keyword">end</span>    
+0044         
+0045         <span class="keyword">if</span> counter1&gt;length(data1)
+0046             data(counter1+counter2-1:end)=data2(counter2:end);
+0047             index(counter1+counter2-1:end)=2;
+0048             counter(counter1+counter2-1:end)=counter2:length(data2);
+0049             done=1;
+0050         <span class="keyword">elseif</span> counter2&gt;length(data2)
+0051             data(counter1+counter2-1:end)=data1(counter1:end);
+0052             index(counter1+counter2-1:end)=1;
+0053             counter(counter1+counter2-1:end)=counter1:length(data1);
+0054             done=1;
+0055         <span class="keyword">end</span>            
+0056     <span class="keyword">end</span>
+0057             
+0058</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

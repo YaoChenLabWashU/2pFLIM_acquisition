@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of avginROIScans</title>
+  <meta name="keywords" content="avginROIScans">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Imaging</a> &gt; <a href="index.html">FluoProcessing</a> &gt; avginROIScans.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\FluoProcessing&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>avginROIScans
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function avginROIScans(acqNumber, channels, rois) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="ROIAvgScanName.html" class="code" title="function out=ROIAvgScanName(epoch, pulse, channel, roi)">ROIAvgScanName</a>	</li><li><a href="ROIScanName.html" class="code" title="function out=ROIScanName(channel, roi, acq)">ROIScanName</a>	</li><li><a href="roiPulseNum.html" class="code" title="function out=roiPulseNum">roiPulseNum</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="runFluorAnalysis.html" class="code" title="function runFluorAnalysis(acqNumber)">runFluorAnalysis</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function avginROIScans(acqNumber, channels, rois)</a>
+0002     <span class="keyword">global</span> state
+0003     
+0004     <span class="keyword">if</span> nargin&lt;3
+0005         rois=1:state.analysis.numberOfROI;
+0006     <span class="keyword">end</span>
+0007     <span class="keyword">if</span> nargin&lt;2
+0008         channels=1:state.init.maximumNumberOfInputChannels;
+0009     <span class="keyword">end</span>
+0010     <span class="keyword">if</span> nargin&lt;1
+0011         acqNumber=[];
+0012     <span class="keyword">end</span>
+0013     <span class="keyword">if</span> state.cycle.useCyclePos
+0014         pulse=state.cycle.lastPositionUsed;
+0015     <span class="keyword">else</span>
+0016         pulse=<a href="roiPulseNum.html" class="code" title="function out=roiPulseNum">roiPulseNum</a>;
+0017     <span class="keyword">end</span>
+0018 
+0019      <span class="keyword">for</span> counter=channels
+0020         <span class="keyword">if</span> getfield(state.analysis, [<span class="string">'anaChannel'</span> num2str(counter)])
+0021             <span class="keyword">for</span> roiCounter=rois
+0022                 <span class="keyword">if</span> ~iswave(<a href="ROIScanName.html" class="code" title="function out=ROIScanName(channel, roi, acq)">ROIScanName</a>(counter, roiCounter))
+0023                     wave(<a href="ROIScanName.html" class="code" title="function out=ROIScanName(channel, roi, acq)">ROIScanName</a>(counter, roiCounter), []);
+0024                 <span class="keyword">end</span>
+0025                 <span class="keyword">if</span> isempty(acqNumber)
+0026                     avgin(<a href="ROIScanName.html" class="code" title="function out=ROIScanName(channel, roi, acq)">ROIScanName</a>(counter, roiCounter), <a href="ROIAvgScanName.html" class="code" title="function out=ROIAvgScanName(epoch, pulse, channel, roi)">ROIAvgScanName</a>(state.epoch, pulse, counter, roiCounter));
+0027                 <span class="keyword">else</span>
+0028                     avgin(<a href="ROIScanName.html" class="code" title="function out=ROIScanName(channel, roi, acq)">ROIScanName</a>(counter, roiCounter, acqNumber), <a href="ROIAvgScanName.html" class="code" title="function out=ROIAvgScanName(epoch, pulse, channel, roi)">ROIAvgScanName</a>(state.epoch, pulse, counter, roiCounter));
+0029                 <span class="keyword">end</span>
+0030             <span class="keyword">end</span>
+0031         <span class="keyword">end</span>
+0032     <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

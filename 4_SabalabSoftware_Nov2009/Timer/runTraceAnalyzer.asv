@@ -1,0 +1,175 @@
+function runTraceAnalyzer(phys)
+	global state
+
+    for lineCounter=1:size(state.analysis.setup)
+		traceNames={};
+		pulsePrefixes={};
+		baseLR=[];
+		% check if we just did a pulse that should be analyzed or are we
+		% analyzing all pulses (==0)
+		if state.analysis.setup{lineCounter, 2}==state.cycle.lastPulseUsed0 | state.analysis.setup{lineCounter, 2}==0
+			if state.analysis.setup{lineCounter, 1} < 10  & phys
+				% Check the channel selector.  This is a physiology trace
+				% and phys is on
+				if state.analysis.setup{lineCounter, 1} == 1 
+					% all channels selected, then get the ones being
+					% acquired
+					for channelCounter=state.phys.settings.acquiredChannels
+						traceNames{end+1}=physTraceName(channelCounter, state.files.lastAcquisition);
+						pulsePrefixes{end+1}=['AD' num2str(channelCounter)];
+					end
+				elseif any((state.analysis.setup{lineCounter, 1}-2)==state.phys.settings.acquiredChannels)	
+					% only 1 channel selected and that channel is being
+					% acquired
+					traceNames={physTraceName(state.analysis.setup{lineCounter, 1}-2, state.files.lastAcquisition)};
+					pulsePrefixes={['AD' num2str(state.analysis.setup{lineCounter, 1}-2) '_p' num2str(state.cycle.lastPulseUsed0)]};
+				end
+			elseif state.analysis.setup{lineCounter, 1} >= 10 & ~phys
+				% This is a fluorescence trace & and imaging is on
+				if state.analysis.setup{lineCounter, 1} == 10 
+					% all channels are selected
+					onChannels=find(state.acq.acquiringChannel);
+				elseif state.acq.acquiringChannel(state.analysis.setup{lineCounter, 1}-10) 
+					% check if the selected channel is on
+					onChannels=state.analysis.setup{lineCounter, 1}-10;
+				else
+					onChannels=[];
+				end
+				if state.analysis.setup{lineCounter, 3}==1	
+					% all ROIS selected
+					rois=1:state.analysis.numberOfROI;
+				elseif (state.analysis.setup{lineCounter, 3}-1) <= state.analysis.numberOfROI
+					% one ROI selected, is it valid?
+					rois=state.analysis.setup{lineCounter, 3}-1;
+				end
+				for channel=onChannels
+					for roi=rois
+						traceNames{end+1}=ROIScanName(channel, roi, state.files.lastAcquisition);
+						pulsePrefixes{end+1}=['p' num2str(state.cycle.lastPulseUsed0) 'c' num2str(channel) 'r' num2str(roi) ];
+						try
+							baseLR(end+1)=state.analysis.roiBaselineR{channel}(roi);
+						catch
+						end
+					end
+				end
+			end
+		end
+		
+		if isempty(traceNames)
+		%	disp(['runTraceAnalyzer : no matches were found for analysis line #' num2str(lineCounter) ' ***']); 
+		else
+			for counter=1:length(traceNames)
+				name=traceNames{counter};
+				baseline=[];
+				if iswave(name)
+					if state.analysis.setup{lineCounter, 4}==2 & (state.analysis.setup{lineCounter, 5} <= state.analysis.setup{lineCounter, 6})
+						bStart	=	x2pnt(name, state.analysis.setup{lineCounter, 5});
+						bEnd	=	x2pnt(name, state.analysis.setup{lineCounter, 6});
+						baseline=evalin('base', ['mean(' name '.data(' num2str(bStart) ':' num2str(bEnd) '))']);
+						baseAddOn=['_b(' num2str(state.analysis.setup{lineCounter, 5}) ',' num2str(state.analysis.setup{lineCounter, 6}) ')'];
+					elseif state.analysis.setup{lineCounter, 4}==3
+						baseAddOn=['_bF'];
+						try
+							baseline=baseLR(counter);
+						catch
+							disp('runTraceAnalyzer : unable to get baselines from fluor analyzer');
+						end
+					else 
+						baseAddOn='';
+					end
+
+					if ~isempty(baseline)
+						wname=[pulsePrefixes{counter} '_bl'];
+						if iswave(wname)
+							eval(['global ' wname]);
+							s=eval(['size(' wname '.data, 2)']);
+							if state.files.lastAcquisition > s+1
+								eval([wname '.data(s+1:state.files.lastAcquisition)=NaN;']);
+							end
+							eval([wname '.data(state.files.lastAcquisition)=baseline;']);
+						else
+							wave(wname, [zeros(1,state.files.lastAcquisition-1) baseline], 'xscale', [1 1]);
+						end
+					end
+
+					[index, new]=traceColumnIndex([pulsePrefixes{counter} baseAddOn], phys);
+					if new
+						state.analysis.setup{lineCounter, 8}=unique([state.analysis.setup{lineCounter, 8} pulsePrefixes(counter)]);
+					end
+
+					if ~isempty(state.internal.excelChannel) & state.files.autoSave
+						try
+							r=['r' num2str(25 + state.files.lastAcquisition)];
+							
+							ddepoke(state.internal.excelChannel, [r 'c' num2str(50*phys+57) ':' r 'c' num2str(50*phys+59)], ...
+								[state.files.lastAcquisition state.epoch state.cycle.lastPulseUsed0]);
+							if ~isempty(baseline)
+								ddepoke(state.internal.excelChannel, ...
+									[r 'c' num2str(50*phys+59+index)], ...
+									baseline);
+							end
+						catch
+							disp('runTraceAnalyzer : unable to link to excel');
+						end
+					end
+					
+					tracePeaks=[];
+					for peakCounter=1:size(state.analysis.setup{lineCounter, 7}, 1)
+						if (state.analysis.setup{lineCounter, 7}(peakCounter, 2) <= state.analysis.setup{lineCounter, 7}(peakCounter, 3)) ...
+								& state.analysis.setup{lineCounter, 7}(peakCounter, 3)
+							bStart	=	x2pnt(name, state.analysis.setup{lineCounter, 7}(peakCounter, 2));
+							bEnd	=	x2pnt(name, state.analysis.setup{lineCounter, 7}(peakCounter, 3));
+							peakAddOn=['_pk(' num2str(state.analysis.setup{lineCounter, 7}(peakCounter, 1)) ...
+									',' num2str(state.analysis.setup{lineCounter, 7}(peakCounter, 2))...
+									',' num2str(state.analysis.setup{lineCounter, 7}(peakCounter, 3))...
+									')'];
+							if isempty(baseline)
+								bVal=0;
+							else
+								bVal=baseline;
+							end
+						
+							switch state.analysis.setup{lineCounter, 7}(peakCounter, 1)
+								case 1
+									tracePeaks(peakCounter)=evalin('base', ['max(' name '.data(' num2str(bStart) ':' num2str(bEnd) '))'])-bVal;
+								case 2
+									tracePeaks(peakCounter)=evalin('base', ['min(' name '.data(' num2str(bStart) ':' num2str(bEnd) '))'])-bVal;
+								case 3
+									tracePeaks(peakCounter)=evalin('base', ['mean(' name '.data(' num2str(bStart) ':' num2str(bEnd) '))'])-bVal;
+								case 4
+		%							tracePeaks(peakCounter)=evalin('base', [name '.xscale(2)*sum(' name '.data(' num2str(bStart) ':' num2str(bEnd) ')-' num2str(bVal) ')']);
+									deltaX=x2pnt(name, state.analysis.setup{lineCounter, 7}(peakCounter, 3))-state.analysis.setup{lineCounter, 7}(peakCounter, 2))
+                                    disp(['(' name '.data(' num2str(bEnd) ')-' name '.data(' num2str(bStart) '))/' num2str(deltaX)]);
+
+                                    tracePeaks(peakCounter)=evalin('base', ['(' name '.data(' num2str(bEnd) ')-' name '.data(' num2str(bStart) '))/' num2str(deltaX)]);
+							end
+							wname=[pulsePrefixes{counter} '_pk' num2str(peakCounter)];
+							if iswave(wname)
+								eval(['global ' wname]);
+								s=eval(['size(' wname '.data, 2)']);
+								if state.files.lastAcquisition > s+1
+									eval([wname '.data(s+1:state.files.lastAcquisition)=NaN;']);
+								end								
+								eval([wname '.data(state.files.lastAcquisition)=tracePeaks(peakCounter);']);
+							else
+								wave(wname, [zeros(1,state.files.lastAcquisition-1) tracePeaks(peakCounter)], 'xscale', [1 1]);
+							end
+							
+							if ~isempty(state.internal.excelChannel) & state.files.autoSave
+								try
+									ddepoke(state.internal.excelChannel, ...
+										[r 'c' num2str(50*phys+59+traceColumnIndex([pulsePrefixes{counter} baseAddOn peakAddOn], phys))], ...
+											tracePeaks(peakCounter));
+								catch
+									disp('runTraceAnalyzer : unable to link to excel');
+								end
+							end
+							
+						end
+					end
+				%	disp([name ' ' num2str(baseline) ' ' num2str(tracePeaks)]);
+				end
+			end
+		end
+				
+	end

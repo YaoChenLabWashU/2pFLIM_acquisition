@@ -1,0 +1,13 @@
+/* Created by mdot for Matlab */
+digraph m2html {
+
+  cellparams [URL="cellparams.html"];
+  cyclegui [URL="cyclegui.html"];
+  notebook [URL="notebook.html"];
+  notebookline [URL="notebookline.html"];
+  physcontrols [URL="physcontrols.html"];
+  physcyclegui [URL="physcyclegui.html"];
+  physsettings [URL="physsettings.html"];
+  pulseMaker [URL="pulseMaker.html"];
+  scope [URL="scope.html"];
+}

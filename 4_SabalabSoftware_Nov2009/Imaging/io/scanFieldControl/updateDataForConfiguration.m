@@ -1,0 +1,4 @@
+function updateDataForConfiguration
+	applyImagingInputParams;
+	applyImagingOutputParams;
+

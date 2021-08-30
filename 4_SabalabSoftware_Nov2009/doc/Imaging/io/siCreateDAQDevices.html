@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of siCreateDAQDevices</title>
+  <meta name="keywords" content="siCreateDAQDevices">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Imaging</a> &gt; <a href="index.html">io</a> &gt; siCreateDAQDevices.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\io&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>siCreateDAQDevices
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function siCreateDAQDevices </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="initImaging.html" class="code" title="function initImaging(userFile, analysisMode)">initImaging</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function siCreateDAQDevices</a>
+0002     <span class="keyword">global</span> state 
+0003 
+0004 <span class="comment">% setups components of AO Objects that are config independent</span>
+0005     <span class="keyword">if</span> state.analysisMode
+0006         <span class="keyword">return</span>
+0007     <span class="keyword">end</span>
+0008 
+0009     <span class="keyword">global</span> focusInput focusOutput pcellFocusOutput
+0010     <span class="keyword">global</span> grabInput grabOutput pcellGrabOutput
+0011     evalin(<span class="string">'base'</span>,<span class="string">'global focusInput focusOutput pcellFocusOutput'</span>);
+0012     evalin(<span class="string">'base'</span>,<span class="string">'global grabInput grabOutput pcellGrabOutput'</span>);
+0013     
+0014 <span class="comment">% Mirror Data Output Acquisition (FOCUS)</span>
+0015     focusOutput = analogoutput(<span class="string">'nidaq'</span>,state.init.mirrorOutputBoardIndex);            
+0016     addchannel(focusOutput, state.init.XMirrorChannelIndex);
+0017     addchannel(focusOutput, state.init.YMirrorChannelIndex);
+0018     set(focusOutput, <span class="string">'SampleRate'</span>, state.acq.outputRate);
+0019     set(focusOutput, <span class="string">'TriggerType'</span>, <span class="string">'HwDigital'</span>);
+0020     set(focusOutput, <span class="string">'HwDigitalTriggerSource'</span>, <span class="string">'RTSI0'</span>);
+0021     set(focusOutput, <span class="string">'TriggerCondition'</span>, <span class="string">'PositiveEdge'</span>);
+0022     set(focusOutput, <span class="string">'ExternalClockDriveLine'</span>, <span class="string">'RTSI5'</span>);
+0023     set(focusOutput, <span class="string">'RepeatOutput'</span>, state.internal.numberOfFocusFrames);
+0024     
+0025 <span class="comment">% Mirror Data Output Acquisition (GRAB)</span>
+0026     grabOutput = analogoutput(<span class="string">'nidaq'</span>,state.init.mirrorOutputBoardIndex);
+0027     addchannel(grabOutput, state.init.XMirrorChannelIndex);
+0028     addchannel(grabOutput, state.init.YMirrorChannelIndex);
+0029     set(grabOutput, <span class="string">'SampleRate'</span>, state.acq.outputRate);
+0030     set(grabOutput, <span class="string">'TriggerType'</span>, <span class="string">'HwDigital'</span>);                    
+0031     set(grabOutput, <span class="string">'HwDigitalTriggerSource'</span>, <span class="string">'RTSI0'</span>);
+0032     set(grabOutput, <span class="string">'TriggerCondition'</span>, <span class="string">'PositiveEdge'</span>);
+0033     set(grabOutput, <span class="string">'ExternalClockDriveLine'</span>, <span class="string">'RTSI5'</span>);
+0034 
+0035 <span class="comment">% Laser Parking Mirror Data Output Acquisition</span>
+0036     state.daq.parkMirrorsOutput = analogoutput(<span class="string">'nidaq'</span>, state.init.mirrorOutputBoardIndex);            
+0037     addchannel(state.daq.parkMirrorsOutput, state.init.XMirrorChannelIndex);
+0038     addchannel(state.daq.parkMirrorsOutput, state.init.YMirrorChannelIndex);
+0039     set(state.daq.parkMirrorsOutput, <span class="string">'SampleRate'</span>, state.acq.outputRate);
+0040     set(state.daq.parkMirrorsOutput, <span class="string">'TriggerType'</span>, <span class="string">'Immediate'</span>);                    
+0041 
+0042     <span class="keyword">if</span> state.pcell.pcellOn    <span class="comment">% if using pockel cells</span>
+0043     <span class="comment">% PCell output board for FOCUS</span>
+0044         pcellFocusOutput = analogoutput(<span class="string">'nidaq'</span>, state.pcell.pcellBoardIndex);            
+0045         <span class="keyword">for</span> counter=1:state.pcell.numberOfPcells
+0046             addchannel(pcellFocusOutput, counter-1); <span class="comment">% getfield(state.pcell, ['pcellChannelIndex' num2str(counter)]));</span>
+0047         <span class="keyword">end</span>
+0048 
+0049         <span class="keyword">for</span> counter=1:state.pcell.numberOfPcells
+0050             addchannel(pcellFocusOutput, counter-1 + state.pcell.numberOfPcells); <span class="comment">%getfield(state.pcell, ['pcellShutterIndex' num2str(counter)]));</span>
+0051         <span class="keyword">end</span>
+0052 
+0053         set(pcellFocusOutput, <span class="string">'SampleRate'</span>, state.acq.outputRate);
+0054         set(pcellFocusOutput, <span class="string">'ClockSource'</span>, <span class="string">'External'</span>)
+0055         set(pcellFocusOutput, <span class="string">'ExternalClockSource'</span>, <span class="string">'RTSI5'</span>)
+0056         set(pcellFocusOutput, <span class="string">'TriggerType'</span>, <span class="string">'HwDigital'</span>);
+0057         set(pcellFocusOutput, <span class="string">'HwDigitalTriggerSource'</span>, <span class="string">'RTSI0'</span>);
+0058         set(pcellFocusOutput, <span class="string">'TriggerCondition'</span>, <span class="string">'PositiveEdge'</span>);
+0059         set(pcellFocusOutput, <span class="string">'RepeatOutput'</span>, state.internal.numberOfFocusFrames);
+0060         
+0061     <span class="comment">% PCell output board for GRAB</span>
+0062         pcellGrabOutput = analogoutput(<span class="string">'nidaq'</span>, state.pcell.pcellBoardIndex);            
+0063         <span class="keyword">for</span> counter=1:state.pcell.numberOfPcells
+0064             addchannel(pcellGrabOutput, counter-1); <span class="comment">%getfield(state.pcell, ['pcellChannelIndex' num2str(counter)]));</span>
+0065         <span class="keyword">end</span>
+0066 
+0067         <span class="keyword">for</span> counter=1:state.pcell.numberOfPcells
+0068             addchannel(pcellGrabOutput, counter-1 + state.pcell.numberOfPcells); <span class="comment">%getfield(state.pcell, ['pcellShutterIndex' num2str(counter)]));</span>
+0069         <span class="keyword">end</span>
+0070 
+0071         set(pcellGrabOutput, <span class="string">'SampleRate'</span>, state.acq.outputRate);
+0072         set(pcellGrabOutput, <span class="string">'ClockSource'</span>, <span class="string">'External'</span>)
+0073         set(pcellGrabOutput, <span class="string">'ExternalClockSource'</span>, <span class="string">'RTSI5'</span>)
+0074         set(pcellGrabOutput, <span class="string">'TriggerType'</span>, <span class="string">'HwDigital'</span>);
+0075         set(pcellGrabOutput, <span class="string">'HwDigitalTriggerSource'</span>, <span class="string">'RTSI0'</span>);
+0076         set(pcellGrabOutput, <span class="string">'TriggerCondition'</span>, <span class="string">'PositiveEdge'</span>);
+0077 
+0078     <span class="keyword">end</span>
+0079     
+0080     
+0081 <span class="comment">%  Piezoelectrode focus control</span>
+0082 
+0083     <span class="keyword">if</span> state.piezo.usePiezo  <span class="comment">%if using pz electrode</span>
+0084         state.piezo.Output=analogoutput(<span class="string">'nidaq'</span>, state.piezo.pzBoardIndex);
+0085         addchannel(state.piezo.Output, state.piezo.pzChannelIndex);
+0086         set(state.piezo.Output, <span class="string">'SampleRate'</span>, state.piezo.sampleRate);
+0087     <span class="keyword">end</span>
+0088 
+0089 <span class="comment">% INPUT OBJECTS BELOW</span>
+0090     
+0091 <span class="comment">% GRAB input object</span>
+0092     grabInput = analoginput(<span class="string">'nidaq'</span>,state.init.acquisitionBoardIndex);
+0093     set(grabInput, <span class="string">'SampleRate'</span>, state.acq.inputRate);
+0094     set(grabInput, <span class="string">'SamplesAcquiredFcn'</span>, {<span class="string">'makeFrameByStripes'</span>});
+0095     set(grabInput, <span class="string">'TriggerType'</span>, <span class="string">'Manual'</span>);
+0096     set(grabInput, <span class="string">'ExternalTriggerDriveLine'</span>, <span class="string">'RTSI0'</span>);
+0097     set(grabInput, <span class="string">'ManualTriggerHwOn'</span>, <span class="string">'Trigger'</span>);
+0098     
+0099 <span class="comment">% Focus Input object</span>
+0100     focusInput = analoginput(<span class="string">'nidaq'</span>,state.init.acquisitionBoardIndex);
+0101     set(focusInput, <span class="string">'SampleRate'</span>, state.acq.inputRate);
+0102     set(focusInput, <span class="string">'SamplesAcquiredFcn'</span>, {<span class="string">'makeStripe'</span>});
+0103     set(focusInput, <span class="string">'TriggerType'</span>, <span class="string">'Immediate'</span>);
+0104     set(focusInput, <span class="string">'ExternalTriggerDriveLine'</span>, <span class="string">'RTSI0'</span>);
+0105     set(pcellFocusOutput, <span class="string">'RepeatOutput'</span>, state.internal.numberOfFocusFrames)    
+0106 
+0107    
+0108 <span class="comment">% PMT offsets</span>
+0109     state.daq.pmtOffsetInput = analoginput(<span class="string">'nidaq'</span>, state.init.acquisitionBoardIndex);
+0110     set(state.daq.pmtOffsetInput, <span class="string">'TriggerType'</span>, <span class="string">'Immediate'</span>);                                        <span class="comment">% 6110E NI Board Set to Trigger PFI0</span>
+0111     set(state.daq.pmtOffsetInput, <span class="string">'SampleRate'</span>, state.acq.inputRate);
+0112     set(state.daq.pmtOffsetInput, <span class="string">'SamplesAcquiredFcn'</span>, {});
+0113</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

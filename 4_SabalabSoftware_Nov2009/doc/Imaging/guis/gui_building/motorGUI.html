@@ -1,0 +1,319 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of motorGUI</title>
+  <meta name="keywords" content="motorGUI">
+  <meta name="description" content="MOTORGUI Application M-file for motorGUI.fig">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Imaging</a> &gt; <a href="../index.html">guis</a> &gt; <a href="index.html">gui_building</a> &gt; motorGUI.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\guis\gui_building&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>motorGUI
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>MOTORGUI Application M-file for motorGUI.fig</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function varargout = motorGUI(varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> MOTORGUI Application M-file for motorGUI.fig
+    FIG = MOTORGUI launch motorGUI GUI.
+    MOTORGUI('callback_name', ...) invoke the named callback.</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Imaging/guis/gui_callbacks/calculateStackParameters.html" class="code" title="function calculateStackParameters">calculateStackParameters</a>	</li><li><a href="../../../Imaging/guis/gui_callbacks/executeGrabOneStackCallback.html" class="code" title="function executeGrabOneStackCallback(h)">executeGrabOneStackCallback</a>	executeGrabOneCallback(h).m******</li><li><a href="../../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>	</li><li><a href="../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>	This function sets the status field in mainControls.</li><li><a href="../../../Imaging/guis/gui_handling/turnOffMotorButtons.html" class="code" title="function turnOffMotorButtons">turnOffMotorButtons</a>	</li><li><a href="../../../Imaging/guis/gui_handling/turnOnMotorButtons.html" class="code" title="function turnOnMotorButtons">turnOnMotorButtons</a>	</li><li><a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>	given the name of a global variable, find and update the GUI that contains it</li><li><a href="../../../Imaging/io/Piezo/piezoUpdatePosition.html" class="code" title="function piezoUpdatePosition()">piezoUpdatePosition</a>	</li><li><a href="../../../Imaging/io/file_io/positions/loadPositionList.html" class="code" title="function loadPositionList">loadPositionList</a>	</li><li><a href="../../../Imaging/io/file_io/positions/savePositionListAs.html" class="code" title="function savePositionListAs">savePositionListAs</a>	</li><li><a href="../../../Imaging/io/motors/applyShift.html" class="code" title="function applyShift(position)">applyShift</a>	</li><li><a href="../../../Imaging/io/motors/applyShiftXY.html" class="code" title="function applyShiftXY(position)">applyShiftXY</a>	</li><li><a href="../../../Imaging/io/motors/definePosition.html" class="code" title="function definePosition(pos)">definePosition</a>	</li><li><a href="../../../Imaging/io/motors/gotoPosition.html" class="code" title="function gotoPosition(pos)">gotoPosition</a>	</li><li><a href="../../../Imaging/io/motors/moveToRelativePosition.html" class="code" title="function moveToRelativePosition(h)">moveToRelativePosition</a>	updateRelPos.m*****</li><li><a href="../../../Imaging/io/motors/updateMotorPosition.html" class="code" title="function out=updateMotorPosition(updateHeader)">updateMotorPosition</a>	</li><li><a href="../../../Imaging/io/motors/updateRelativeMotorPosition.html" class="code" title="function updateRelativeMotorPosition(update)">updateRelativeMotorPosition</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Imaging/io/initImaging.html" class="code" title="function initImaging(userFile, analysisMode)">initImaging</a>	</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function varargout = generic_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub2" class="code">function varargout = relPos_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub3" class="code">function varargout = readPosition_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub4" class="code">function varargout = setZeroXYButton_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub5" class="code">function varargout = setZeroXYZButton_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub6" class="code">function varargout = setZeroZButton_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub7" class="code">function varargout = definePosition_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub8" class="code">function varargout = gotoPosition_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub9" class="code">function varargout = shiftXY_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub10" class="code">function varargout = shiftXYZ_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub11" class="code">function varargout = setStackStart_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub12" class="code">function varargout = setStackStop_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub13" class="code">function varargout = GRAB_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub14" class="code">function varargout = savePositionListButton_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub15" class="code">function varargout = loadPositionListButton_Callback(h, eventdata, handles, varargin)</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function varargout = motorGUI(varargin)</a>
+0002 <span class="comment">% MOTORGUI Application M-file for motorGUI.fig</span>
+0003 <span class="comment">%    FIG = MOTORGUI launch motorGUI GUI.</span>
+0004 <span class="comment">%    MOTORGUI('callback_name', ...) invoke the named callback.</span>
+0005 
+0006 <span class="comment">% Last Modified by GUIDE v2.0 26-Apr-2001 15:50:39</span>
+0007 
+0008 <span class="keyword">if</span> nargin == 0  <span class="comment">% LAUNCH GUI</span>
+0009 
+0010     fig = openfig(mfilename,<span class="string">'reuse'</span>);
+0011 
+0012     <span class="comment">% Use system color scheme for figure:</span>
+0013     set(fig,<span class="string">'Color'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0014 
+0015     <span class="comment">% Generate a structure of handles to pass to callbacks, and store it.</span>
+0016     handles = guihandles(fig);
+0017     guidata(fig, handles);
+0018 
+0019     <span class="keyword">if</span> nargout &gt; 0
+0020         varargout{1} = fig;
+0021     <span class="keyword">end</span>
+0022 
+0023 <span class="keyword">elseif</span> ischar(varargin{1}) <span class="comment">% INVOKE NAMED SUBFUNCTION OR CALLBACK</span>
+0024 
+0025     <span class="keyword">try</span>
+0026         [varargout{1:nargout}] = feval(varargin{:}); <span class="comment">% FEVAL switchyard</span>
+0027     <span class="keyword">catch</span>
+0028         disp(lasterr);
+0029     <span class="keyword">end</span>
+0030 
+0031 <span class="keyword">end</span>
+0032 
+0033 
+0034 <span class="comment">%| ABOUT CALLBACKS:</span>
+0035 <span class="comment">%| GUIDE automatically appends subfunction prototypes to this file, and</span>
+0036 <span class="comment">%| sets objects' callback properties to call them through the FEVAL</span>
+0037 <span class="comment">%| switchyard above. This comment describes that mechanism.</span>
+0038 <span class="comment">%|</span>
+0039 <span class="comment">%| Each callback subfunction declaration has the following form:</span>
+0040 <span class="comment">%| &lt;SUBFUNCTION_NAME&gt;(H, EVENTDATA, HANDLES, VARARGIN)</span>
+0041 <span class="comment">%|</span>
+0042 <span class="comment">%| The subfunction name is composed using the object's Tag and the</span>
+0043 <span class="comment">%| callback type separated by '_', e.g. 'slider2_Callback',</span>
+0044 <span class="comment">%| 'figure1_CloseRequestFcn', 'axis1_ButtondownFcn'.</span>
+0045 <span class="comment">%|</span>
+0046 <span class="comment">%| H is the callback object's handle (obtained using GCBO).</span>
+0047 <span class="comment">%|</span>
+0048 <span class="comment">%| EVENTDATA is empty, but reserved for future use.</span>
+0049 <span class="comment">%|</span>
+0050 <span class="comment">%| HANDLES is a structure containing handles of components in GUI using</span>
+0051 <span class="comment">%| tags as fieldnames, e.g. handles.figure1, handles.slider2. This</span>
+0052 <span class="comment">%| structure is created at GUI startup using GUIHANDLES and stored in</span>
+0053 <span class="comment">%| the figure's application data using GUIDATA. A copy of the structure</span>
+0054 <span class="comment">%| is passed to each callback.  You can store additional information in</span>
+0055 <span class="comment">%| this structure at GUI startup, and you can change the structure</span>
+0056 <span class="comment">%| during callbacks.  Call guidata(h, handles) after changing your</span>
+0057 <span class="comment">%| copy to replace the stored original so that subsequent callbacks see</span>
+0058 <span class="comment">%| the updates. Type &quot;help guihandles&quot; and &quot;help guidata&quot; for more</span>
+0059 <span class="comment">%| information.</span>
+0060 <span class="comment">%|</span>
+0061 <span class="comment">%| VARARGIN contains any extra arguments you have passed to the</span>
+0062 <span class="comment">%| callback. Specify the extra arguments by editing the callback</span>
+0063 <span class="comment">%| property in the inspector. By default, GUIDE sets the property to:</span>
+0064 <span class="comment">%| &lt;MFILENAME&gt;('&lt;SUBFUNCTION_NAME&gt;', gcbo, [], guidata(gcbo))</span>
+0065 <span class="comment">%| Add any extra arguments after the last argument, before the final</span>
+0066 <span class="comment">%| closing parenthesis.</span>
+0067 
+0068 
+0069 
+0070 <span class="comment">% --------------------------------------------------------------------</span>
+0071 <a name="_sub1" href="#_subfunctions" class="code">function varargout = generic_Callback(h, eventdata, handles, varargin)</a>
+0072 <span class="comment">% Stub for Callback of the uicontrol handle</span>
+0073     <span class="keyword">global</span> gh
+0074     figure(gh.motorGUI.figure1)
+0075     <a href="../../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(h);
+0076 
+0077 <span class="comment">% --------------------------------------------------------------------</span>
+0078 <a name="_sub2" href="#_subfunctions" class="code">function varargout = relPos_Callback(h, eventdata, handles, varargin)</a>
+0079 <span class="comment">% Stub for Callback of the uicontrol handle</span>
+0080     <span class="keyword">global</span> state gh
+0081     figure(gh.motorGUI.figure1)
+0082     <a href="../../../Imaging/guis/gui_handling/turnOffMotorButtons.html" class="code" title="function turnOffMotorButtons">turnOffMotorButtons</a>;
+0083     <a href="../../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(h);
+0084     <a href="../../../Imaging/io/motors/moveToRelativePosition.html" class="code" title="function moveToRelativePosition(h)">moveToRelativePosition</a>;
+0085     <span class="keyword">if</span> state.piezo.usePiezo
+0086         <a href="../../../Imaging/io/Piezo/piezoUpdatePosition.html" class="code" title="function piezoUpdatePosition()">piezoUpdatePosition</a>;
+0087     <span class="keyword">end</span>
+0088     <a href="../../../Imaging/guis/gui_handling/turnOnMotorButtons.html" class="code" title="function turnOnMotorButtons">turnOnMotorButtons</a>;
+0089 
+0090 <span class="comment">% --------------------------------------------------------------------</span>
+0091 <a name="_sub3" href="#_subfunctions" class="code">function varargout = readPosition_Callback(h, eventdata, handles, varargin)</a>
+0092 <span class="comment">% Stub for Callback of the uicontrol handles.pushbutton1.</span>
+0093     <span class="keyword">global</span> gh
+0094     figure(gh.motorGUI.figure1)
+0095     <a href="../../../Imaging/guis/gui_handling/turnOffMotorButtons.html" class="code" title="function turnOffMotorButtons">turnOffMotorButtons</a>;
+0096     <a href="../../../Imaging/io/motors/updateMotorPosition.html" class="code" title="function out=updateMotorPosition(updateHeader)">updateMotorPosition</a>;
+0097     <a href="../../../Imaging/guis/gui_handling/turnOnMotorButtons.html" class="code" title="function turnOnMotorButtons">turnOnMotorButtons</a>;
+0098 
+0099 <span class="comment">% --------------------------------------------------------------------</span>
+0100 <a name="_sub4" href="#_subfunctions" class="code">function varargout = setZeroXYButton_Callback(h, eventdata, handles, varargin)</a>
+0101 <span class="comment">% Stub for Callback of the uicontrol handles.pushbutton2.</span>
+0102     <span class="keyword">global</span> state gh
+0103     figure(gh.motorGUI.figure1)
+0104     <a href="../../../Imaging/guis/gui_handling/turnOffMotorButtons.html" class="code" title="function turnOffMotorButtons">turnOffMotorButtons</a>;
+0105     flag=<a href="../../../Imaging/io/motors/updateMotorPosition.html" class="code" title="function out=updateMotorPosition(updateHeader)">updateMotorPosition</a>;
+0106     <span class="keyword">if</span> isempty(flag)
+0107         disp(<span class="string">'setZeroXYButton_Callback : Unable to zero XY.  MP285 Error'</span>);
+0108         beep;
+0109     <span class="keyword">else</span>
+0110         state.motor.offsetX=state.motor.absXPosition;
+0111         state.motor.offsetY=state.motor.absYPosition;
+0112         <a href="../../../Imaging/io/motors/updateRelativeMotorPosition.html" class="code" title="function updateRelativeMotorPosition(update)">updateRelativeMotorPosition</a>;
+0113     <span class="keyword">end</span>
+0114     <a href="../../../Imaging/guis/gui_handling/turnOnMotorButtons.html" class="code" title="function turnOnMotorButtons">turnOnMotorButtons</a>;
+0115 
+0116 <span class="comment">% --------------------------------------------------------------------</span>
+0117 <a name="_sub5" href="#_subfunctions" class="code">function varargout = setZeroXYZButton_Callback(h, eventdata, handles, varargin)</a>
+0118 <span class="comment">% Stub for Callback of the uicontrol handles.pushbutton2.</span>
+0119     <span class="keyword">global</span> state gh
+0120     figure(gh.motorGUI.figure1)
+0121     <a href="../../../Imaging/guis/gui_handling/turnOffMotorButtons.html" class="code" title="function turnOffMotorButtons">turnOffMotorButtons</a>;
+0122     flag=<a href="../../../Imaging/io/motors/updateMotorPosition.html" class="code" title="function out=updateMotorPosition(updateHeader)">updateMotorPosition</a>;
+0123     <span class="keyword">if</span> isempty(flag)
+0124         disp(<span class="string">'setZeroXYZButton_Callback : Unable to zero XYZ.  MP285 Error'</span>);
+0125         beep;
+0126     <span class="keyword">else</span>
+0127         state.motor.offsetX=state.motor.absXPosition;
+0128         state.motor.offsetY=state.motor.absYPosition;
+0129         state.motor.offsetZ=state.motor.absZPosition;
+0130         <a href="../../../Imaging/io/motors/updateRelativeMotorPosition.html" class="code" title="function updateRelativeMotorPosition(update)">updateRelativeMotorPosition</a>;
+0131     <span class="keyword">end</span>
+0132     <a href="../../../Imaging/guis/gui_handling/turnOnMotorButtons.html" class="code" title="function turnOnMotorButtons">turnOnMotorButtons</a>;
+0133 
+0134 <span class="comment">% --------------------------------------------------------------------</span>
+0135 <a name="_sub6" href="#_subfunctions" class="code">function varargout = setZeroZButton_Callback(h, eventdata, handles, varargin)</a>
+0136 <span class="comment">% Stub for Callback of the uicontrol handles.pushbutton2.</span>
+0137     <span class="keyword">global</span> state gh
+0138     figure(gh.motorGUI.figure1)
+0139     <a href="../../../Imaging/guis/gui_handling/turnOffMotorButtons.html" class="code" title="function turnOffMotorButtons">turnOffMotorButtons</a>;
+0140     state.motor.lastAction=0;
+0141     
+0142     flag=<a href="../../../Imaging/io/motors/updateMotorPosition.html" class="code" title="function out=updateMotorPosition(updateHeader)">updateMotorPosition</a>;
+0143     <span class="keyword">if</span> isempty(flag)
+0144         disp(<span class="string">'setZeroZButton_Callback : Unable to zero Z.  MP285 Error'</span>);
+0145         beep;
+0146     <span class="keyword">else</span>
+0147         state.motor.offsetZ=state.motor.absZPosition;
+0148         state.motor.relZPosition=0;
+0149         <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.motor.relZPosition'</span>);
+0150     <span class="keyword">end</span>
+0151     <a href="../../../Imaging/guis/gui_handling/turnOnMotorButtons.html" class="code" title="function turnOnMotorButtons">turnOnMotorButtons</a>;
+0152 
+0153 <span class="comment">% --------------------------------------------------------------------</span>
+0154 <a name="_sub7" href="#_subfunctions" class="code">function varargout = definePosition_Callback(h, eventdata, handles, varargin)</a>
+0155 <span class="comment">% Stub for Callback of the uicontrol handles.definePosition.</span>
+0156     <span class="keyword">global</span> gh state
+0157     figure(gh.motorGUI.figure1)
+0158     <a href="../../../Imaging/guis/gui_handling/turnOffMotorButtons.html" class="code" title="function turnOffMotorButtons">turnOffMotorButtons</a>;
+0159     state.motor.lastAction=1;
+0160        <span class="keyword">if</span> state.motor.position&gt;size(state.motor.positionVectors,1)
+0161         state.motor.oldParams={<span class="keyword">...</span>
+0162             state.motor.position, <span class="keyword">...</span>
+0163             []<span class="keyword">...</span>
+0164             };
+0165     <span class="keyword">else</span>
+0166         state.motor.oldParams={<span class="keyword">...</span>
+0167             state.motor.position, <span class="keyword">...</span>
+0168             state.motor.positionVectors(state.motor.position,:)<span class="keyword">...</span>
+0169             };
+0170     <span class="keyword">end</span>
+0171     <a href="../../../Imaging/io/motors/definePosition.html" class="code" title="function definePosition(pos)">definePosition</a>;
+0172     
+0173     <a href="../../../Imaging/guis/gui_handling/turnOnMotorButtons.html" class="code" title="function turnOnMotorButtons">turnOnMotorButtons</a>;
+0174 
+0175 <span class="comment">% --------------------------------------------------------------------</span>
+0176 <a name="_sub8" href="#_subfunctions" class="code">function varargout = gotoPosition_Callback(h, eventdata, handles, varargin)</a>
+0177 <span class="comment">% Stub for Callback of the uicontrol handles.gotoPosition.</span>
+0178     <span class="keyword">global</span> gh
+0179     figure(gh.motorGUI.figure1)
+0180     <a href="../../../Imaging/guis/gui_handling/turnOffMotorButtons.html" class="code" title="function turnOffMotorButtons">turnOffMotorButtons</a>;
+0181     <a href="../../../Imaging/io/motors/gotoPosition.html" class="code" title="function gotoPosition(pos)">gotoPosition</a>;
+0182     <a href="../../../Imaging/guis/gui_handling/turnOnMotorButtons.html" class="code" title="function turnOnMotorButtons">turnOnMotorButtons</a>;
+0183 
+0184 <span class="comment">% --------------------------------------------------------------------</span>
+0185 <a name="_sub9" href="#_subfunctions" class="code">function varargout = shiftXY_Callback(h, eventdata, handles, varargin)</a>
+0186 <span class="comment">% Stub for Callback of the uicontrol handles.gotoPosition.</span>
+0187     <span class="keyword">global</span> gh state
+0188     figure(gh.motorGUI.figure1)
+0189     <a href="../../../Imaging/guis/gui_handling/turnOffMotorButtons.html" class="code" title="function turnOffMotorButtons">turnOffMotorButtons</a>;
+0190     <a href="../../../Imaging/io/motors/applyShiftXY.html" class="code" title="function applyShiftXY(position)">applyShiftXY</a>(state.motor.position);
+0191     <a href="../../../Imaging/guis/gui_handling/turnOnMotorButtons.html" class="code" title="function turnOnMotorButtons">turnOnMotorButtons</a>;
+0192 
+0193 <span class="comment">% --------------------------------------------------------------------</span>
+0194 <a name="_sub10" href="#_subfunctions" class="code">function varargout = shiftXYZ_Callback(h, eventdata, handles, varargin)</a>
+0195 <span class="comment">% Stub for Callback of the uicontrol handles.gotoPosition.</span>
+0196     <span class="keyword">global</span> state gh
+0197     figure(gh.motorGUI.figure1)
+0198     <a href="../../../Imaging/guis/gui_handling/turnOffMotorButtons.html" class="code" title="function turnOffMotorButtons">turnOffMotorButtons</a>;
+0199     <a href="../../../Imaging/io/motors/applyShift.html" class="code" title="function applyShift(position)">applyShift</a>(state.motor.position);
+0200     <a href="../../../Imaging/guis/gui_handling/turnOnMotorButtons.html" class="code" title="function turnOnMotorButtons">turnOnMotorButtons</a>;
+0201 
+0202 
+0203 <span class="comment">% --------------------------------------------------------------------</span>
+0204 <a name="_sub11" href="#_subfunctions" class="code">function varargout = setStackStart_Callback(h, eventdata, handles, varargin)</a>
+0205 <span class="comment">% Stub for Callback of the uicontrol handles.setStackStart.</span>
+0206     <span class="keyword">global</span> state gh
+0207     figure(gh.motorGUI.figure1)
+0208     <a href="../../../Imaging/guis/gui_handling/turnOffMotorButtons.html" class="code" title="function turnOffMotorButtons">turnOffMotorButtons</a>;
+0209     <span class="keyword">if</span> state.piezo.usePiezo
+0210         state.motor.stackStart=state.piezo.next_pos;
+0211         <a href="../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Stack start set'</span>);
+0212         <a href="../../../Imaging/guis/gui_callbacks/calculateStackParameters.html" class="code" title="function calculateStackParameters">calculateStackParameters</a>;
+0213     <span class="keyword">else</span>
+0214         flag=<a href="../../../Imaging/io/motors/updateMotorPosition.html" class="code" title="function out=updateMotorPosition(updateHeader)">updateMotorPosition</a>;
+0215         <span class="keyword">if</span> isempty(flag)
+0216             disp(<span class="string">'setStackStart_Callback : Unable to set stack start.  MP285 Error'</span>);
+0217             beep;
+0218         <span class="keyword">else</span>
+0219             state.motor.stackStart=state.motor.lastPositionRead;
+0220             <a href="../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Stack start set'</span>);
+0221             <a href="../../../Imaging/guis/gui_callbacks/calculateStackParameters.html" class="code" title="function calculateStackParameters">calculateStackParameters</a>;
+0222         <span class="keyword">end</span>
+0223     <span class="keyword">end</span>
+0224     <a href="../../../Imaging/guis/gui_handling/turnOnMotorButtons.html" class="code" title="function turnOnMotorButtons">turnOnMotorButtons</a>;
+0225     
+0226 <span class="comment">% --------------------------------------------------------------------</span>
+0227 <a name="_sub12" href="#_subfunctions" class="code">function varargout = setStackStop_Callback(h, eventdata, handles, varargin)</a>
+0228 <span class="comment">% Stub for Callback of the uicontrol handles.setStackStop.</span>
+0229     <span class="keyword">global</span> state gh
+0230     figure(gh.motorGUI.figure1)
+0231     <a href="../../../Imaging/guis/gui_handling/turnOffMotorButtons.html" class="code" title="function turnOffMotorButtons">turnOffMotorButtons</a>;
+0232     <span class="keyword">if</span> state.piezo.usePiezo
+0233         state.motor.stackStop=state.piezo.next_pos;
+0234         <a href="../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Stack start set'</span>);
+0235         <a href="../../../Imaging/guis/gui_callbacks/calculateStackParameters.html" class="code" title="function calculateStackParameters">calculateStackParameters</a>;
+0236     <span class="keyword">else</span>
+0237         flag=<a href="../../../Imaging/io/motors/updateMotorPosition.html" class="code" title="function out=updateMotorPosition(updateHeader)">updateMotorPosition</a>;
+0238         <span class="keyword">if</span> isempty(flag)
+0239             disp(<span class="string">'setStackStop_Callback : Unable to set stack end.  MP285 Error'</span>);
+0240             beep;
+0241         <span class="keyword">else</span>
+0242             state.motor.stackStop=state.motor.lastPositionRead;
+0243             <a href="../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Stack end set'</span>);
+0244             <a href="../../../Imaging/guis/gui_callbacks/calculateStackParameters.html" class="code" title="function calculateStackParameters">calculateStackParameters</a>;
+0245         <span class="keyword">end</span>
+0246     <span class="keyword">end</span>
+0247     <a href="../../../Imaging/guis/gui_handling/turnOnMotorButtons.html" class="code" title="function turnOnMotorButtons">turnOnMotorButtons</a>;
+0248 
+0249 <span class="comment">% --------------------------------------------------------------------</span>
+0250 <a name="_sub13" href="#_subfunctions" class="code">function varargout = GRAB_Callback(h, eventdata, handles, varargin)</a>
+0251 <span class="comment">% Stub for Callback of the uicontrol handles.GRAB.</span>
+0252     <span class="keyword">global</span> gh
+0253     figure(gh.motorGUI.figure1)
+0254     <a href="../../../Imaging/guis/gui_callbacks/executeGrabOneStackCallback.html" class="code" title="function executeGrabOneStackCallback(h)">executeGrabOneStackCallback</a>(h);
+0255     
+0256 <span class="comment">% --------------------------------------------------------------------</span>
+0257 <a name="_sub14" href="#_subfunctions" class="code">function varargout = savePositionListButton_Callback(h, eventdata, handles, varargin)</a>
+0258 <span class="comment">% Stub for Callback of the uicontrol handles.savePositionListButton.</span>
+0259     <span class="keyword">global</span> gh
+0260     figure(gh.motorGUI.figure1)
+0261     <a href="../../../Imaging/io/file_io/positions/savePositionListAs.html" class="code" title="function savePositionListAs">savePositionListAs</a>;
+0262 
+0263 <span class="comment">% --------------------------------------------------------------------</span>
+0264 <a name="_sub15" href="#_subfunctions" class="code">function varargout = loadPositionListButton_Callback(h, eventdata, handles, varargin)</a>
+0265 <span class="comment">% Stub for Callback of the uicontrol handles.loadPositionListButton.</span>
+0266     <span class="keyword">global</span> gh
+0267     figure(gh.motorGUI.figure1)
+0268     <a href="../../../Imaging/io/file_io/positions/loadPositionList.html" class="code" title="function loadPositionList">loadPositionList</a>;</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

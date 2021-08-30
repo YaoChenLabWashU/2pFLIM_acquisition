@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of applyAdvancedCyclePosition</title>
+  <meta name="keywords" content="applyAdvancedCyclePosition">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">Timer</a> &gt; applyAdvancedCyclePosition.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Timer&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>applyAdvancedCyclePosition
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function applyAdvancedCyclePosition(position) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>	given the name of a global variable, find and update the GUI that contains it</li><li><a href="../Imaging/io/setupImagingCyclePosition.html" class="code" title="function setupImagingCyclePosition">setupImagingCyclePosition</a>	</li><li><a href="timerSetActiveStatus.html" class="code" title="function timerSetActiveStatus(packageList, status)">timerSetActiveStatus</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="../Imaging/guis/gui_building/advancedCycleGUI.html" class="code" title="function varargout = advancedCycleGUI(varargin)">advancedCycleGUI</a>	ADVANCEDCYCLEGUI M-file for advancedCycleGUI.fig</li><li><a href="../Imaging/io/scanFieldControl/putCurrentInCyclePos.html" class="code" title="function putCurrentInCyclePos(posNum)">putCurrentInCyclePos</a>	</li><li><a href="changeCyclePosition.html" class="code" title="function changeCyclePosition(pos)">changeCyclePosition</a>	</li><li><a href="timerDoOne.html" class="code" title="function timerDoOne">timerDoOne</a>	</li><li><a href="timerMainLoop.html" class="code" title="function timerMainLoop">timerMainLoop</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function applyAdvancedCyclePosition(position)</a>
+0002     <span class="keyword">global</span> state
+0003 
+0004     <span class="keyword">if</span> nargin==1
+0005         state.cycle.currentCyclePosition=position;
+0006         <a href="../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.cycle.currentCyclePosition'</span>);
+0007     <span class="keyword">end</span>
+0008 
+0009     <span class="comment">% is there is a text functiona call in the cycle</span>
+0010     <span class="comment">% execute it</span>
+0011     <span class="keyword">if</span> ~isempty(state.cycle.functionNameList{state.cycle.currentCyclePosition})
+0012         evalin(<span class="string">'base'</span>, state.cycle.functionNameList{state.cycle.currentCyclePosition});
+0013     <span class="keyword">end</span>
+0014     
+0015     <a href="timerSetActiveStatus.html" class="code" title="function timerSetActiveStatus(packageList, status)">timerSetActiveStatus</a>(<span class="string">'Imaging'</span>, state.cycle.imageOnList(state.cycle.currentCyclePosition));    
+0016     <span class="keyword">if</span> state.cycle.imageOnList(state.cycle.currentCyclePosition) <span class="comment">% imaging is on</span>
+0017         <span class="keyword">try</span>
+0018             <a href="../Imaging/io/setupImagingCyclePosition.html" class="code" title="function setupImagingCyclePosition">setupImagingCyclePosition</a>;
+0019         <span class="keyword">catch</span>
+0020             disp([<span class="string">'applyAdvancedCyclePosition : '</span> lasterr]);
+0021         <span class="keyword">end</span>
+0022     <span class="keyword">end</span>
+0023     
+0024     <a href="timerSetActiveStatus.html" class="code" title="function timerSetActiveStatus(packageList, status)">timerSetActiveStatus</a>(<span class="string">'Physiology'</span>, state.cycle.physOnList(state.cycle.currentCyclePosition));    
+0025     <span class="keyword">if</span> state.cycle.physOnList(state.cycle.currentCyclePosition) <span class="comment">% physiology is on</span>
+0026         <span class="keyword">try</span>
+0027             <span class="keyword">if</span> (state.cycle.da0List(state.cycle.currentCyclePosition) ~= state.cycle.pulseToUse0) <span class="keyword">...</span>
+0028                     || (state.cycle.da1List(state.cycle.currentCyclePosition) ~= state.cycle.pulseToUse1)
+0029                 state.phys.internal.needNewOutputData=1;
+0030             <span class="keyword">end</span>
+0031             state.cycle.pulseToUse0=state.cycle.da0List(state.cycle.currentCyclePosition);
+0032             state.cycle.pulseToUse1=state.cycle.da1List(state.cycle.currentCyclePosition);
+0033             <span class="keyword">if</span> (state.cycle.lastPulseUsed0 ~= state.cycle.pulseToUse0) || (state.cycle.lastPulseUsed1 ~= state.cycle.pulseToUse1)
+0034                 state.phys.internal.needNewOutputData=1;
+0035             <span class="keyword">end</span>
+0036             <a href="../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.cycle.pulseToUse0'</span>);
+0037             <a href="../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.cycle.pulseToUse1'</span>);
+0038             
+0039             phCheckAcquisitionChannels
+0040             
+0041             <span class="keyword">if</span> state.phys.daq.auxOutputBoardIndex
+0042                 <span class="keyword">try</span>
+0043                     <span class="keyword">if</span> ~all(state.cycle.lastUsedAuxPulses == [state.cycle.aux4List(state.cycle.currentCyclePosition) <span class="keyword">...</span>
+0044                             state.cycle.aux5List(state.cycle.currentCyclePosition) <span class="keyword">...</span>
+0045                             state.cycle.aux6List(state.cycle.currentCyclePosition) <span class="keyword">...</span>
+0046                             state.cycle.aux7List(state.cycle.currentCyclePosition)])
+0047                            state.phys.internal.needNewAuxOutputData=1;
+0048                     <span class="keyword">end</span>
+0049                 <span class="keyword">catch</span>
+0050                     state.phys.internal.needNewAuxOutputData=1;
+0051                 <span class="keyword">end</span>
+0052             <span class="keyword">end</span>
+0053         <span class="keyword">catch</span>
+0054             disp([<span class="string">'applyAdvancedCyclePosition : '</span> lasterr]);
+0055         <span class="keyword">end</span>
+0056     <span class="keyword">else</span>
+0057         state.cycle.pulseToUse0=0;
+0058         state.cycle.lastPulseUsed0=0;
+0059     <span class="keyword">end</span>
+0060     
+0061     state.cycle.nextTimeDelay=state.cycle.delayList(state.cycle.currentCyclePosition);
+0062     <a href="../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.cycle.nextTimeDelay'</span>);
+0063 
+0064     state.cycle.lastPositionUsed=state.cycle.currentCyclePosition;
+0065     
+0066</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

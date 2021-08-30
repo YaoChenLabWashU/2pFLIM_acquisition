@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of putDataGrab</title>
+  <meta name="keywords" content="putDataGrab">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Imaging</a> &gt; <a href="../index.html">io</a> &gt; <a href="index.html">scanFieldControl</a> &gt; putDataGrab.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\io\scanFieldControl&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>putDataGrab
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function putDataGrab </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Imaging/guis/gui_callbacks/executeFocusCallback.html" class="code" title="function executeFocusCallback">executeFocusCallback</a>	</li><li><a href="../../../Imaging/io/ad_da/startGrab.html" class="code" title="function startGrab">startGrab</a>	</li><li><a href="../../../Imaging/pcell/resetPcellOutput.html" class="code" title="function resetPcellOutput">resetPcellOutput</a>	</li><li><a href="../../../Imaging/timerFunctions/timerStart_Imaging.html" class="code" title="function timerStart_Imaging">timerStart_Imaging</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function putDataGrab</a>
+0002     <span class="keyword">global</span> state
+0003     
+0004     <span class="keyword">global</span> grabOutput pcellGrabOutput
+0005     putdata(grabOutput, state.acq.repeatedMirrorData);            <span class="comment">% Queues Data to engine for Board 2 (Mirrors)</span>
+0006     pcellChannels=0:2*state.pcell.numberOfPcells-1;
+0007     
+0008     <span class="keyword">if</span> length(state.cycle.physOnList)&gt;=state.cycle.currentCyclePosition &amp; state.cycle.physOnList(state.cycle.currentCyclePosition) <span class="comment">% BSMOD 08012005 Changes so that Imaging and Phys can both use the aux board</span>
+0009                                                                                                                                    <span class="comment">%TN 03Aug05</span>
+0010         chanNeeded=[pcellChannels <span class="keyword">...</span>
+0011                     find(<span class="keyword">...</span>
+0012                         [state.cycle.aux4List(state.cycle.currentCyclePosition) <span class="keyword">...</span>
+0013                          state.cycle.aux5List(state.cycle.currentCyclePosition) <span class="keyword">...</span>
+0014                          state.cycle.aux6List(state.cycle.currentCyclePosition) <span class="keyword">...</span>
+0015                          state.cycle.aux7List(state.cycle.currentCyclePosition)])+3];
+0016         
+0017         delete(get(pcellGrabOutput, <span class="string">'Channel'</span>));
+0018         
+0019         <span class="keyword">if</span> isempty(chanNeeded)
+0020             <span class="keyword">return</span>
+0021         <span class="keyword">end</span>
+0022             
+0023         chanAdded=addchannel(pcellGrabOutput, chanNeeded);
+0024         set(chanAdded, <span class="string">'OutputRange'</span>, [-10 10], <span class="string">'UnitsRange'</span>, [-10 10]);
+0025         
+0026         nPoints=size(state.acq.pcellRepeatedOutput, 1);
+0027         
+0028         state.phys.daq.auxOutput=zeros(nPoints, length(chanNeeded));
+0029         
+0030         counter=1;
+0031         <span class="keyword">for</span> channel=chanNeeded
+0032             <span class="keyword">if</span> any(channel==pcellChannels)
+0033                 state.phys.daq.auxOutput(1:nPoints, counter)=state.acq.pcellRepeatedOutput(:, counter);
+0034             <span class="keyword">else</span>
+0035                 patternNum=eval([<span class="string">'state.cycle.aux'</span> num2str(channel) <span class="string">'List(state.cycle.currentCyclePosition);'</span>]);
+0036                 makePulsePattern(patternNum, 0, get(pcellGrabOutput, <span class="string">'SampleRate'</span>));
+0037                 pattern=eval([<span class="string">'state.pulses.pulsePattern'</span> num2str(patternNum)]);
+0038                 pSize=size(pattern, 2);
+0039                 <span class="keyword">if</span> nPoints &gt; pSize
+0040                     pattern=[pattern repmat(pattern(end), 1, nPoints-pSize)];
+0041                 <span class="keyword">elseif</span> pSize&gt;nPoints
+0042                     pattern=pattern(1:nPoints);
+0043                 <span class="keyword">end</span>
+0044                 state.phys.daq.auxOutput(1:nPoints, counter)=pattern';
+0045             <span class="keyword">end</span>
+0046             counter=counter+1;
+0047         <span class="keyword">end</span>
+0048         putdata(pcellGrabOutput, state.phys.daq.auxOutput);
+0049     <span class="keyword">else</span>              
+0050         <span class="keyword">if</span> size(get(pcellGrabOutput, <span class="string">'Channel'</span>),1)~=size(pcellChannels,1)
+0051             delete(get(pcellGrabOutput, <span class="string">'Channel'</span>));
+0052             addchannel(pcellGrabOutput, pcellChannels);
+0053         <span class="keyword">end</span>
+0054         putdata(pcellGrabOutput, state.acq.pcellRepeatedOutput);        <span class="comment">% Queues Data to engine for board 1 (Pockell Cell)</span>
+0055     <span class="keyword">end</span>
+0056</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

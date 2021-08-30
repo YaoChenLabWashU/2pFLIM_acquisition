@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of getBoxCoords</title>
+  <meta name="keywords" content="getBoxCoords">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Imaging</a> &gt; <a href="../index.html">io</a> &gt; <a href="index.html">scanFieldControl</a> &gt; getBoxCoords.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\io\scanFieldControl&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>getBoxCoords
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function [x, y]=getBoxCoords(imageHandle, sortCoords) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Imaging/pcell/pcellcontrol.html" class="code" title="function varargout = pcellcontrol(varargin)">pcellcontrol</a>	PCELLCONTROL Application M-file for pcellControl.fig</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [x, y]=getBoxCoords(imageHandle, sortCoords)</a>
+0002     <span class="keyword">if</span> nargin&gt;0
+0003         <span class="keyword">if</span> ~isempty(imageHandle)
+0004             figure(imageHandle);
+0005         <span class="keyword">end</span>
+0006     <span class="keyword">end</span>
+0007     <span class="keyword">if</span> nargin&lt;2
+0008         sortCoords=0;
+0009     <span class="keyword">end</span>
+0010     
+0011     disp(<span class="string">'*** DRAG ROI OVER WINDOW ***'</span>);
+0012     k = waitforbuttonpress;
+0013     
+0014     x=[];
+0015     y=[];
+0016 
+0017     <span class="keyword">if</span> isempty(findobj(gcf, <span class="string">'Type'</span>, <span class="string">'axes'</span>))
+0018         disp(<span class="string">'*** NO axes found.  returning ***'</span>);
+0019         <span class="keyword">return</span>
+0020     <span class="keyword">end</span>
+0021         
+0022         
+0023     point1 = get(gca,<span class="string">'CurrentPoint'</span>);    <span class="comment">% button down detected</span>
+0024     finalRect = rbbox;                   <span class="comment">% return figure units</span>
+0025     point2 = get(gca,<span class="string">'CurrentPoint'</span>);    <span class="comment">% button up detected</span>
+0026     y=round([point1(1,1) point2(1,1)]);
+0027     x=round([point1(1,2) point2(1,2)]);
+0028     <span class="keyword">if</span> sortCoords==1     <span class="comment">% sort by X</span>
+0029         [x, I]=sort(x);
+0030         y=y(I);
+0031     <span class="keyword">elseif</span> sortCoords==2 <span class="comment">% sort by Y</span>
+0032         [y, I]=sort(y);
+0033         x=x(I);
+0034     <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

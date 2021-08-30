@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of loadCycle</title>
+  <meta name="keywords" content="loadCycle">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">Timer</a> &gt; loadCycle.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Timer&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>loadCycle
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function loadCycle(pname, fname) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>	This function sets the status field in mainControls.</li><li><a href="../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>	given the name of a global variable, find and update the GUI that contains it</li><li><a href="../Imaging/io/scanFieldControl/updateCycleDisplay.html" class="code" title="function updateCycleDisplay(position)">updateCycleDisplay</a>	</li><li><a href="changeCyclePosition.html" class="code" title="function changeCyclePosition(pos)">changeCyclePosition</a>	</li><li><a href="saveCycle.html" class="code" title="function saveCycle">saveCycle</a>	writes pulseSet to disk</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="loadUserSettings.html" class="code" title="function loadUserSettings(pname, fname)">loadUserSettings</a>	Allows user to select a settings file (*.ini) from disk and loads it</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function loadCycle(pname, fname)</a>
+0002     <span class="keyword">global</span> state
+0003 
+0004     <span class="keyword">if</span> state.internal.cycleChanged
+0005         beep;
+0006         answer=questdlg(<span class="string">'Do you want to save changes to the current cycle?'</span>, <span class="string">'SAVE CYCLE?'</span>, <span class="string">'Yes'</span>, <span class="string">'No'</span>, <span class="string">'Cancel'</span>, <span class="string">'Yes'</span>);
+0007         <span class="keyword">if</span> strcmp(answer, <span class="string">'Cancel'</span>)
+0008             <span class="keyword">return</span>
+0009         <span class="keyword">elseif</span> strcmp(answer, <span class="string">'Yes'</span>)
+0010             <a href="saveCycle.html" class="code" title="function saveCycle">saveCycle</a>;
+0011         <span class="keyword">end</span>
+0012     <span class="keyword">end</span>
+0013     
+0014     <span class="keyword">if</span> nargin&lt;2
+0015         <span class="keyword">if</span> ~isempty(state.cycle.cyclePath)
+0016             <span class="keyword">try</span>
+0017                 cd(state.cycle.cyclePath);
+0018             <span class="keyword">catch</span>
+0019             <span class="keyword">end</span>
+0020         <span class="keyword">end</span>
+0021         [fname, pname]=uigetfile(<span class="string">'*.cyc'</span>, <span class="string">'Choose cycle'</span>);
+0022     <span class="keyword">end</span>
+0023 
+0024     <span class="keyword">if</span> ~isnumeric(fname) &amp;&amp; ~isempty(fname)
+0025         <span class="keyword">try</span>
+0026             cycle=load(fullfile(pname, fname), <span class="string">'-MAT'</span>);
+0027         <span class="keyword">catch</span>
+0028             beep;
+0029             <span class="comment">% gy changed 20120413</span>
+0030             warning([<span class="string">'loadCycle : Unable to load '</span> fullfile(pname, fname) <span class="string">'. File may be missing or have been moved.'</span>])
+0031             <span class="keyword">return</span>;
+0032         <span class="keyword">end</span>
+0033 
+0034         fnames=fieldnames(cycle.cycle);
+0035         <span class="keyword">for</span> counter=1:length(fnames)
+0036             eval([<span class="string">'state.cycle.'</span> fnames{counter} <span class="string">' = cycle.cycle.'</span> fnames{counter} <span class="string">';'</span>]);
+0037         <span class="keyword">end</span>
+0038         
+0039         <span class="keyword">for</span> counter=1:length(state.internal.cycleListNames)
+0040             <span class="keyword">if</span> isfield(cycle.cycle, [state.internal.cycleListNames{counter} <span class="string">'List'</span>])
+0041                 eval([<span class="string">'state.'</span> state.internal.cycleListNames{counter} <span class="string">'List = cycle.cycle.'</span> state.internal.cycleListNames{counter} <span class="string">'List;'</span>]);
+0042             <span class="keyword">else</span>
+0043                 disp([<span class="string">'Appears to have old cycle definition.  Repairing field: '</span> state.internal.cycleListNames{counter}]);
+0044                 <span class="keyword">if</span> isnumeric(getfield(state.cycle, state.internal.cycleListNames{counter}))
+0045                     disp(<span class="string">'... with numeric field.  Please resave the cycle'</span>);
+0046                     eval([<span class="string">'state.cycle.'</span> state.internal.cycleListNames{counter} <span class="string">'List = ones(size(cycle.cycle.repeatsList));'</span>]);
+0047                 <span class="keyword">elseif</span> ischar(getfield(state.cycle, state.internal.cycleListNames{counter}))
+0048                    eval([<span class="string">'state.cycle.'</span> state.internal.cycleListNames{counter} <span class="string">'List = repmat({''''}, size(cycle.cycle.repeatsList));'</span>]);
+0049                    disp(<span class="string">'... with string field.  Please resave the cycle'</span>);
+0050                 <span class="keyword">end</span>
+0051             <span class="keyword">end</span>
+0052             
+0053                     
+0054         <span class="keyword">end</span>
+0055         
+0056         state.cycle.cycleName = fname;
+0057         state.cycle.cyclePath = pname;
+0058         <a href="../Imaging/io/scanFieldControl/updateCycleDisplay.html" class="code" title="function updateCycleDisplay(position)">updateCycleDisplay</a>(1);
+0059         <a href="../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.cycle.VCRCPulse'</span>);
+0060         <a href="../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.cycle.CCRCPulse'</span>);
+0061         <a href="../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.cycle.randomize'</span>);
+0062         <a href="../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.cycle.writeProtect'</span>);
+0063         <a href="../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.cycle.useCyclePos'</span>);
+0064         <a href="../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.cycle.cycleName'</span>); <span class="comment">%TN 27Oct05</span>
+0065         
+0066         makeCycleMenu;
+0067         checkCurrentCycleInMenu;
+0068         state.internal.cycleChanged=0;
+0069         <a href="changeCyclePosition.html" class="code" title="function changeCyclePosition(pos)">changeCyclePosition</a>(1);
+0070         
+0071         <a href="../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'cycle loaded'</span>);
+0072     <span class="keyword">else</span>
+0073         <a href="../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Cannot load cycle'</span>);
+0074     <span class="keyword">end</span>
+0075     
+0076</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

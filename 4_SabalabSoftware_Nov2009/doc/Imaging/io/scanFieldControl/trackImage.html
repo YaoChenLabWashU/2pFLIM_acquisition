@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of trackImage</title>
+  <meta name="keywords" content="trackImage">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Imaging</a> &gt; <a href="../index.html">io</a> &gt; <a href="index.html">scanFieldControl</a> &gt; trackImage.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\io\scanFieldControl&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>trackImage
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function trackImage </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>	This function sets the status field in mainControls.</li><li><a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>	given the name of a global variable, find and update the GUI that contains it</li><li><a href="findShift.html" class="code" title="function corr=findshift(im1, im2)">findShift</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Imaging/timerFunctions/timerProcess_Imaging.html" class="code" title="function timerProcess_Imaging">timerProcess_Imaging</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function trackImage</a>
+0002     <span class="keyword">global</span> state imageData
+0003 
+0004     <span class="keyword">if</span> ~state.acq.autoTrack 
+0005         <span class="keyword">return</span>
+0006     <span class="keyword">end</span>
+0007 
+0008     <span class="keyword">if</span> ~state.internal.keepAllSlicesInMemory &amp; (state.acq.numberOfZSlices&gt;1)
+0009         beep;
+0010         disp(<span class="string">'*** Stack based image track skipped ***'</span>);
+0011         disp(<span class="string">'*** Requires keepAllSlicesInMemory to be activated from the settings menu ***'</span>);
+0012         <span class="keyword">return</span>
+0013     <span class="keyword">end</span>
+0014 
+0015     <span class="keyword">try</span>
+0016         <a href="../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Finding shifts ...'</span>);
+0017 
+0018         state.acq.shifts=zeros(3, state.acq.numberOfZSlices);
+0019         maxCC=-1000;
+0020         <span class="keyword">for</span> sliceCounter=1:state.acq.numberOfZSlices
+0021             <span class="keyword">if</span> state.acq.averaging
+0022                 startSlice=sliceCounter;
+0023                 stopSlice=sliceCounter;
+0024             <span class="keyword">else</span>
+0025                 startSlice=(sliceCounter-1)*state.acq.numberOfFrames+1;
+0026                 stopSlice=startSlice+state.acq.numberOfFrames-1;
+0027             <span class="keyword">end</span>
+0028 
+0029             state.acq.trackerImage=mean(imageData{state.acq.trackerChannel}(:,:,startSlice:stopSlice),3);
+0030             state.acq.shifts(:, sliceCounter)<span class="keyword">...</span>
+0031                 =<a href="findShift.html" class="code" title="function corr=findshift(im1, im2)">findShift</a>(state.acq.trackerReference, medfilt2(imageData{state.acq.trackerChannel}(:,:,sliceCounter)));
+0032             disp([<span class="string">'CC '</span> num2str(state.acq.shifts(3, sliceCounter))])
+0033             <span class="keyword">if</span> state.acq.shifts(3, sliceCounter)&gt;maxCC
+0034                 maxCC=state.acq.shifts(3, sliceCounter);
+0035                 maxCCSlice=sliceCounter;
+0036                 shift=state.acq.shifts(1:2, sliceCounter);
+0037             <span class="keyword">end</span>
+0038         <span class="keyword">end</span>
+0039         
+0040         addEntryToNotebook(2, [<span class="string">'trackImage acq '</span> num2str(state.files.fileCounter) <span class="string">' ('</span> <span class="keyword">...</span><span class="comment"> </span>
+0041             num2str(shift(2)) <span class="string">', '</span> num2str(shift(1)) <span class="string">', '</span> num2str(maxCCSlice) <span class="string">') CC='</span> num2str(maxCC)]);
+0042 
+0043 
+0044 
+0045         state.acq.pixelShiftY=shift(1)-state.internal.trackerY0+1;
+0046         state.acq.pixelShiftX=shift(2)-state.internal.trackerX0+1;
+0047         state.acq.sliceShift=state.acq.zStepSize*(maxCCSlice-1);
+0048         
+0049         <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.pixelShiftX'</span>);
+0050         <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.pixelShiftY'</span>);
+0051         <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.sliceShift'</span>);
+0052         scanShiftX=2*state.acq.scanAmplitudeX*(state.acq.pixelShiftX/state.acq.pixelsPerLine)/state.acq.zoomFactor;
+0053         scanShiftY=2*state.acq.scanAmplitudeY*(state.acq.pixelShiftY/state.acq.linesPerFrame)/state.acq.zoomFactor;
+0054 
+0055         c = cos(state.acq.scanRotation*pi/180);
+0056         s = sin(state.acq.scanRotation*pi/180);
+0057         state.acq.scanShiftX =  c * scanShiftX + s * scanShiftY;
+0058         state.acq.scanShiftY = -s * scanShiftX + c * scanShiftY;                
+0059 
+0060         <span class="keyword">if</span> (state.acq.pixelShiftY &gt; state.acq.maxShift) || (state.acq.pixelShiftX &gt; state.acq.maxShift)
+0061             beep;
+0062             <a href="../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'SHIFT TOO LARGE'</span>);
+0063             disp(<span class="string">'*** UNABLE to apply shift. Shift too large.'</span>);
+0064         <span class="keyword">else</span>
+0065             state.acq.postRotOffsetX=state.acq.postRotOffsetX+state.acq.scanShiftX;
+0066             state.acq.postRotOffsetY=state.acq.postRotOffsetY+state.acq.scanShiftY;        
+0067 
+0068             <span class="keyword">if</span> ~isempty(state.blaster.XList)
+0069                 state.blaster.XList=state.blaster.XList+state.acq.scanShiftX;
+0070                 state.blaster.YList=state.blaster.YList+state.acq.scanShiftY;
+0071                 state.blaster.X=state.blaster.XList(state.blaster.displayPos);
+0072                 state.blaster.Y=state.blaster.YList(state.blaster.displayPos);
+0073                 <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.blaster.X'</span>);
+0074                 <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.blaster.Y'</span>);
+0075             <span class="keyword">end</span>
+0076             state.internal.refShiftX = state.internal.refShiftX + state.acq.scanShiftX;
+0077             state.internal.refShiftY = state.internal.refShiftY + state.acq.scanShiftY;
+0078             state.internal.needNewRotatedMirrorOutput=1;
+0079             state.internal.needNewPcellRepeatedOutput=1;
+0080         <span class="keyword">end</span>
+0081      <span class="keyword">catch</span>
+0082          <a href="../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'AUTOTRACK ERROR'</span>);
+0083          disp(<span class="string">'*** trackImage: Error in autoTrack  '</span>);
+0084          disp(lasterr);
+0085      <span class="keyword">end</span>
+0086 
+0087</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

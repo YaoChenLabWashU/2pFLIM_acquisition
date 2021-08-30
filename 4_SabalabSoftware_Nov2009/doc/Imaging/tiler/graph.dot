@@ -1,0 +1,28 @@
+/* Created by mdot for Matlab */
+digraph m2html {
+  initTiler -> createTilerDAQObjects;
+  initTiler -> makeTilerOutput;
+  initTiler -> tilerAddInputChannels;
+  initTiler -> tilerControls;
+  initTiler -> tilerLineControls;
+  makeTilerOutput -> setTilerStatusString;
+  tilerActionFunction -> setTilerStatusString;
+  tilerControls -> makeTilerOutput;
+  tilerControls -> setTilerStatusString;
+  tilerControls -> startTiler;
+  tilerControls -> tilerSetupForStart;
+  tilerLineControls -> tilerAddInputChannels;
+
+  createTilerDAQObjects [URL="createTilerDAQObjects.html"];
+  initTiler [URL="initTiler.html"];
+  makeTilerOutput [URL="makeTilerOutput.html"];
+  setTilerStatusString [URL="setTilerStatusString.html"];
+  startTiler [URL="startTiler.html"];
+  stopTiler [URL="stopTiler.html"];
+  tilerActionFunction [URL="tilerActionFunction.html"];
+  tilerAddInputChannels [URL="tilerAddInputChannels.html"];
+  tilerControls [URL="tilerControls.html"];
+  tilerLineControls [URL="tilerLineControls.html"];
+  tilerSetDAQParams [URL="tilerSetDAQParams.html"];
+  tilerSetupForStart [URL="tilerSetupForStart.html"];
+}

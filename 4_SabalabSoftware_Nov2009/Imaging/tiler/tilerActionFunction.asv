@@ -1,0 +1,126 @@
+function tilerActionFunction(ai, SamplesAcquired)
+	global state gh
+
+	state.tiler.tileCounter=state.tiler.tileCounter+1;
+
+    XCounter=state.tiler.counterLookup(state.tileCounter);
+    YCounter=state.tiler.counterLookup(state.tileCounter);
+    
+    if ai==state.tiler.mirrorInputObj
+		inputData = getdata(ai, state.tiler.mirrorPointsPerPulse);
+        state.tiler.mirrorDataIn(...
+            :, ...
+            (XCounter + (YCounter-1)*state.tiler.nTilesX)*state.tiler.mirrorPointsPerPulse + 1 : ...
+            (XCounter + (YCounter-1)*state.tiler.nTilesX)*state.tiler.mirrorPointsPerPulse) = 
+            inputData';
+        prefix='mirror';
+	elseif ai==state.tiler.physInputObj
+		inputData = getdata(ai, state.tiler.physPointsPerPulse); 
+		prefix='phys';
+	end
+
+    updateGuiByGlobal('state.tiler.tileCounter');
+
+
+
+	for counter=1:size(inputData,2)
+		eval(['global ' prefix 'DataWave' num2str(counter-1) ' ' prefix 'LastWave' num2str(counter-1)]);
+		eval([prefix 'DataWave' num2str(counter-1) ...
+				'.data(state.tiler.counterLookup(1, state.tiler.tileCounter), state.tiler.counterLookup(2, state.tiler.tileCounter))=mean(inputData(:,counter));']);
+        eval([prefix 'LastWave' num2str(counter-1) '.data = inputData(1:state.tiler.mirrorInputPointsPerPulse,counter)'';']);
+        duplicateo([prefix 'LastWave' num2str(counter-1)], ['tiler' prefix num2str(counter-1) '_' num2str(state.files.fileCounter) '_' num2str(state.tiler.tileCounter)]);
+        
+            % HERE MAKE IT STORE THE DATA AND we'll parse and display at the end    
+    end
+% 	if get(ai, 'SamplesAvailable')<2*state.tiler.mirrorPointsPerPulse
+% 		drawnow
+% 	else
+% 		get(ai, 'SamplesAvailable');
+% 	end
+	return
+	
+	state.tiler.input1(state.tiler.tileCounter)=inputDataMean(1);
+	state.tiler.input2(state.tiler.tileCounter)=inputDataMean(2);
+	setWaveProp(['tileResults'], 'data', inputData(:,2)'/100 + state.tiler.XYLookup(2, state.tiler.tileCounter), 'xscale', [state.tiler.XYLookup(1, state.tiler.tileCounter) .0001]);
+
+	return
+	if state.pulseMode.abort
+		state.pulseMode.abort=1;
+		setPulseModeStatusString('Aborting...');
+		flushPulseModeData;
+		set(gh.pulseModeControl.doitButton, 'String', 'DO IT');
+		turnOnAllChildren(gh.pulseModeControl.figure1);
+		setPulseModeStatusString('Reset');
+
+		return
+	end
+	
+	if ~state.pulseMode.inputPoints==SamplesAcquired.Data.RelSample
+		disp('pulseModeActionFunction: Called with incorrect # of samples acquired');
+		disp('	Returning without processing');
+	end
+	
+	state.pulseMode.statusString='Processing...';
+	updateGuiByGlobal('state.pulseMode.statusString');
+
+	state.pulseMode.inputDataChan1=inputData(:,1);
+	state.pulseMode.inputDataChan2=2000*inputData(:,2);
+	m=mean(state.pulseMode.inputDataChan2...
+        (round(.001*state.pulseMode.actualInputRate) ...
+            :round(.009*state.pulseMode.actualInputRate)));
+    state.pulseMode.inputDataChan2=state.pulseMode.inputDataChan2-m;
+    
+	global pulseModeInputWave1 pulseModeInputWave2
+
+	pulseModeInputWave1.data = state.pulseMode.inputDataChan1;
+	pulseModeInputWave2.data = state.pulseMode.inputDataChan2;
+
+	state.pulseMode.tileResult1=mean(state.pulseMode.inputDataChan1); %...
+%        (round(.001*state.pulseMode.actualInputRate) ...
+ %           :round(.009*state.pulseMode.actualInputRate)));
+	state.pulseMode.tileResult2=-mean(state.pulseMode.inputDataChan2...
+               (round(.010*state.pulseMode.actualInputRate) ...
+            :round(.025*state.pulseMode.actualInputRate)));
+
+ 	updateGuiByGlobal('state.pulseMode.tileResult1');
+ 	updateGuiByGlobal('state.pulseMode.tileResult2');
+
+	if ~state.pulseMode.tiling
+		if state.pulseMode.autoSave
+			savePulseModeAcquisition;
+		end
+		setPulseModeStatusString('Done');
+		set(gh.pulseModeControl.doitButton, 'String', 'DO IT');	
+		turnOnAllChildren(gh.pulseModeControl.figure1);
+	else
+		state.pulseMode.tileImage1(...
+			state.pulseMode.tileXIndex(state.pulseMode.tileCounter)+1, ...
+			state.pulseMode.tileYIndex(state.pulseMode.tileCounter)+1) = state.pulseMode.tileResult1;
+		state.pulseMode.tileImage2(...
+			state.pulseMode.tileXIndex(state.pulseMode.tileCounter)+1, ...
+			state.pulseMode.tileYIndex(state.pulseMode.tileCounter)+1) = state.pulseMode.tileResult2;
+		
+		global tileImageWave1 tileImageWave2
+		
+		tileImageWave1(...
+			state.pulseMode.tileYIndex(state.pulseMode.tileCounter)+1, ...
+			state.pulseMode.tileXIndex(state.pulseMode.tileCounter)+1) = state.pulseMode.tileResult1;
+		tileImageWave2(...
+			state.pulseMode.tileYIndex(state.pulseMode.tileCounter)+1, ...
+			state.pulseMode.tileXIndex(state.pulseMode.tileCounter)+1) = state.pulseMode.tileResult2;
+
+		linearPos = 1 + state.pulseMode.tileXIndex(state.pulseMode.tileCounter) ...
+			+ state.pulseMode.tileSteps*state.pulseMode.tileYIndex(state.pulseMode.tileCounter);
+		
+		state.pulseMode.tileAllResults1(linearPos,:)=state.pulseMode.inputDataChan1;
+		state.pulseMode.tileAllResults2(linearPos,:)=state.pulseMode.inputDataChan2;
+		
+		global tileAllResults1 tileAllResults2
+		tileAllResults1(linearPos,:)=state.pulseMode.inputDataChan1'; %=state.pulseMode.tileAllResults1;
+		tileAllResults2(linearPos,:)=state.pulseMode.inputDataChan2'; %=state.pulseMode.tileAllResults1;
+		
+		drawnow;
+		nextTile;
+	end
+	
+

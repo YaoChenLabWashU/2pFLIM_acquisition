@@ -1,0 +1,603 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of blaster</title>
+  <meta name="keywords" content="blaster">
+  <meta name="description" content="BLASTER M-file for blaster.fig">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Imaging</a> &gt; <a href="index.html">blaster</a> &gt; blaster.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\blaster&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>blaster
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>BLASTER M-file for blaster.fig</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function varargout = blaster(varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> BLASTER M-file for blaster.fig
+      BLASTER, by itself, creates a new BLASTER or raises the existing
+      singleton*.
+
+      H = BLASTER returns the handle to a new BLASTER or the handle to
+      the existing singleton*.
+
+      BLASTER('CALLBACK',hObject,eventData,handles,...) calls the local
+      function named CALLBACK in BLASTER.M with the given input arguments.
+
+      BLASTER('Property','Value',...) creates a new BLASTER or raises the
+      existing singleton*.  Starting from the left, property value pairs are
+      applied to the GUI before blaster_OpeningFunction gets called.  An
+      unrecognized property name or invalid value makes property application
+      stop.  All inputs are passed to blaster_OpeningFcn via varargin.
+
+      *See GUI Options on GUIDE's Tools menu.  Choose &quot;GUI allows only one
+      instance to run (singleton)&quot;.
+
+ See also: GUIDE, GUIDATA, GUIHANDLES</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../Imaging/FluoProcessing/reviewFluorData.html" class="code" title="function reviewFluorData(acqNumber, channelList)">reviewFluorData</a>	</li><li><a href="makeBlasterConfigMenu.html" class="code" title="function makeBlasterConfigMenu">makeBlasterConfigMenu</a>	</li><li><a href="updateBlasterConfigDisplay.html" class="code" title="function updateBlasterConfigDisplay">updateBlasterConfigDisplay</a>	</li><li><a href="updateBlasterConfigLineDisplay.html" class="code" title="function updateBlasterConfigLineDisplay">updateBlasterConfigLineDisplay</a>	</li><li><a href="../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>	</li><li><a href="../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>	This function sets the status field in mainControls.</li><li><a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>	given the name of a global variable, find and update the GUI that contains it</li><li><a href="../../Imaging/guis/siSelectionChannelToFront.html" class="code" title="function siSelectionChannelToFront">siSelectionChannelToFront</a>	</li><li><a href="../../Imaging/io/applyChangesToOutput.html" class="code" title="function applyChangesToOutput(force)">applyChangesToOutput</a>	</li><li><a href="../../Imaging/io/file_io/data/updateHeaderString.html" class="code" title="function updateHeaderString(globalName)">updateHeaderString</a>	</li><li><a href="../../Imaging/io/scanFieldControl/updateReferenceImage.html" class="code" title="function updateReferenceImage">updateReferenceImage</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="initBlaster.html" class="code" title="function initBlaster">initBlaster</a>	initBlaser % initializes the guis and variables necessary for the blaster</li><li><a href="loadBlasterSetup.html" class="code" title="function loadBlasterSetup(pname, fname)">loadBlasterSetup</a>	</li><li><a href="saveBlasterSetup.html" class="code" title="function saveBlasterSetup">saveBlasterSetup</a>	</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function blaster_OpeningFcn(hObject, eventdata, handles, varargin)</a></li><li><a href="#_sub2" class="code">function varargout = blaster_OutputFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub3" class="code">function varargout = blankImaging_Callback(hObject, eventdata, handles, varargin)</a></li><li><a href="#_sub4" class="code">function active_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub5" class="code">function varargout = genericConfig_Callback(hObject, eventdata, handles, varargin)</a></li><li><a href="#_sub6" class="code">function varargout = genericUpdate_Callback(hObject, eventdata, handles, varargin)</a></li><li><a href="#_sub7" class="code">function varargout = commonParam_Callback(hObject, eventdata, handles, varargin)</a></li><li><a href="#_sub8" class="code">function displayPos_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub9" class="code">function pickPosition_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub10" class="code">function X_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub11" class="code">function Y_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub12" class="code">function lineWidth_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub13" class="code">function lineWidth_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub14" class="code">function linePower1_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub15" class="code">function linePower1_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub16" class="code">function config_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub17" class="code">function config_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub18" class="code">function line_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub19" class="code">function line_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub20" class="code">function deleteLine_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub21" class="code">function maxLine_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub22" class="code">function maxLine_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub23" class="code">function configName_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub24" class="code">function updatePositionDisplay</a></li><li><a href="#_sub25" class="code">function handleChange</a></li><li><a href="#_sub26" class="code">function selectArea_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub27" class="code">function tileCounter_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub28" class="code">function tileCounter_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub29" class="code">function tileX_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub30" class="code">function tileX_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub31" class="code">function tileY_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub32" class="code">function tileY_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub33" class="code">function remakeTiler_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub34" class="code">function resetTiler_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub35" class="code">function reviewTile_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub36" class="code">function linePower2_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub37" class="code">function linePower2_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub38" class="code">function linePowerSlider2_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub39" class="code">function linePowerSlider2_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub40" class="code">function nTilesY_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub41" class="code">function nTilesY_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub42" class="code">function nTilesYSlider_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub43" class="code">function nTilesYSlider_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub44" class="code">function analysisButton_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub45" class="code">function parkModeCheckbox_Callback(hObject, eventdata, handles)</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function varargout = blaster(varargin)</a>
+0002 <span class="comment">% BLASTER M-file for blaster.fig</span>
+0003 <span class="comment">%      BLASTER, by itself, creates a new BLASTER or raises the existing</span>
+0004 <span class="comment">%      singleton*.</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">%      H = BLASTER returns the handle to a new BLASTER or the handle to</span>
+0007 <span class="comment">%      the existing singleton*.</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">%      BLASTER('CALLBACK',hObject,eventData,handles,...) calls the local</span>
+0010 <span class="comment">%      function named CALLBACK in BLASTER.M with the given input arguments.</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">%      BLASTER('Property','Value',...) creates a new BLASTER or raises the</span>
+0013 <span class="comment">%      existing singleton*.  Starting from the left, property value pairs are</span>
+0014 <span class="comment">%      applied to the GUI before blaster_OpeningFunction gets called.  An</span>
+0015 <span class="comment">%      unrecognized property name or invalid value makes property application</span>
+0016 <span class="comment">%      stop.  All inputs are passed to blaster_OpeningFcn via varargin.</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">%      *See GUI Options on GUIDE's Tools menu.  Choose &quot;GUI allows only one</span>
+0019 <span class="comment">%      instance to run (singleton)&quot;.</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">% See also: GUIDE, GUIDATA, GUIHANDLES</span>
+0022 
+0023 <span class="comment">% Edit the above text to modify the response to help blaster</span>
+0024 
+0025 <span class="comment">% Last Modified by GUIDE v2.5 21-Sep-2009 15:23:16</span>
+0026 
+0027 <span class="comment">% Begin initialization code - DO NOT EDIT</span>
+0028 gui_Singleton = 1;
+0029 gui_State = struct(<span class="string">'gui_Name'</span>,       mfilename, <span class="keyword">...</span>
+0030                    <span class="string">'gui_Singleton'</span>,  gui_Singleton, <span class="keyword">...</span>
+0031                    <span class="string">'gui_OpeningFcn'</span>, @<a href="#_sub1" class="code" title="subfunction blaster_OpeningFcn(hObject, eventdata, handles, varargin)">blaster_OpeningFcn</a>, <span class="keyword">...</span>
+0032                    <span class="string">'gui_OutputFcn'</span>,  @<a href="#_sub2" class="code" title="subfunction varargout = blaster_OutputFcn(hObject, eventdata, handles)">blaster_OutputFcn</a>, <span class="keyword">...</span>
+0033                    <span class="string">'gui_LayoutFcn'</span>,  [] , <span class="keyword">...</span>
+0034                    <span class="string">'gui_Callback'</span>,   []);
+0035 <span class="keyword">if</span> nargin &amp; isstr(varargin{1})
+0036     gui_State.gui_Callback = str2func(varargin{1});
+0037 <span class="keyword">end</span>
+0038 
+0039 <span class="keyword">if</span> nargout
+0040     [varargout{1:nargout}] = gui_mainfcn(gui_State, varargin{:});
+0041 <span class="keyword">else</span>
+0042     gui_mainfcn(gui_State, varargin{:});
+0043 <span class="keyword">end</span>
+0044 <span class="comment">% End initialization code - DO NOT EDIT</span>
+0045 
+0046 
+0047 <span class="comment">% --- Executes just before blaster is made visible.</span>
+0048 <a name="_sub1" href="#_subfunctions" class="code">function blaster_OpeningFcn(hObject, eventdata, handles, varargin)</a>
+0049 handles.output = hObject;
+0050 guidata(hObject, handles);
+0051 
+0052 <span class="comment">% --- Outputs from this function are returned to the command line.</span>
+0053 <a name="_sub2" href="#_subfunctions" class="code">function varargout = blaster_OutputFcn(hObject, eventdata, handles)</a>
+0054 varargout{1} = handles.output;
+0055 
+0056 
+0057 <a name="_sub3" href="#_subfunctions" class="code">function varargout = blankImaging_Callback(hObject, eventdata, handles, varargin)</a>
+0058     set(hObject, <span class="string">'Enable'</span>, <span class="string">'off'</span>);    
+0059     <span class="keyword">try</span>
+0060         <a href="../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0061         <span class="keyword">global</span> state
+0062         state.internal.needNewPcellPowerOutput=1;
+0063         <a href="#_sub25" class="code" title="subfunction handleChange">handleChange</a>;
+0064     <span class="keyword">catch</span>
+0065         disp([<span class="string">'blaster: '</span> lasterr]);
+0066     <span class="keyword">end</span>
+0067     set(hObject, <span class="string">'Enable'</span>, <span class="string">'on'</span>);    
+0068 
+0069 <a name="_sub4" href="#_subfunctions" class="code">function active_Callback(hObject, eventdata, handles)</a>
+0070     <a href="../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0071     set(hObject, <span class="string">'Enable'</span>, <span class="string">'off'</span>);    
+0072     <span class="keyword">try</span>
+0073         <span class="keyword">global</span> state
+0074         <span class="keyword">if</span> state.blaster.blankImaging
+0075             state.internal.needNewPcellPowerOutput=1;
+0076         <span class="keyword">end</span>
+0077 
+0078         state.internal.needNewPcellRepeatedOutput=1;
+0079         state.internal.needNewRepeatedMirrorOutput=1;
+0080         <a href="../../Imaging/io/applyChangesToOutput.html" class="code" title="function applyChangesToOutput(force)">applyChangesToOutput</a>;
+0081     <span class="keyword">catch</span>
+0082         disp([<span class="string">'blaster: '</span> lasterr]);
+0083     <span class="keyword">end</span>
+0084     <span class="keyword">try</span>
+0085         <a href="../../Imaging/io/scanFieldControl/updateReferenceImage.html" class="code" title="function updateReferenceImage">updateReferenceImage</a>;
+0086     <span class="keyword">catch</span>
+0087         disp([<span class="string">'blaster (updateReferenceImage): '</span> lasterr]);
+0088     <span class="keyword">end</span>
+0089     set(hObject, <span class="string">'Enable'</span>, <span class="string">'on'</span>);    
+0090 
+0091 <a name="_sub5" href="#_subfunctions" class="code">function varargout = genericConfig_Callback(hObject, eventdata, handles, varargin)</a>
+0092     set(hObject, <span class="string">'Enable'</span>, <span class="string">'off'</span>);    
+0093     <span class="keyword">try</span>
+0094         <a href="../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0095         <span class="keyword">global</span> state
+0096 
+0097         <span class="comment">% is the blaster on and the position in use in the current config?</span>
+0098         needUpdate=state.blaster.active &amp; (state.blaster.currentConfig == state.blaster.displayConfig);
+0099             <span class="comment">%&amp; any(state.blaster.displayPos==state.blaster.allConfigs{state.blaster.currentConfig, 2}(:,1));</span>
+0100 
+0101         <span class="keyword">switch</span> get(hObject, <span class="string">'Tag'</span>)
+0102             <span class="keyword">case</span> {<span class="string">'linePos'</span>, <span class="string">'linePosSlider'</span>}        <span class="comment">% position 1 in the config</span>
+0103                 state.blaster.allConfigs{state.blaster.displayConfig, 2}(state.blaster.line, 1)=state.blaster.linePos;
+0104                 <span class="keyword">if</span> needUpdate
+0105                     state.internal.needNewRepeatedMirrorOutput=1;
+0106                 <span class="keyword">end</span>
+0107             <span class="keyword">case</span> {<span class="string">'linePat'</span>, <span class="string">'linePatSlider'</span>}        <span class="comment">% position 2 in the config</span>
+0108                 state.blaster.allConfigs{state.blaster.displayConfig, 2}(state.blaster.line, 2)=state.blaster.linePat;
+0109                 <span class="keyword">if</span> needUpdate
+0110                     state.internal.needNewPcellRepeatedOutput=1;
+0111                     state.internal.needNewRepeatedMirrorOutput=1;
+0112                 <span class="keyword">end</span>
+0113             <span class="keyword">case</span> {<span class="string">'lineWidth'</span>, <span class="string">'lineWidthSlider'</span>}        <span class="comment">% position 3 in the config</span>
+0114                 state.blaster.allConfigs{state.blaster.displayConfig, 2}(state.blaster.line, 3)=state.blaster.lineWidth;
+0115                 <span class="keyword">if</span> needUpdate
+0116                     state.internal.needNewPcellRepeatedOutput=1;
+0117                     state.internal.needNewRepeatedMirrorOutput=1;
+0118                 <span class="keyword">end</span>
+0119             <span class="keyword">case</span> {<span class="string">'linePower1'</span>, <span class="string">'linePowerSlider1'</span>}        <span class="comment">% position 4 in the config</span>
+0120                 state.blaster.allConfigs{state.blaster.displayConfig, 2}(state.blaster.line, 4)=state.blaster.linePower1;
+0121                 <span class="keyword">if</span> needUpdate
+0122                     state.internal.needNewPcellRepeatedOutput=1;
+0123                 <span class="keyword">end</span>
+0124             <span class="keyword">case</span> {<span class="string">'linePower2'</span>, <span class="string">'linePowerSlider2'</span>}        <span class="comment">% position 5 in the config</span>
+0125                 state.blaster.allConfigs{state.blaster.displayConfig, 2}(state.blaster.line, 5)=state.blaster.linePower2;
+0126                 <span class="keyword">try</span>                    
+0127                     disp([<span class="string">'Laser 2 blaster power = '</span> <span class="keyword">...</span>
+0128                             num2str(state.pcell.pcellPowerCal2(1+round(state.blaster.linePower2)))<span class="keyword">...</span>
+0129                             <span class="string">' mW   '</span><span class="keyword">...</span>
+0130                            num2str(100*state.pcell.pcellPowerCal2(1+round(state.blaster.linePower2))/max(state.pcell.pcellPowerCal2))<span class="keyword">...</span>
+0131                            <span class="string">'% max'</span>]);
+0132                     state.pcell.pcellBlasterPower2=state.pcell.pcellPowerCal2(1+round(state.blaster.linePower2));
+0133                     <a href="../../Imaging/io/file_io/data/updateHeaderString.html" class="code" title="function updateHeaderString(globalName)">updateHeaderString</a>(<span class="string">'state.pcell.pcellBlasterPower2'</span>);
+0134                 <span class="keyword">catch</span>
+0135                     state.pcell.pcellBlasterPower2=-1;
+0136                     <a href="../../Imaging/io/file_io/data/updateHeaderString.html" class="code" title="function updateHeaderString(globalName)">updateHeaderString</a>(<span class="string">'state.pcell.pcellBlasterPower2'</span>);
+0137                 <span class="keyword">end</span>
+0138             <span class="keyword">case</span> <span class="string">'lineTilerActive'</span>        <span class="comment">% position 6 in the config</span>
+0139                 state.blaster.allConfigs{state.blaster.displayConfig, 2}(state.blaster.line, 6)=state.blaster.lineTilerActive;
+0140                 <span class="keyword">if</span> needUpdate
+0141                     state.internal.needNewPcellRepeatedOutput=1;
+0142                 <span class="keyword">end</span>
+0143         <span class="keyword">end</span>
+0144         <span class="keyword">if</span> needUpdate
+0145             <a href="../../Imaging/io/applyChangesToOutput.html" class="code" title="function applyChangesToOutput(force)">applyChangesToOutput</a>;
+0146         <span class="keyword">end</span>
+0147     <span class="keyword">catch</span>
+0148         disp([<span class="string">'genericConfig_Callback: '</span> lasterr]);
+0149     <span class="keyword">end</span>
+0150     set(hObject, <span class="string">'Enable'</span>, <span class="string">'on'</span>);    
+0151 
+0152 
+0153 <a name="_sub6" href="#_subfunctions" class="code">function varargout = genericUpdate_Callback(hObject, eventdata, handles, varargin)</a>
+0154     set(hObject, <span class="string">'Enable'</span>, <span class="string">'off'</span>);    
+0155     <span class="keyword">try</span>
+0156         <a href="../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0157         <a href="#_sub25" class="code" title="subfunction handleChange">handleChange</a>;
+0158     <span class="keyword">catch</span>
+0159         disp([<span class="string">'blaster: '</span> lasterr]);
+0160     <span class="keyword">end</span>
+0161     set(hObject, <span class="string">'Enable'</span>, <span class="string">'on'</span>);    
+0162 
+0163 <a name="_sub7" href="#_subfunctions" class="code">function varargout = commonParam_Callback(hObject, eventdata, handles, varargin)</a>
+0164     set(hObject, <span class="string">'Enable'</span>, <span class="string">'off'</span>);    
+0165     <span class="keyword">try</span>
+0166         <a href="../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0167         <a href="#_sub25" class="code" title="subfunction handleChange">handleChange</a>;
+0168     <span class="keyword">catch</span>
+0169         disp([<span class="string">'blaster: '</span> lasterr]);
+0170     <span class="keyword">end</span>
+0171     set(hObject, <span class="string">'Enable'</span>, <span class="string">'on'</span>);    
+0172     
+0173 
+0174 <a name="_sub8" href="#_subfunctions" class="code">function displayPos_Callback(hObject, eventdata, handles)</a>
+0175     <a href="../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0176     <span class="keyword">global</span> state
+0177 
+0178     <span class="keyword">if</span> state.blaster.displayPos&gt;length(state.blaster.indexList)
+0179         state.blaster.displayPos=length(state.blaster.indexList)+1;
+0180         <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.blaster.displayPos'</span>);
+0181         state.blaster.XList(state.blaster.displayPos)=0;
+0182         state.blaster.YList(state.blaster.displayPos)=0;
+0183     <span class="keyword">end</span>
+0184     <a href="#_sub24" class="code" title="subfunction updatePositionDisplay">updatePositionDisplay</a>;
+0185 
+0186 <a name="_sub9" href="#_subfunctions" class="code">function pickPosition_Callback(hObject, eventdata, handles)</a>
+0187     <span class="keyword">global</span> state
+0188     <span class="keyword">if</span> state.internal.status==2 | state.internal.status==3
+0189         <span class="keyword">return</span>
+0190     <span class="keyword">end</span>
+0191     set(hObject, <span class="string">'Enable'</span>, <span class="string">'off'</span>);
+0192     <span class="keyword">try</span>
+0193         <a href="../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Click on blast location'</span>);
+0194         <a href="../../Imaging/guis/siSelectionChannelToFront.html" class="code" title="function siSelectionChannelToFront">siSelectionChannelToFront</a>
+0195 
+0196         [x,y]=ginput(1);
+0197         x=round(x);
+0198         y=round(y);
+0199         
+0200         index = round(y-1) * state.internal.lengthOfXData + round(state.internal.lengthOfXData*(state.internal.fractionStart + x*state.internal.fractionPerPixel));
+0201         
+0202         state.blaster.X = state.acq.rotatedMirrorData2D(index,1);
+0203         state.blaster.Y = state.acq.rotatedMirrorData2D(index,2);
+0204         
+0205         <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.blaster.Y'</span>);
+0206         <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.blaster.X'</span>);
+0207         
+0208         state.blaster.XList(state.blaster.displayPos)=state.blaster.X;
+0209         state.blaster.YList(state.blaster.displayPos)=state.blaster.Y;
+0210         state.blaster.indexXList(state.blaster.displayPos)=x;
+0211         state.blaster.indexYList(state.blaster.displayPos)=y;
+0212         state.blaster.indexList(state.blaster.displayPos)=index;
+0213         
+0214         <a href="../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">''</span>);
+0215 
+0216         <span class="keyword">if</span> state.blaster.active &amp; any(state.blaster.displayPos==state.blaster.allConfigs{state.blaster.currentConfig, 2}(:,1))    <span class="comment">% the position is used in the current config</span>
+0217             state.internal.needNewRepeatedMirrorOutput=1;
+0218             <a href="../../Imaging/io/applyChangesToOutput.html" class="code" title="function applyChangesToOutput(force)">applyChangesToOutput</a>;
+0219         <span class="keyword">end</span>
+0220     <span class="keyword">catch</span>
+0221         <a href="../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'ERROR'</span>);
+0222         disp([<span class="string">'blaster selection : '</span> lasterr]);
+0223     <span class="keyword">end</span>
+0224     
+0225     <span class="keyword">try</span>
+0226         <a href="../../Imaging/io/scanFieldControl/updateReferenceImage.html" class="code" title="function updateReferenceImage">updateReferenceImage</a>
+0227     <span class="keyword">catch</span>
+0228         disp([<span class="string">'blaster selection (updateReferenceImage): '</span> lasterr]);
+0229     <span class="keyword">end</span>
+0230     set(hObject, <span class="string">'Enable'</span>, <span class="string">'on'</span>);
+0231     
+0232 <a name="_sub10" href="#_subfunctions" class="code">function X_Callback(hObject, eventdata, handles)</a>
+0233 
+0234 <a name="_sub11" href="#_subfunctions" class="code">function Y_Callback(hObject, eventdata, handles)</a>
+0235 
+0236 <a name="_sub12" href="#_subfunctions" class="code">function lineWidth_CreateFcn(hObject, eventdata, handles)</a>
+0237 <span class="keyword">if</span> ispc
+0238     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0239 <span class="keyword">else</span>
+0240     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0241 <span class="keyword">end</span>
+0242 
+0243 <a name="_sub13" href="#_subfunctions" class="code">function lineWidth_Callback(hObject, eventdata, handles)</a>
+0244 
+0245 <a name="_sub14" href="#_subfunctions" class="code">function linePower1_CreateFcn(hObject, eventdata, handles)</a>
+0246 <span class="keyword">if</span> ispc
+0247     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0248 <span class="keyword">else</span>
+0249     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0250 <span class="keyword">end</span>
+0251 
+0252 <a name="_sub15" href="#_subfunctions" class="code">function linePower1_Callback(hObject, eventdata, handles)</a>
+0253 
+0254 <a name="_sub16" href="#_subfunctions" class="code">function config_CreateFcn(hObject, eventdata, handles)</a>
+0255     <span class="keyword">if</span> ispc
+0256         set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0257     <span class="keyword">else</span>
+0258         set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0259     <span class="keyword">end</span>
+0260 
+0261 <a name="_sub17" href="#_subfunctions" class="code">function config_Callback(hObject, eventdata, handles)</a>
+0262     <a href="../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0263     <a href="updateBlasterConfigDisplay.html" class="code" title="function updateBlasterConfigDisplay">updateBlasterConfigDisplay</a>
+0264     
+0265 <a name="_sub18" href="#_subfunctions" class="code">function line_CreateFcn(hObject, eventdata, handles)</a>
+0266     <span class="keyword">if</span> ispc
+0267         set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0268     <span class="keyword">else</span>
+0269         set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0270     <span class="keyword">end</span>
+0271 
+0272 <a name="_sub19" href="#_subfunctions" class="code">function line_Callback(hObject, eventdata, handles)</a>
+0273     <a href="../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0274     <span class="keyword">global</span> state
+0275     <span class="keyword">if</span> state.blaster.line &gt; size(state.blaster.allConfigs{state.blaster.displayConfig, 2}, 1)
+0276         state.blaster.line=size(state.blaster.allConfigs{state.blaster.displayConfig, 2}, 1)+1;
+0277         <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.blaster.line'</span>);
+0278         state.blaster.allConfigs{state.blaster.displayConfig, 2}(end+1, :)=    [state.blaster.linePos 0 state.blaster.lineWidth state.blaster.linePower1 state.blaster.linePower2 0];
+0279         <a href="updateBlasterConfigLineDisplay.html" class="code" title="function updateBlasterConfigLineDisplay">updateBlasterConfigLineDisplay</a>;
+0280         state.blaster.maxLine=state.blaster.line;
+0281         <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.blaster.maxLine'</span>)
+0282     <span class="keyword">else</span>
+0283         <a href="updateBlasterConfigLineDisplay.html" class="code" title="function updateBlasterConfigLineDisplay">updateBlasterConfigLineDisplay</a>;
+0284     <span class="keyword">end</span>
+0285 
+0286 <a name="_sub20" href="#_subfunctions" class="code">function deleteLine_Callback(hObject, eventdata, handles)</a>
+0287     <span class="keyword">global</span> state
+0288     <span class="keyword">if</span> size(state.blaster.allConfigs{state.blaster.displayConfig, 2},1) &gt; 1
+0289         state.blaster.allConfigs{state.blaster.displayConfig, 2}(state.blaster.line, :)=[];
+0290         state.blaster.maxLine=size(state.blaster.allConfigs{state.blaster.displayConfig, 2},1);
+0291         <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.blaster.maxLine'</span>)
+0292         <span class="keyword">if</span> state.blaster.line &gt; size(state.blaster.allConfigs{state.blaster.displayConfig, 2}, 1)
+0293             state.blaster.line=size(state.blaster.allConfigs{state.blaster.displayConfig, 2}, 1);
+0294             <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.blaster.line'</span>);
+0295         <span class="keyword">end</span>
+0296         <a href="updateBlasterConfigLineDisplay.html" class="code" title="function updateBlasterConfigLineDisplay">updateBlasterConfigLineDisplay</a>;
+0297     <span class="keyword">else</span>    
+0298         beep;
+0299         <a href="../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'CAN''T DELETE ONLY LINE'</span>);
+0300     <span class="keyword">end</span>
+0301         
+0302 <a name="_sub21" href="#_subfunctions" class="code">function maxLine_CreateFcn(hObject, eventdata, handles)</a>
+0303     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0304 <a name="_sub22" href="#_subfunctions" class="code">function maxLine_Callback(hObject, eventdata, handles)</a>
+0305 
+0306 
+0307         
+0308 <a name="_sub23" href="#_subfunctions" class="code">function configName_Callback(hObject, eventdata, handles)</a>
+0309     <a href="../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0310     <span class="keyword">global</span> state
+0311     state.blaster.allConfigs{state.blaster.displayConfig,1}=state.blaster.displayConfigName;
+0312     <a href="makeBlasterConfigMenu.html" class="code" title="function makeBlasterConfigMenu">makeBlasterConfigMenu</a>
+0313 
+0314 <a name="_sub24" href="#_subfunctions" class="code">function updatePositionDisplay</a>
+0315     <span class="keyword">global</span> state
+0316     state.blaster.X = state.blaster.XList(state.blaster.displayPos);
+0317     <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.blaster.X'</span>);
+0318     state.blaster.Y = state.blaster.YList(state.blaster.displayPos);
+0319     <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.blaster.Y'</span>);
+0320 
+0321 <a name="_sub25" href="#_subfunctions" class="code">function handleChange</a>
+0322     <span class="keyword">global</span> state     
+0323 
+0324     <span class="keyword">if</span> state.blaster.active
+0325         state.internal.needNewPcellRepeatedOutput=1;
+0326         state.internal.needNewRepeatedMirrorOutput=1;
+0327         <a href="../../Imaging/io/applyChangesToOutput.html" class="code" title="function applyChangesToOutput(force)">applyChangesToOutput</a>;
+0328     <span class="keyword">end</span>
+0329 
+0330 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+0331 <span class="comment">% FUNCTIONS RELATED TO THE TILER</span>
+0332 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+0333 
+0334 <a name="_sub26" href="#_subfunctions" class="code">function selectArea_Callback(hObject, eventdata, handles)</a>
+0335     <span class="keyword">global</span> state
+0336     <span class="keyword">if</span> state.internal.status==2 | state.internal.status==3
+0337         <span class="keyword">return</span>
+0338     <span class="keyword">end</span>
+0339     set(hObject, <span class="string">'Enable'</span>, <span class="string">'off'</span>);
+0340     <span class="keyword">try</span>
+0341         <a href="../../Imaging/guis/siSelectionChannelToFront.html" class="code" title="function siSelectionChannelToFront">siSelectionChannelToFront</a>
+0342 
+0343         k = waitforbuttonpress;
+0344         <a href="../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Select Region'</span>);
+0345     
+0346         <span class="keyword">if</span> isempty(findobj(gcf, <span class="string">'Type'</span>, <span class="string">'axes'</span>))
+0347             disp(<span class="string">'*** NO axes***'</span>);
+0348             <span class="keyword">return</span>
+0349         <span class="keyword">end</span>
+0350                 
+0351         point1 = get(gca,<span class="string">'CurrentPoint'</span>);    <span class="comment">% button down detected</span>
+0352         finalRect = rbbox;                   <span class="comment">% return figure units</span>
+0353         <a href="../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">''</span>);
+0354     
+0355         point2 = get(gca,<span class="string">'CurrentPoint'</span>);    <span class="comment">% button up detected</span>
+0356         point1 = point1(1,1:2);              <span class="comment">% extract x and y</span>
+0357         point2 = point2(1,1:2);
+0358         p1 = min(point1,point2);             <span class="comment">% calculate locations</span>
+0359         offset = abs(point1-point2);         <span class="comment">% and dimensions</span>
+0360         x = [p1(1) p1(1)+offset(1) p1(1)+offset(1) p1(1) p1(1)];
+0361         y = [p1(2) p1(2) p1(2)+offset(2) p1(2)+offset(2) p1(2)];
+0362         x=round(x);
+0363         y=round(y);
+0364         state.blaster.tilerAreaX0=x(1);
+0365         state.blaster.tilerAreaX1=x(2);
+0366         state.blaster.tilerAreaY0=y(1);
+0367         state.blaster.tilerAreaY1=y(3);
+0368         remakeTiler;
+0369     <span class="keyword">catch</span>
+0370         <a href="../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'ERROR'</span>);
+0371         disp([<span class="string">'tiler selection : '</span> lasterr]);
+0372     <span class="keyword">end</span>
+0373     set(hObject, <span class="string">'Enable'</span>, <span class="string">'on'</span>);
+0374         
+0375         
+0376 <a name="_sub27" href="#_subfunctions" class="code">function tileCounter_CreateFcn(hObject, eventdata, handles)</a>
+0377     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0378 <a name="_sub28" href="#_subfunctions" class="code">function tileCounter_Callback(hObject, eventdata, handles)</a>
+0379 <a name="_sub29" href="#_subfunctions" class="code">function tileX_CreateFcn(hObject, eventdata, handles)</a>
+0380     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0381 <a name="_sub30" href="#_subfunctions" class="code">function tileX_Callback(hObject, eventdata, handles)</a>
+0382 <a name="_sub31" href="#_subfunctions" class="code">function tileY_CreateFcn(hObject, eventdata, handles)</a>
+0383     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0384 <a name="_sub32" href="#_subfunctions" class="code">function tileY_Callback(hObject, eventdata, handles)</a>
+0385 
+0386 <a name="_sub33" href="#_subfunctions" class="code">function remakeTiler_Callback(hObject, eventdata, handles)</a>
+0387     <a href="../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0388     remakeTiler;
+0389 
+0390 <a name="_sub34" href="#_subfunctions" class="code">function resetTiler_Callback(hObject, eventdata, handles)</a>
+0391     remakeTiler;
+0392     
+0393 <a name="_sub35" href="#_subfunctions" class="code">function reviewTile_Callback(hObject, eventdata, handles)</a>
+0394     <a href="../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0395     <span class="keyword">global</span> state
+0396 
+0397     state.blaster.tileX = state.acq.rotatedMirrorData(state.blaster.tilerIndexList(state.blaster.reviewTile), 1);
+0398     state.blaster.tileY = state.acq.rotatedMirrorData(state.blaster.tilerIndexList(state.blaster.reviewTile), 2);
+0399     <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.tiler.tileX'</span>);
+0400     <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.tiler.tileY'</span>);
+0401 
+0402     <span class="keyword">if</span> state.blaster.posUsingTiler
+0403         state.blaster.indexList(state.blaster.posUsingTiler) = state.blaster.tilerIndexList(state.blaster.reviewTile);
+0404         state.blaster.XList(state.blaster.posUsingTiler) = state.blaster.tileX;
+0405         state.blaster.YList(state.blaster.posUsingTiler) = state.blaster.tileY;
+0406 
+0407         <span class="keyword">if</span> state.blaster.displayPos == state.blaster.posUsingTiler
+0408             state.blaster.X=state.blaster.tileX;
+0409             state.blaster.Y=state.blaster.tileY;
+0410             <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.blaster.X'</span>);
+0411             <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.blaster.Y'</span>);
+0412         <span class="keyword">end</span>
+0413         <a href="../../Imaging/io/scanFieldControl/updateReferenceImage.html" class="code" title="function updateReferenceImage">updateReferenceImage</a>;
+0414     <span class="keyword">end</span>
+0415 
+0416     <span class="keyword">if</span> length(state.tiler.acqList)&gt;=state.tiler.reviewTile
+0417         <span class="keyword">try</span>
+0418             reviewPhysAcq(state.tiler.acqList(state.tiler.reviewTile));
+0419             <a href="../../Imaging/FluoProcessing/reviewFluorData.html" class="code" title="function reviewFluorData(acqNumber, channelList)">reviewFluorData</a>(state.tiler.acqList(state.tiler.reviewTile));
+0420         <span class="keyword">end</span>
+0421     <span class="keyword">end</span>
+0422 
+0423 
+0424 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0425 <a name="_sub36" href="#_subfunctions" class="code">function linePower2_CreateFcn(hObject, eventdata, handles)</a>
+0426 <span class="comment">% hObject    handle to linePower2 (see GCBO)</span>
+0427 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0428 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0429 
+0430 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0431 <span class="comment">%       See ISPC and COMPUTER.</span>
+0432 <span class="keyword">if</span> ispc
+0433     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0434 <span class="keyword">else</span>
+0435     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0436 <span class="keyword">end</span>
+0437 
+0438 
+0439 
+0440 <a name="_sub37" href="#_subfunctions" class="code">function linePower2_Callback(hObject, eventdata, handles)</a>
+0441 <span class="comment">% hObject    handle to linePower2 (see GCBO)</span>
+0442 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0443 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0444 
+0445 <span class="comment">% Hints: get(hObject,'String') returns contents of linePower2 as text</span>
+0446 <span class="comment">%        str2double(get(hObject,'String')) returns contents of linePower2 as a double</span>
+0447 
+0448 
+0449 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0450 <a name="_sub38" href="#_subfunctions" class="code">function linePowerSlider2_CreateFcn(hObject, eventdata, handles)</a>
+0451 <span class="comment">% hObject    handle to linePowerSlider2 (see GCBO)</span>
+0452 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0453 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0454 
+0455 <span class="comment">% Hint: slider controls usually have a light gray background, change</span>
+0456 <span class="comment">%       'usewhitebg' to 0 to use default.  See ISPC and COMPUTER.</span>
+0457 usewhitebg = 1;
+0458 <span class="keyword">if</span> usewhitebg
+0459     set(hObject,<span class="string">'BackgroundColor'</span>,[.9 .9 .9]);
+0460 <span class="keyword">else</span>
+0461     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0462 <span class="keyword">end</span>
+0463 
+0464 
+0465 <span class="comment">% --- Executes on slider movement.</span>
+0466 <a name="_sub39" href="#_subfunctions" class="code">function linePowerSlider2_Callback(hObject, eventdata, handles)</a>
+0467 <span class="comment">% hObject    handle to linePowerSlider2 (see GCBO)</span>
+0468 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0469 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0470 
+0471 <span class="comment">% Hints: get(hObject,'Value') returns position of slider</span>
+0472 <span class="comment">%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider</span>
+0473 
+0474 
+0475 
+0476 
+0477 
+0478 <a name="_sub40" href="#_subfunctions" class="code">function nTilesY_Callback(hObject, eventdata, handles)</a>
+0479 <span class="comment">% hObject    handle to nTilesY (see GCBO)</span>
+0480 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0481 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0482 
+0483 <span class="comment">% Hints: get(hObject,'String') returns contents of nTilesY as text</span>
+0484 <span class="comment">%        str2double(get(hObject,'String')) returns contents of nTilesY as a double</span>
+0485 
+0486 
+0487 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0488 <a name="_sub41" href="#_subfunctions" class="code">function nTilesY_CreateFcn(hObject, eventdata, handles)</a>
+0489 <span class="comment">% hObject    handle to nTilesY (see GCBO)</span>
+0490 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0491 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0492 
+0493 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0494 <span class="comment">%       See ISPC and COMPUTER.</span>
+0495 <span class="keyword">if</span> ispc &amp;&amp; isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+0496     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0497 <span class="keyword">end</span>
+0498 
+0499 
+0500 <span class="comment">% --- Executes on slider movement.</span>
+0501 <a name="_sub42" href="#_subfunctions" class="code">function nTilesYSlider_Callback(hObject, eventdata, handles)</a>
+0502 <span class="comment">% hObject    handle to nTilesYSlider (see GCBO)</span>
+0503 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0504 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0505 
+0506 <span class="comment">% Hints: get(hObject,'Value') returns position of slider</span>
+0507 <span class="comment">%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider</span>
+0508 
+0509 
+0510 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0511 <a name="_sub43" href="#_subfunctions" class="code">function nTilesYSlider_CreateFcn(hObject, eventdata, handles)</a>
+0512 <span class="comment">% hObject    handle to nTilesYSlider (see GCBO)</span>
+0513 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0514 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0515 
+0516 <span class="comment">% Hint: slider controls usually have a light gray background.</span>
+0517 <span class="keyword">if</span> isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+0518     set(hObject,<span class="string">'BackgroundColor'</span>,[.9 .9 .9]);
+0519 <span class="keyword">end</span>
+0520 
+0521 
+0522 <span class="comment">% --- Executes on button press in analysisButton.</span>
+0523 <a name="_sub44" href="#_subfunctions" class="code">function analysisButton_Callback(hObject, eventdata, handles)</a>
+0524 <span class="comment">% hObject    handle to analysisButton (see GCBO)</span>
+0525 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0526 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0527 
+0528 
+0529 <span class="comment">% --- Executes on button press in parkModeCheckbox.</span>
+0530 <a name="_sub45" href="#_subfunctions" class="code">function parkModeCheckbox_Callback(hObject, eventdata, handles)</a>
+0531 <span class="comment">% hObject    handle to parkModeCheckbox (see GCBO)</span>
+0532 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0533 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0534 
+0535 <span class="comment">% Hint: get(hObject,'Value') returns toggle state of parkModeCheckbox</span></pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

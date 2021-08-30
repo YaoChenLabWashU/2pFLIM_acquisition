@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of makePcellLookupTable</title>
+  <meta name="keywords" content="makePcellLookupTable">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Imaging</a> &gt; <a href="index.html">pcell</a> &gt; makePcellLookupTable.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\pcell&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>makePcellLookupTable
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function makePcellLookupTable(chan) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="calibratePCell.html" class="code" title="function calibratePCell(chan)">calibratePCell</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function makePcellLookupTable(chan)</a>
+0002     <span class="keyword">if</span> nargin&lt;1
+0003         chan=1;
+0004     <span class="keyword">end</span>
+0005     <span class="keyword">global</span> state
+0006     
+0007     [hi, hiloc]=max(state.pcell.pcellTestIn);
+0008     [lo, loloc]=min(state.pcell.pcellTestIn);
+0009     
+0010     <span class="keyword">if</span> loloc&lt;hiloc
+0011         start=loloc;
+0012         last=hiloc;
+0013     <span class="keyword">elseif</span> hiloc&lt;loloc
+0014         start=hiloc;
+0015         last=loloc;
+0016     <span class="keyword">else</span>
+0017         disp(<span class="string">'Error: Low power level and high power level found at same voltage'</span>);
+0018         <span class="keyword">return</span>;
+0019     <span class="keyword">end</span>
+0020         
+0021         
+0022     norm=round(1000*(state.pcell.pcellTestIn-lo)/(hi-lo))+1;
+0023     startVolt=state.pcell.pcellTestOut(start);
+0024     endVolt=state.pcell.pcellTestOut(last);
+0025     
+0026     powerLookupTable=linspace(startVolt, endVolt, 1001);
+0027     
+0028 <span class="comment">%     for counter=start+1:last</span>
+0029 <span class="comment">%         startVolt=state.pcell.pcellTestOut(counter-1);</span>
+0030 <span class="comment">%         endVolt=state.pcell.pcellTestOut(counter);</span>
+0031 <span class="comment">%         startPower=norm(counter-1);</span>
+0032 <span class="comment">%         endPower=norm(counter);</span>
+0033 <span class="comment">%         if startPower==endPower</span>
+0034 <span class="comment">%             powerLookupTable(startPower) = startVolt;</span>
+0035 <span class="comment">%         else</span>
+0036 <span class="comment">%             powerLookupTable(startPower:endPower) = startVolt:(endVolt-startVolt)/(endPower-startPower):endVolt;</span>
+0037 <span class="comment">%         end</span>
+0038 <span class="comment">%     end</span>
+0039 <span class="comment">%</span>
+0040     eval([<span class="string">'state.pcell.powerLookupTable'</span> num2str(chan) <span class="string">'=powerLookupTable;'</span>]);
+0041     eval([<span class="string">'global pcellLookupTableWave'</span> num2str(chan)]);
+0042     <span class="keyword">if</span> ~exist([<span class="string">'pcellLookupTableWave'</span> num2str(chan)]) 
+0043         wave([<span class="string">'pcellLookupTableWave'</span> num2str(chan)], powerLookupTable, <span class="string">'xscale'</span>, [0 .1]);
+0044     <span class="keyword">elseif</span> eval([<span class="string">'iswave(pcellLookupTableWave'</span> num2str(chan) <span class="string">')'</span>])
+0045         eval([<span class="string">'pcellLookupTableWave'</span> num2str(chan) <span class="string">'.data = powerLookupTable;'</span>]);
+0046     <span class="keyword">else</span>
+0047         wave([<span class="string">'pcellLookupTableWave'</span> num2str(chan)], powerLookupTable, <span class="string">'xscale'</span>, [0 .1]);
+0048     <span class="keyword">end</span>
+0049 
+0050</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

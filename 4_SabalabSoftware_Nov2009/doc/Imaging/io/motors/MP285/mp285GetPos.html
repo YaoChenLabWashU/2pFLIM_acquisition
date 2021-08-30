@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of mp285GetPos</title>
+  <meta name="keywords" content="mp285GetPos">
+  <meta name="description" content="mp285GetPos retrieves the position information from the mp285 controller">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../../index.html">Home</a> &gt;  <a href="../../../index.html">Imaging</a> &gt; <a href="../../index.html">io</a> &gt; <a href="../index.html">motors</a> &gt; <a href="index.html">MP285</a> &gt; mp285GetPos.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../../index.html"><img alt="<" border="0" src="../../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\io\motors\MP285&nbsp;<img alt=">" border="0" src="../../../../right.png"></a></td></tr></table>-->
+
+<h1>mp285GetPos
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<div class="box"><strong>mp285GetPos retrieves the position information from the mp285 controller</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<div class="box"><strong>function xyz=mp285GetPos </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> mp285GetPos retrieves the position information from the mp285 controller
+ 
+ mp285GetPos 
+ 
+ Class Support
+   -------------
+   
+    the output [x y z] is the position of the mp285 in microns
+        
+   Karel Svoboda 8/28/00 Matlab 6.0R
+     svoboda@cshl.org
+     Modified 2/5/1 by Bernardo Sabatini to support global state and preset serialPortHandle</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../../matlabicon.gif)">
+<li><a href="../../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>	This function sets the status field in mainControls.</li><li><a href="mp285Flush.html" class="code" title="function temp=mp285Flush">mp285Flush</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../../matlabicon.gif)">
+<li><a href="mp285FinishMove.html" class="code" title="function out=mp285FinishMove(check)">mp285FinishMove</a>	mp285SetPos controls the position of the mp285</li><li><a href="mp285SetPos.html" class="code" title="function out=mp285SetPos(xyz, resolution, checkPosition)">mp285SetPos</a>	mp285SetPos controls the position of the mp285</li><li><a href="../../../../Imaging/io/motors/setMotorOffsets.html" class="code" title="function setMotorOffsets">setMotorOffsets</a>	</li><li><a href="../../../../Imaging/io/motors/updateMotorPosition.html" class="code" title="function out=updateMotorPosition(updateHeader)">updateMotorPosition</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 
+0002 <a name="_sub0" href="#_subfunctions" class="code">function xyz=mp285GetPos</a>
+0003 <span class="comment">% mp285GetPos retrieves the position information from the mp285 controller</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% mp285GetPos</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% Class Support</span>
+0008 <span class="comment">%   -------------</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">%    the output [x y z] is the position of the mp285 in microns</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">%   Karel Svoboda 8/28/00 Matlab 6.0R</span>
+0013 <span class="comment">%     svoboda@cshl.org</span>
+0014 <span class="comment">%     Modified 2/5/1 by Bernardo Sabatini to support global state and preset serialPortHandle</span>
+0015 
+0016 xyz=[];
+0017 
+0018 <span class="keyword">global</span> state
+0019 <span class="keyword">if</span> state.motor.motorOn==0
+0020     <span class="keyword">return</span>
+0021 <span class="keyword">end</span>
+0022     
+0023 <span class="keyword">if</span> length(state.motor.serialPortHandle) == 0
+0024     disp([<span class="string">'mp285GetPos: mp285 not configured.'</span>]);
+0025     xyz=[];
+0026     state.motor.lastPositionRead=[];
+0027     <span class="keyword">return</span>
+0028 <span class="keyword">end</span>
+0029 
+0030 <span class="comment">%whos state.motor.serialPortHandle;</span>
+0031 <span class="comment">% get all the junk out</span>
+0032 <a href="mp285Flush.html" class="code" title="function temp=mp285Flush">mp285Flush</a>;
+0033 
+0034 mp285Error=0;
+0035 
+0036 <span class="comment">% read position</span>
+0037 <span class="keyword">try</span>
+0038     fwrite(state.motor.serialPortHandle, [99 13]);         <span class="comment">%'c'CR</span>
+0039 <span class="keyword">catch</span>
+0040     mp285Error=1;
+0041 <span class="keyword">end</span>
+0042 
+0043 <span class="keyword">if</span> ~mp285Error
+0044     <span class="keyword">try</span>
+0045         array = fread(state.motor.serialPortHandle, 3, <span class="string">'long'</span>);        <span class="comment">% read position information (12bytes) including CR (1 byte)</span>
+0046     <span class="keyword">catch</span>
+0047         mp285Error=1;
+0048     <span class="keyword">end</span>
+0049 <span class="keyword">end</span>
+0050 
+0051 <span class="keyword">if</span> ~mp285Error
+0052     <span class="keyword">try</span>
+0053         dummy = fread(state.motor.serialPortHandle, 1);        <span class="comment">% read position information (12bytes) including CR (1 byte)</span>
+0054     <span class="keyword">catch</span>
+0055         mp285Error=1;
+0056     <span class="keyword">end</span>
+0057 <span class="keyword">end</span>
+0058 
+0059 <span class="keyword">if</span> mp285Error
+0060     disp(<span class="string">'mp285GetPos: Error in mp285 Communication'</span>);
+0061     disp(lasterr)
+0062     <a href="../../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'mp285 Error. Reset?'</span>);
+0063     state.motor.lastPositionRead=[];
+0064     <span class="keyword">return</span>
+0065 <span class="keyword">end</span>
+0066 
+0067 
+0068 <span class="keyword">if</span> length(array)&lt;3 | length(dummy)&lt;1                <span class="comment">% check if data is avaiable</span>
+0069     disp([<span class="string">'mp285GetPos: mp285 position data not available '</span>]);
+0070     xyz=[];
+0071     state.motor.lastPositionRead=[];
+0072     <span class="keyword">return</span>;    
+0073 <span class="keyword">end</span>
+0074 xyz=reshape(array,1,3)./[state.motor.calibrationFactorX state.motor.calibrationFactorY state.motor.calibrationFactorZ]/10;
+0075 
+0076 state.motor.lastPositionRead=xyz;
+0077</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

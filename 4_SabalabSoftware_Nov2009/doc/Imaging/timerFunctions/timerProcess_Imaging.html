@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of timerProcess_Imaging</title>
+  <meta name="keywords" content="timerProcess_Imaging">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Imaging</a> &gt; <a href="index.html">timerFunctions</a> &gt; timerProcess_Imaging.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\timerFunctions&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>timerProcess_Imaging
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function timerProcess_Imaging </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../Imaging/FluoProcessing/runFluorAnalysis.html" class="code" title="function runFluorAnalysis(acqNumber)">runFluorAnalysis</a>	</li><li><a href="../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>	This function sets the status field in mainControls.</li><li><a href="../../Imaging/guis/gui_handling/turnOnMenus.html" class="code" title="function turnOnMenus">turnOnMenus</a>	</li><li><a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>	given the name of a global variable, find and update the GUI that contains it</li><li><a href="../../Imaging/guis/siRedrawImages.html" class="code" title="function siRedrawImages(channelList, frame)">siRedrawImages</a>	</li><li><a href="../../Imaging/io/ad_da/resetCounters.html" class="code" title="function resetCounters">resetCounters</a>	</li><li><a href="../../Imaging/io/scanFieldControl/abortGrab.html" class="code" title="function abortGrab">abortGrab</a>	</li><li><a href="../../Imaging/io/scanFieldControl/trackImage.html" class="code" title="function trackImage">trackImage</a>	</li><li><a href="../../Imaging/io/scanFieldControl/updateReferenceImage.html" class="code" title="function updateReferenceImage">updateReferenceImage</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function timerProcess_Imaging</a>
+0002     <span class="keyword">global</span> state gh
+0003 
+0004     
+0005     <span class="keyword">if</span> state.internal.abortActionFunctions
+0006         <a href="../../Imaging/io/scanFieldControl/abortGrab.html" class="code" title="function abortGrab">abortGrab</a>;
+0007         <span class="keyword">return</span>
+0008     <span class="keyword">end</span>
+0009     <a href="../../Imaging/io/scanFieldControl/trackImage.html" class="code" title="function trackImage">trackImage</a>;
+0010     <span class="keyword">if</span> state.internal.abortActionFunctions
+0011         <a href="../../Imaging/io/scanFieldControl/abortGrab.html" class="code" title="function abortGrab">abortGrab</a>;
+0012         <span class="keyword">return</span>
+0013     <span class="keyword">end</span>
+0014 
+0015     <a href="../../Imaging/guis/siRedrawImages.html" class="code" title="function siRedrawImages(channelList, frame)">siRedrawImages</a>;
+0016     <a href="../../Imaging/io/scanFieldControl/updateReferenceImage.html" class="code" title="function updateReferenceImage">updateReferenceImage</a>;
+0017     <span class="keyword">if</span> state.internal.abortActionFunctions
+0018         <a href="../../Imaging/io/scanFieldControl/abortGrab.html" class="code" title="function abortGrab">abortGrab</a>;
+0019         <span class="keyword">return</span>
+0020     <span class="keyword">end</span>
+0021 
+0022     <span class="keyword">if</span> any(state.internal.excelChannel) &amp;&amp; (state.files.autoSave==1)
+0023         <span class="keyword">try</span>
+0024             r=[<span class="string">'r'</span> num2str(25 + state.files.lastAcquisition)];
+0025             ddepoke(state.internal.excelChannel, [r <span class="string">'c10:'</span> r <span class="string">'c12'</span>], [state.files.lastAcquisition state.epoch state.motor.distance]);
+0026             ddepoke(state.internal.excelChannel, [r <span class="string">'c13'</span>], state.configName);
+0027             ddepoke(state.internal.excelChannel, [r <span class="string">'c14:'</span> r <span class="string">'c20'</span>], <span class="keyword">...</span>
+0028                 [state.acq.numberOfFrames state.acq.averaging state.acq.numberOfZSlices <span class="keyword">...</span>
+0029                     state.acq.zoomFactor state.acq.scanRotation state.acq.lineScan state.blaster.active]);
+0030             <span class="keyword">if</span> state.blaster.active
+0031                 ddepoke(state.internal.excelChannel, [r <span class="string">'c21'</span>], state.blaster.setupName);
+0032                 <span class="keyword">if</span> state.blaster.currentConfig
+0033                     ddepoke(state.internal.excelChannel, [r <span class="string">'c22'</span>], state.blaster.currentConfig);
+0034                     ddepoke(state.internal.excelChannel, [r <span class="string">'c23'</span>], state.blaster.allConfigs{state.blaster.currentConfig, 1});    
+0035                 <span class="keyword">end</span>
+0036             <span class="keyword">end</span>
+0037             ddepoke(state.internal.excelChannel, [r <span class="string">'c24:'</span> r <span class="string">'c28'</span>], <span class="keyword">...</span>
+0038                 [state.acq.autoTrack <span class="keyword">...</span>
+0039                     state.acq.pmtOffsetChannel1 <span class="keyword">...</span>
+0040                     state.acq.pmtOffsetChannel2 <span class="keyword">...</span>
+0041                     state.acq.pmtOffsetChannel3 <span class="keyword">...</span>
+0042                     state.acq.binFactor]);
+0043         <span class="keyword">catch</span>
+0044             disp(<span class="string">'timerProcess_Imaging : unable to link to excel'</span>);
+0045         <span class="keyword">end</span>
+0046     <span class="keyword">end</span>
+0047     
+0048     <span class="keyword">try</span>
+0049         <span class="keyword">if</span> isfield(state, <span class="string">'analysis'</span>)
+0050             <span class="keyword">if</span> isfield(state.analysis, <span class="string">'analysisMode'</span>)
+0051                 <a href="../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Analyze Fluor....'</span>);
+0052                 <a href="../../Imaging/FluoProcessing/runFluorAnalysis.html" class="code" title="function runFluorAnalysis(acqNumber)">runFluorAnalysis</a>(state.files.fileCounter);
+0053             <span class="keyword">end</span>
+0054         <span class="keyword">end</span>
+0055     <span class="keyword">catch</span>
+0056         <a href="../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'ERROR in fluor analysis'</span>);
+0057         disp(<span class="string">'*** endAcquisition: error in fluor analysis'</span>);
+0058         disp(lasterr);
+0059     <span class="keyword">end</span>    
+0060 
+0061     <span class="keyword">if</span> state.internal.abortActionFunctions
+0062         <a href="../../Imaging/io/scanFieldControl/abortGrab.html" class="code" title="function abortGrab">abortGrab</a>;
+0063         <span class="keyword">return</span>
+0064     <span class="keyword">end</span>
+0065 
+0066     state.internal.status=0;
+0067 
+0068     <span class="keyword">if</span> state.cycle.loopingStatus==0        <span class="comment">% not a loop, just a single</span>
+0069         set(gh.siGUI_ImagingControls.focusButton, <span class="string">'Visible'</span>, <span class="string">'On'</span>);
+0070         set(gh.siGUI_ImagingControls.grabOneButton, <span class="string">'String'</span>, <span class="string">'GRAB'</span>);
+0071         set(gh.siGUI_ImagingControls.grabOneButton, <span class="string">'Visible'</span>, <span class="string">'On'</span>);    
+0072         <a href="../../Imaging/guis/gui_handling/turnOnMenus.html" class="code" title="function turnOnMenus">turnOnMenus</a>;
+0073     <span class="keyword">end</span>
+0074     
+0075     <span class="keyword">if</span> state.blaster.active &amp;&amp; any(state.blaster.allConfigs{state.blaster.currentConfig, 2}(:, 6))
+0076         state.blaster.acqList(state.blaster.tileCounter)=state.files.lastAcquisition;
+0077         state.blaster.tileCounter = state.blaster.tileCounter + 1;
+0078         <span class="keyword">if</span> state.blaster.tileCounter&gt;state.blaster.nTiles^2
+0079             beep;
+0080             disp(<span class="string">'*** FINISHED TILER LOOP. ***'</span>)
+0081             state.blaster.tileCounter=1;
+0082         <span class="keyword">end</span>
+0083         <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.blaster.tileCounter'</span>)
+0084         state.internal.needNewRepeatedMirrorOutput=1;
+0085     <span class="keyword">end</span>    
+0086 
+0087     <span class="keyword">if</span> state.internal.abortActionFunctions
+0088         <a href="../../Imaging/io/scanFieldControl/abortGrab.html" class="code" title="function abortGrab">abortGrab</a>;
+0089         <span class="keyword">return</span>
+0090     <span class="keyword">end</span>
+0091     
+0092     <span class="keyword">if</span> state.db.conn~=0
+0093         fileName = [state.files.fullFileName <span class="string">'.tif'</span>];
+0094         state.db.imaging.tiff_lo_oid=lo_import(state.db.conn, fileName);
+0095         addRecordByTable(<span class="string">'imagingAcq'</span>);
+0096     <span class="keyword">end</span>
+0097 
+0098     <a href="../../Imaging/io/ad_da/resetCounters.html" class="code" title="function resetCounters">resetCounters</a>;
+0099 
+0100        <span class="comment">% if there is slice specific pcell control, ensure that it gets</span>
+0101     <span class="comment">% remade with slice=1 in the next grab</span>
+0102     <span class="keyword">if</span> state.pcell.boxSliceSpecific
+0103         state.internal.needNewPcellRepeatedOutput=1;
+0104     <span class="keyword">end</span>
+0105</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

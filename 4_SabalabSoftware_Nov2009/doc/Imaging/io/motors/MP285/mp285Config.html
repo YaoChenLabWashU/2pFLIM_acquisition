@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of mp285Config</title>
+  <meta name="keywords" content="mp285Config">
+  <meta name="description" content="mp285Config configures the serial port for the mp285 Sutter controler">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../../index.html">Home</a> &gt;  <a href="../../../index.html">Imaging</a> &gt; <a href="../../index.html">io</a> &gt; <a href="../index.html">motors</a> &gt; <a href="index.html">MP285</a> &gt; mp285Config.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../../index.html"><img alt="<" border="0" src="../../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\io\motors\MP285&nbsp;<img alt=">" border="0" src="../../../../right.png"></a></td></tr></table>-->
+
+<h1>mp285Config
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<div class="box"><strong>mp285Config configures the serial port for the mp285 Sutter controler</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<div class="box"><strong>function out=mp285Config </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> mp285Config configures the serial port for the mp285 Sutter controler
+ 
+ mp285Config sets up the serial port (given by sPort, i.e. 'COM2') for communication with 
+ Sutter's mp285 stepper motor controller. 
+ 
+ Class Support
+   -------------
+   The input char variable is the specification of the serial port, 'COM1' or 'COM2'
+    The defulat if 'COM2'. The output is the object handle for the serial port
+        
+   Karel Svoboda 10/1/00 Matlab 6.0R
+     svoboda@cshl.org
+    Modified 2/5/1 by Bernardo Sabatini to support global state variable</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../../matlabicon.gif)">
+<li><a href="mp285SetVelocity.html" class="code" title="function out=mp285SetVelocity(vel, res)">mp285SetVelocity</a>	</li><li><a href="mp285Talk.html" class="code" title="function out=mp285Talk(in, verbose)">mp285Talk</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../../matlabicon.gif)">
+<li><a href="../../../../Imaging/io/initImaging.html" class="code" title="function initImaging(userFile, analysisMode)">initImaging</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function out=mp285Config</a>
+0002 <span class="comment">% mp285Config configures the serial port for the mp285 Sutter controler</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% mp285Config sets up the serial port (given by sPort, i.e. 'COM2') for communication with</span>
+0005 <span class="comment">% Sutter's mp285 stepper motor controller.</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% Class Support</span>
+0008 <span class="comment">%   -------------</span>
+0009 <span class="comment">%   The input char variable is the specification of the serial port, 'COM1' or 'COM2'</span>
+0010 <span class="comment">%    The defulat if 'COM2'. The output is the object handle for the serial port</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">%   Karel Svoboda 10/1/00 Matlab 6.0R</span>
+0013 <span class="comment">%     svoboda@cshl.org</span>
+0014 <span class="comment">%    Modified 2/5/1 by Bernardo Sabatini to support global state variable</span>
+0015 
+0016     <span class="keyword">global</span> state
+0017     state.motor.lastPositionRead=[0 0 0];
+0018     
+0019     <span class="keyword">if</span> state.motor.resolutionBit==0
+0020         state.motor.resolution=10;
+0021     <span class="keyword">else</span>
+0022         state.motor.resolution=40;
+0023     <span class="keyword">end</span>
+0024     
+0025     <span class="keyword">if</span> state.motor.motorOn==0
+0026         <span class="keyword">return</span>
+0027     <span class="keyword">end</span>
+0028 
+0029 
+0030 <span class="comment">% close all open serial port objects on the same port and remove</span>
+0031 <span class="comment">% the relevant object form the workspace</span>
+0032     port=instrfind(<span class="string">'Port'</span>,state.motor.port);
+0033     <span class="keyword">if</span> length(port) &gt; 0; 
+0034         fclose(port); 
+0035         delete(port);
+0036         clear port;
+0037     <span class="keyword">end</span>
+0038 
+0039 <span class="comment">% make serial object named 'mp285'</span>
+0040     state.motor.serialPortHandle = serial(state.motor.port);
+0041     set(state.motor.serialPortHandle, <span class="string">'BaudRate'</span>, state.motor.baud, <span class="string">'Parity'</span>, <span class="string">'none'</span> , <span class="string">'Terminator'</span>, <span class="string">'CR'</span>, <span class="keyword">...</span>
+0042         <span class="string">'StopBits'</span>, 1, <span class="string">'Timeout'</span>, state.motor.timeout, <span class="string">'Name'</span>, <span class="string">'mp285'</span>);
+0043 
+0044 <span class="comment">% open and check status</span>
+0045     fopen(state.motor.serialPortHandle);
+0046     stat=get(state.motor.serialPortHandle, <span class="string">'Status'</span>);
+0047     <span class="keyword">if</span> ~strcmp(stat, <span class="string">'open'</span>)
+0048         disp([<span class="string">' mp285Config: trouble opening port; cannot to proceed'</span>]);
+0049         state.motor.serialPortHandle=[];
+0050         out=1;
+0051         <span class="keyword">return</span>;
+0052     <span class="keyword">end</span>
+0053 
+0054 <a href="mp285Talk.html" class="code" title="function out=mp285Talk(in, verbose)">mp285Talk</a>(state.motor.AbsORRel);
+0055 <a href="mp285Talk.html" class="code" title="function out=mp285Talk(in, verbose)">mp285Talk</a>(<span class="string">'n'</span>); <span class="comment">% updateScreen</span>
+0056 <a href="mp285SetVelocity.html" class="code" title="function out=mp285SetVelocity(vel, res)">mp285SetVelocity</a>(state.motor.velocitySlow,0);
+0057 
+0058 out=0;
+0059</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

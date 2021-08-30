@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of resetImageProperties</title>
+  <meta name="keywords" content="resetImageProperties">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Imaging</a> &gt; <a href="../index.html">guis</a> &gt; <a href="index.html">gui_building</a> &gt; resetImageProperties.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\guis\gui_building&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>resetImageProperties
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function resetImageProperties(moveWindows) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Imaging/guis/gui_callbacks/updateClim.html" class="code" title="function updateClim(channelList, frame)">updateClim</a>	</li><li><a href="../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>	This function sets the status field in mainControls.</li><li><a href="../../../Imaging/io/scanFieldControl/setupScanImageFigurePositions.html" class="code" title="function setupScanImageFigurePositions">setupScanImageFigurePositions</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Imaging/io/scanFieldControl/applyImagingInputParams.html" class="code" title="function applyImagingInputParams">applyImagingInputParams</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function resetImageProperties(moveWindows)</a>
+0002     <span class="keyword">global</span> state 
+0003 
+0004     <span class="keyword">if</span> nargin&lt;1
+0005         moveWindows=1;
+0006     <span class="keyword">end</span>
+0007     <a href="../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Making image windows...'</span>);
+0008     axisPosition = [0 0 1 1];
+0009     
+0010     <span class="comment">% This loop sets up the aspect ratios for the figures</span>
+0011     <a href="../../../Imaging/guis/gui_callbacks/updateClim.html" class="code" title="function updateClim(channelList, frame)">updateClim</a>;
+0012     
+0013     <a href="../../../Imaging/io/scanFieldControl/setupScanImageFigurePositions.html" class="code" title="function setupScanImageFigurePositions">setupScanImageFigurePositions</a>;
+0014     imageAspectRatio = state.internal.imageAspectRatioBias*state.acq.scanAmplitudeY/state.acq.scanAmplitudeX/(state.acq.linesPerFrame/state.acq.pixelsPerLine);
+0015 
+0016     set(state.internal.GraphFigure, <span class="string">'Visible'</span>, <span class="string">'off'</span>);
+0017     set(state.internal.MaxFigure, <span class="string">'Visible'</span>, <span class="string">'off'</span>);
+0018     <span class="comment">% This loop updates the appropriate images, figures and axes.</span>
+0019     
+0020     <span class="keyword">if</span> state.acq.dualLaserMode==1   <span class="comment">% lasers go simulataneously therefor one image window per laser</span>
+0021         channelList=1:state.init.maximumNumberOfInputChannels;
+0022     <span class="keyword">else</span>
+0023         channelList=[1:state.init.maximumNumberOfInputChannels 11:10+state.init.maximumNumberOfInputChannels];
+0024     <span class="keyword">end</span>
+0025     
+0026     <span class="keyword">for</span> channelCounter = channelList <span class="comment">% Count through all the channels</span>
+0027         inputChannelCounter=mod(channelCounter, 10);
+0028         <span class="keyword">if</span> moveWindows
+0029             set(state.internal.GraphFigure(channelCounter), <span class="keyword">...</span>
+0030                 <span class="string">'Position'</span>, eval([<span class="string">'state.windowPositions.image'</span> num2str(channelCounter) <span class="string">'_position'</span>])<span class="keyword">...</span>
+0031                 );
+0032         <span class="keyword">end</span>
+0033         set(state.internal.axis(channelCounter),<span class="keyword">...</span>
+0034             <span class="string">'XLim'</span>,  [0 state.acq.pixelsPerLine], <span class="keyword">...</span>
+0035             <span class="string">'YLim'</span>, [0 state.acq.linesPerFrame], <span class="keyword">...</span>
+0036             <span class="string">'Position'</span>, axisPosition, <span class="keyword">...</span>
+0037             <span class="string">'DataAspectRatio'</span>, [imageAspectRatio 1 1]<span class="keyword">...</span>
+0038             );
+0039         
+0040         <span class="keyword">if</span> state.acq.imagingChannel(inputChannelCounter)    <span class="comment">% is thsi one to be imaged?</span>
+0041             set(state.internal.GraphFigure(channelCounter), <span class="string">'Visible'</span>, <span class="string">'on'</span>);
+0042         <span class="keyword">end</span>
+0043         
+0044         <span class="keyword">if</span> moveWindows
+0045             set(state.internal.MaxFigure(channelCounter), <span class="keyword">...</span>
+0046                 <span class="string">'Position'</span>, eval([<span class="string">'state.windowPositions.maxImage'</span> num2str(channelCounter) <span class="string">'_position'</span>])<span class="keyword">...</span>
+0047                 );
+0048         <span class="keyword">end</span>
+0049         set(state.internal.maxaxis(channelCounter),<span class="keyword">...</span>
+0050             <span class="string">'XLim'</span>,  [0 state.acq.pixelsPerLine], <span class="keyword">...</span>
+0051             <span class="string">'YLim'</span>, [0 state.acq.linesPerFrame], <span class="keyword">...</span>
+0052             <span class="string">'Position'</span>, axisPosition, <span class="keyword">...</span>
+0053             <span class="string">'DataAspectRatio'</span>, [imageAspectRatio 1 1]<span class="keyword">...</span>
+0054             );
+0055         
+0056         <span class="keyword">if</span> state.acq.maxImage(inputChannelCounter)    <span class="comment">% is thsi one to be imaged?</span>
+0057             set(state.internal.MaxFigure(channelCounter), <span class="string">'Visible'</span>, <span class="string">'on'</span>);
+0058         <span class="keyword">end</span>
+0059         
+0060     <span class="keyword">end</span>
+0061 
+0062     <span class="keyword">if</span> moveWindows
+0063         set(state.internal.compositeFigure, <span class="keyword">...</span>
+0064             <span class="string">'Position'</span>, state.windowPositions.compositeImage_position<span class="keyword">...</span>
+0065             );
+0066     <span class="keyword">end</span>
+0067     set(state.internal.compositeAxis, <span class="keyword">...</span>
+0068         <span class="string">'XLim'</span>,  [0 state.acq.pixelsPerLine], <span class="keyword">...</span>
+0069         <span class="string">'YLim'</span>, [0 state.acq.linesPerFrame], <span class="keyword">...</span>
+0070         <span class="string">'Position'</span>, axisPosition, <span class="keyword">...</span>
+0071         <span class="string">'DataAspectRatio'</span>, [imageAspectRatio 1 1]<span class="keyword">...</span>
+0072         );
+0073     <span class="keyword">if</span> state.internal.composite    <span class="comment">% is thsi one to be imaged?</span>
+0074         set(state.internal.compositeFigure, <span class="string">'Visible'</span>, <span class="string">'on'</span>);
+0075     <span class="keyword">else</span>
+0076         set(state.internal.compositeFigure, <span class="string">'Visible'</span>, <span class="string">'off'</span>);
+0077     <span class="keyword">end</span>
+0078     
+0079     
+0080     <a href="../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">''</span>);</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

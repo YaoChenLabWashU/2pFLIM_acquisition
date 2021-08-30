@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of plotROIScansMultiPanel</title>
+  <meta name="keywords" content="plotROIScansMultiPanel">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Imaging</a> &gt; <a href="index.html">FluoProcessing</a> &gt; plotROIScansMultiPanel.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\FluoProcessing&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>plotROIScansMultiPanel
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function plotROIScansMultiPanel(channels, rois) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="ROIScanName.html" class="code" title="function out=ROIScanName(channel, roi, acq)">ROIScanName</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function plotROIScansMultiPanel(channels, rois)</a>
+0002     <span class="keyword">global</span> state
+0003     
+0004     <span class="keyword">if</span> nargin&lt;2
+0005         rois=1:state.analysis.numberOfROI;
+0006     <span class="keyword">end</span>
+0007     <span class="keyword">if</span> nargin&lt;1
+0008         channels=find([1:state.init.maximumNumberOfInputChannels].*<span class="keyword">...</span>
+0009             [state.analysis.plot1 state.analysis.plot2 state.analysis.plot3 state.analysis.plot4].*<span class="keyword">...</span>
+0010             [state.analysis.anaChannel1 state.analysis.anaChannel2 state.analysis.anaChannel3 state.analysis.anaChannel4]);
+0011         <span class="keyword">if</span> state.acq.dualLaserMode==2
+0012             channels=[channels channels+10];
+0013         <span class="keyword">end</span>
+0014     <span class="keyword">end</span>
+0015     
+0016     colorList=<span class="string">'kgrbmckkkkkgrbmckkkk'</span>;
+0017 
+0018     sq=floor(sqrt(length(channels)));
+0019     
+0020     <span class="keyword">if</span> sq==sqrt(length(channels))
+0021         xl=sq;
+0022         yl=sq;
+0023     <span class="keyword">else</span>
+0024         xl=sq;
+0025         yl=sq+1;
+0026     <span class="keyword">end</span>
+0027     
+0028     panelCounter=1;
+0029      <span class="keyword">for</span> channel=channels
+0030         roiCounter=1;
+0031         <span class="keyword">for</span> roi=rois
+0032             <span class="keyword">if</span> ~iswave(<a href="ROIScanName.html" class="code" title="function out=ROIScanName(channel, roi, acq)">ROIScanName</a>(channel, roi))
+0033                 wave(<a href="ROIScanName.html" class="code" title="function out=ROIScanName(channel, roi, acq)">ROIScanName</a>(channel, roi), []);
+0034             <span class="keyword">end</span>
+0035             <span class="keyword">if</span> (panelCounter==1) &amp;&amp; (roiCounter==1)
+0036                 figure(<span class="string">'Color'</span>, <span class="string">'w'</span>, <span class="string">'DoubleBuffer'</span>, <span class="string">'on'</span>, <span class="string">'CloseRequestFcn'</span>, <span class="string">'plotWaveDeleteFcn'</span>,<span class="string">'KeyPressFcn'</span>,<span class="string">'plotKeyPressFcn'</span>,<span class="keyword">...</span>
+0037                       <span class="string">'WindowButtonDownFcn'</span>,<span class="string">'plotButtonDwnFcn'</span>,<span class="string">'WindowButtonUpFcn'</span>,<span class="string">'plotButtonUpFcn'</span>);            
+0038                 set(gcf, <span class="string">'NumberTitle'</span>, <span class="string">'off'</span>, <span class="string">'Name'</span>, <span class="string">'ROI Fluorescence Data'</span>);
+0039             <span class="keyword">end</span>
+0040             subplot(xl,yl,panelCounter);
+0041             append([<a href="ROIScanName.html" class="code" title="function out=ROIScanName(channel, roi, acq)">ROIScanName</a>(channel, roi)]);
+0042             title([<span class="string">'Chan '</span> num2str(channel) <span class="string">' ROI '</span> num2str(rois)]);
+0043             roiCounter=roiCounter+1;
+0044             setPlotProps(<a href="ROIScanName.html" class="code" title="function out=ROIScanName(channel, roi, acq)">ROIScanName</a>(channel, roi), <span class="string">'color'</span>, colorList(channel+1), <span class="string">'LineWidth'</span>, roiCounter*.5);
+0045         <span class="keyword">end</span>
+0046         panelCounter=panelCounter+1;
+0047     <span class="keyword">end</span>
+0048</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of mp285SetVelocity</title>
+  <meta name="keywords" content="mp285SetVelocity">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../../index.html">Home</a> &gt;  <a href="../../../index.html">Imaging</a> &gt; <a href="../../index.html">io</a> &gt; <a href="../index.html">motors</a> &gt; <a href="index.html">MP285</a> &gt; mp285SetVelocity.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../../index.html"><img alt="<" border="0" src="../../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\io\motors\MP285&nbsp;<img alt=">" border="0" src="../../../../right.png"></a></td></tr></table>-->
+
+<h1>mp285SetVelocity
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<div class="box"><strong>function out=mp285SetVelocity(vel, res) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../../matlabicon.gif)">
+<li><a href="mp285Flush.html" class="code" title="function temp=mp285Flush">mp285Flush</a>	</li><li><a href="mp285ReadAnswer.html" class="code" title="function out=mp285ReadAnswer">mp285ReadAnswer</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../../matlabicon.gif)">
+<li><a href="../../../../Imaging/guis/gui_callbacks/executeGrabOneStackCallback.html" class="code" title="function executeGrabOneStackCallback(h)">executeGrabOneStackCallback</a>	executeGrabOneCallback(h).m******</li><li><a href="mp285Config.html" class="code" title="function out=mp285Config">mp285Config</a>	mp285Config configures the serial port for the mp285 Sutter controler</li><li><a href="../../../../Imaging/io/motors/executeGoHome.html" class="code" title="function moved=executeGoHome">executeGoHome</a>	</li><li><a href="../../../../Imaging/io/motors/gotoPosition.html" class="code" title="function gotoPosition(pos)">gotoPosition</a>	</li><li><a href="../../../../Imaging/io/motors/gotoZero.html" class="code" title="function gotoZero">gotoZero</a>	</li><li><a href="../../../../Imaging/io/motors/moveToRelativePosition.html" class="code" title="function moveToRelativePosition(h)">moveToRelativePosition</a>	updateRelPos.m*****</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function out=mp285SetVelocity(vel, res)</a>
+0002 
+0003     out=1;
+0004     <span class="keyword">if</span> nargin==0
+0005         vel=80;
+0006         res=0;
+0007     <span class="keyword">elseif</span> nargin==1
+0008         res=0;
+0009     <span class="keyword">elseif</span> nargin&gt;2
+0010         disp(<span class="string">'mp285SetVelocity: Expect only upto 2 arguments.'</span>);
+0011         <span class="keyword">return</span>
+0012     <span class="keyword">end</span>
+0013     
+0014     <span class="keyword">global</span> state
+0015     <span class="keyword">if</span> state.motor.motorOn==0
+0016         <span class="keyword">return</span>
+0017     <span class="keyword">end</span>
+0018 
+0019     <span class="keyword">if</span> length(state.motor.serialPortHandle) == 0
+0020         disp([<span class="string">'mp285SetVelocity: mp285 not configured'</span>]);
+0021         state.motor.lastPositionRead=[];
+0022         <span class="keyword">return</span>;
+0023     <span class="keyword">end</span>
+0024 
+0025     state.motor.velocity=vel;
+0026     <span class="keyword">if</span> res==1
+0027         vel=bitor(2^15,vel);
+0028     <span class="keyword">end</span>
+0029     
+0030     <span class="comment">% flush all the junk out</span>
+0031     <a href="mp285Flush.html" class="code" title="function temp=mp285Flush">mp285Flush</a>;
+0032     fwrite(state.motor.serialPortHandle, <span class="string">'V'</span>);
+0033     fwrite(state.motor.serialPortHandle, vel, <span class="string">'uint16'</span>);
+0034     fwrite(state.motor.serialPortHandle, 13);
+0035     out=<a href="mp285ReadAnswer.html" class="code" title="function out=mp285ReadAnswer">mp285ReadAnswer</a>;
+0036     <span class="keyword">if</span> isempty(out)        <span class="comment">% check if CR was returned</span>
+0037         disp([<span class="string">'mp285SetVelocity: Timeout in serial communication'</span>]); 
+0038         out=1;
+0039         <span class="keyword">return</span>;
+0040     <span class="keyword">elseif</span> length(out)&gt;1 | out(1)~=13
+0041         disp([<span class="string">'mp285SetVelocity: mp285 returned an error:'</span> num2str(out)]);
+0042         out=1;
+0043         <span class="keyword">return</span>
+0044     <span class="keyword">end</span>
+0045         
+0046     out=0;
+0047</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

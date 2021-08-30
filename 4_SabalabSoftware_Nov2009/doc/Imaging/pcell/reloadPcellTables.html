@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of reloadPcellTables</title>
+  <meta name="keywords" content="reloadPcellTables">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Imaging</a> &gt; <a href="index.html">pcell</a> &gt; reloadPcellTables.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\pcell&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>reloadPcellTables
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function reloadPcellTables </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>	This function sets the status field in mainControls.</li><li><a href="../../Imaging/io/applyChangesToOutput.html" class="code" title="function applyChangesToOutput(force)">applyChangesToOutput</a>	</li><li><a href="turnOnAllChildren.html" class="code" title="function turnOnAllChildren(h)">turnOnAllChildren</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../Imaging/timerFunctions/timerUserSettings_Imaging.html" class="code" title="function timerUserSettings_Imaging">timerUserSettings_Imaging</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function reloadPcellTables</a>
+0002     <span class="keyword">global</span> state
+0003     
+0004     <span class="keyword">if</span> state.pcell.pcellOn
+0005         <a href="../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Loading pcell tables'</span>);
+0006         <span class="keyword">if</span> ~isempty(state.pcell.pcellTablePath) &amp;&amp; ischar(state.pcell.pcellTablePath)
+0007     <span class="comment">%        cd(state.pcell.pcellTablePath);</span>
+0008             pname=state.pcell.pcellTablePath;
+0009     
+0010             <span class="keyword">for</span> chan=1:state.pcell.numberOfPcells
+0011                 fname = eval([<span class="string">'state.pcell.pcellTableName'</span> num2str(chan)]);
+0012                 <span class="keyword">if</span> ischar(fname) &amp;&amp; ~isempty(fname)
+0013                     periods=findstr(fname, <span class="string">'.'</span>);
+0014                     <span class="keyword">if</span> any(periods)                                
+0015                         fname=fname(1:periods(1)-1);
+0016                     <span class="keyword">end</span>        
+0017             
+0018                     load(fullfile(pname, [fname <span class="string">'.pow'</span>]), <span class="string">'-mat'</span>);            <span class="comment">% load file as MATLAB workspace file</span>
+0019                     eval([<span class="string">'state.pcell.pcellTableName'</span> num2str(chan) <span class="string">'=fname;'</span>]);
+0020                     eval([<span class="string">'state.pcell.powerLookupTable'</span> num2str(chan) <span class="string">'=plt;'</span>]);
+0021                     disp([<span class="string">'Loaded power table for channel '</span> num2str(chan) <span class="string">' from '</span> fullfile(pname, [fname <span class="string">'.pow'</span>])]);
+0022                 <span class="keyword">end</span>
+0023             <span class="keyword">end</span>
+0024                             
+0025             <span class="keyword">global</span> gh
+0026             <a href="turnOnAllChildren.html" class="code" title="function turnOnAllChildren(h)">turnOnAllChildren</a>(gh.pcellControl.figure1);
+0027             <span class="keyword">if</span> ~state.analysisMode &amp;&amp; ~state.initializing
+0028                 state.internal.needNewPcellPowerOutput=1;
+0029                 <a href="../../Imaging/io/applyChangesToOutput.html" class="code" title="function applyChangesToOutput(force)">applyChangesToOutput</a>;
+0030             <span class="keyword">end</span>
+0031             <a href="../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">''</span>);
+0032 <span class="comment">%         else</span>
+0033 <span class="comment">%             beep</span>
+0034 <span class="comment">%             setStatusString('INCORRECT PCELL PATH');</span>
+0035 <span class="comment">%             disp('*** INCORRECT PCELL PATH');</span>
+0036         <span class="keyword">end</span>    
+0037     <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

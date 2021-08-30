@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of plotROIAvgScansMultiPanel</title>
+  <meta name="keywords" content="plotROIAvgScansMultiPanel">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Imaging</a> &gt; <a href="index.html">FluoProcessing</a> &gt; plotROIAvgScansMultiPanel.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\FluoProcessing&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>plotROIAvgScansMultiPanel
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function plotROIAvgScans(epochs, pulses, channels, rois) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="allCurrentROIAvgScanNames.html" class="code" title="function out=allCurrentROIAvgScanNames(epochs, pulses, channels, rois)">allCurrentROIAvgScanNames</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function plotROIAvgScans(epochs, pulses, channels, rois)</a>
+0002     <span class="keyword">global</span> state
+0003     
+0004     <span class="keyword">if</span> nargin==0
+0005         epochs=[];
+0006         pulses=[];
+0007         channels=[];
+0008         rois=[];
+0009     <span class="keyword">elseif</span> nargin~=4
+0010         error(<span class="string">'allCurrentROIAvgScanNames : expect 4 inputs'</span>);
+0011     <span class="keyword">end</span>
+0012 
+0013     <span class="keyword">if</span> isempty(channels)
+0014         channels=find([1:state.init.maximumNumberOfInputChannels].*[state.analysis.plot1 state.analysis.plot2 state.analysis.plot3 state.analysis.plot4]);
+0015     <span class="keyword">end</span>
+0016     
+0017     <span class="keyword">if</span> isempty(epochs)
+0018         epochs=state.epoch;
+0019     <span class="keyword">end</span>
+0020     
+0021     colorList=<span class="string">'brkgmcykkkkkkkkkk'</span>;
+0022     
+0023     <span class="keyword">for</span> channel=channels
+0024         <span class="keyword">if</span> getfield(state.analysis, [<span class="string">'anaChannel'</span> num2str(channel)])
+0025             roiScanNames=<a href="allCurrentROIAvgScanNames.html" class="code" title="function out=allCurrentROIAvgScanNames(epochs, pulses, channels, rois)">allCurrentROIAvgScanNames</a>(epochs, pulses, channel, rois);
+0026             first=1;
+0027             counter=1;
+0028             <span class="keyword">for</span> name=roiScanNames
+0029                 <span class="keyword">if</span> ~iswave(name{1})
+0030                     wave(name{1}, []);
+0031                 <span class="keyword">end</span>
+0032                 <span class="keyword">if</span> first
+0033                     evalin(<span class="string">'base'</span>, [<span class="string">'plot('</span> name{1} <span class="string">');'</span>]);
+0034                     set(gcf, <span class="string">'NumberTitle'</span>, <span class="string">'off'</span>);
+0035                     set(gcf, <span class="string">'Name'</span>, [<span class="string">'Epoch '</span> num2str(epochs) <span class="string">' Chan '</span> num2str(channels) <span class="string">' FLUOR AVGS'</span>]);
+0036                     drawnow;
+0037                     first=0;
+0038                 <span class="keyword">else</span>
+0039                     evalin(<span class="string">'base'</span>, [<span class="string">'append('</span> name{1} <span class="string">');'</span>]);    
+0040                 <span class="keyword">end</span>
+0041                 setPlotProps(name{1}, <span class="string">'color'</span>, colorList(counter));
+0042                 counter=counter+1;
+0043             <span class="keyword">end</span>
+0044         <span class="keyword">end</span>
+0045     <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

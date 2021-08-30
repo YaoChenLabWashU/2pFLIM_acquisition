@@ -1,0 +1,798 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of fluorAnalysisSettings</title>
+  <meta name="keywords" content="fluorAnalysisSettings">
+  <meta name="description" content="FLUORANALYSISSETTINGS M-file for fluorAnalysisSettings.fig">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Imaging</a> &gt; <a href="index.html">FluoProcessing</a> &gt; fluorAnalysisSettings.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\FluoProcessing&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>fluorAnalysisSettings
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>FLUORANALYSISSETTINGS M-file for fluorAnalysisSettings.fig</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function varargout = fluorAnalysisSettings(varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> FLUORANALYSISSETTINGS M-file for fluorAnalysisSettings.fig
+      FLUORANALYSISSETTINGS, by itself, creates a new FLUORANALYSISSETTINGS or raises the existing
+      singleton*.
+
+      H = FLUORANALYSISSETTINGS returns the handle to a new FLUORANALYSISSETTINGS or the handle to
+      the existing singleton*.
+
+      FLUORANALYSISSETTINGS('CALLBACK',hObject,eventData,handles,...) calls the local
+      function named CALLBACK in FLUORANALYSISSETTINGS.M with the given input arguments.
+
+      FLUORANALYSISSETTINGS('Property','Value',...) creates a new FLUORANALYSISSETTINGS or raises the
+      existing singleton*.  Starting from the left, property value pairs are
+      applied to the GUI before fluorAnalysisSettings_OpeningFunction gets called.  An
+      unrecognized property name or invalid value makes property application
+      stop.  All inputs are passed to fluorAnalysisSettings_OpeningFcn via varargin.
+
+      *See GUI Options on GUIDE's Tools menu.  Choose &quot;GUI allows only one
+      instance to run (singleton)&quot;.
+
+ See also: GUIDE, GUIDATA, GUIHANDLES</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="reviewFluorData.html" class="code" title="function reviewFluorData(acqNumber, channelList)">reviewFluorData</a>	</li><li><a href="runFluorAnalysis.html" class="code" title="function runFluorAnalysis(acqNumber)">runFluorAnalysis</a>	</li><li><a href="../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>	</li><li><a href="../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>	This function sets the status field in mainControls.</li><li><a href="../../Imaging/guis/siSelectionChannelToFront.html" class="code" title="function siSelectionChannelToFront">siSelectionChannelToFront</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="initFluorAnalysis.html" class="code" title="function initFluorAnalysis">initFluorAnalysis</a>	</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function fluorAnalysisSettings_OpeningFcn(hObject, eventdata, handles, varargin)</a></li><li><a href="#_sub2" class="code">function varargout = fluorAnalysisSettings_OutputFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub3" class="code">function ratioMode1_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub4" class="code">function ratioMode2_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub5" class="code">function ratioMode3_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub6" class="code">function physiologyLinkDA_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub7" class="code">function numberOfROI_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub8" class="code">function avgLineScanStart_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub9" class="code">function avgLineScanStart_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub10" class="code">function avgLineScanEnd_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub11" class="code">function avgLineScanSmooth_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub12" class="code">function baselineStart_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub13" class="code">function baselineEnd_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub14" class="code">function baseFrameStart_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub15" class="code">function baseFrameEnd_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub16" class="code">function varargout = generic_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub17" class="code">function analysisMode_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub18" class="code">function avgLineScanChannel_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub19" class="code">function baseLineEnd_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub20" class="code">function baseLineStart_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub21" class="code">function numberOfROISlider_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub22" class="code">function avgLineScanStartSlider_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub23" class="code">function avgLineScanEndSlider_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub24" class="code">function avgLineScanSmoothSlider_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub25" class="code">function baseLineStartSlider_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub26" class="code">function baseLineEndSlider_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub27" class="code">function baseFrameStartSlider_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub28" class="code">function baseFrameEndSlider_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub29" class="code">function roiWidth_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub30" class="code">function roiWidth_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub31" class="code">function roiWidthSlider_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub32" class="code">function review_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub33" class="code">function epoch_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub34" class="code">function epochSlider_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub35" class="code">function review_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub36" class="code">function reviewSlider_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub37" class="code">function selectROIButton_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub38" class="code">function currentROINumber_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub39" class="code">function currentROINumber_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub40" class="code">function currentROINumberSlider_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub41" class="code">function rerunButton_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub42" class="code">function peakStart_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub43" class="code">function peakStart_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub44" class="code">function peakEnd_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub45" class="code">function peakEnd_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub46" class="code">function peakAverage_Callback(hObject, eventdata, handles)</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function varargout = fluorAnalysisSettings(varargin)</a>
+0002 <span class="comment">% FLUORANALYSISSETTINGS M-file for fluorAnalysisSettings.fig</span>
+0003 <span class="comment">%      FLUORANALYSISSETTINGS, by itself, creates a new FLUORANALYSISSETTINGS or raises the existing</span>
+0004 <span class="comment">%      singleton*.</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">%      H = FLUORANALYSISSETTINGS returns the handle to a new FLUORANALYSISSETTINGS or the handle to</span>
+0007 <span class="comment">%      the existing singleton*.</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">%      FLUORANALYSISSETTINGS('CALLBACK',hObject,eventData,handles,...) calls the local</span>
+0010 <span class="comment">%      function named CALLBACK in FLUORANALYSISSETTINGS.M with the given input arguments.</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">%      FLUORANALYSISSETTINGS('Property','Value',...) creates a new FLUORANALYSISSETTINGS or raises the</span>
+0013 <span class="comment">%      existing singleton*.  Starting from the left, property value pairs are</span>
+0014 <span class="comment">%      applied to the GUI before fluorAnalysisSettings_OpeningFunction gets called.  An</span>
+0015 <span class="comment">%      unrecognized property name or invalid value makes property application</span>
+0016 <span class="comment">%      stop.  All inputs are passed to fluorAnalysisSettings_OpeningFcn via varargin.</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">%      *See GUI Options on GUIDE's Tools menu.  Choose &quot;GUI allows only one</span>
+0019 <span class="comment">%      instance to run (singleton)&quot;.</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">% See also: GUIDE, GUIDATA, GUIHANDLES</span>
+0022 
+0023 <span class="comment">% Edit the above text to modify the response to help fluorAnalysisSettings</span>
+0024 
+0025 <span class="comment">% Last Modified by GUIDE v2.5 06-Mar-2003 10:34:03</span>
+0026 
+0027 <span class="comment">% Begin initialization code - DO NOT EDIT</span>
+0028 gui_Singleton = 1;
+0029 gui_State = struct(<span class="string">'gui_Name'</span>,       mfilename, <span class="keyword">...</span>
+0030                    <span class="string">'gui_Singleton'</span>,  gui_Singleton, <span class="keyword">...</span>
+0031                    <span class="string">'gui_OpeningFcn'</span>, @<a href="#_sub1" class="code" title="subfunction fluorAnalysisSettings_OpeningFcn(hObject, eventdata, handles, varargin)">fluorAnalysisSettings_OpeningFcn</a>, <span class="keyword">...</span>
+0032                    <span class="string">'gui_OutputFcn'</span>,  @<a href="#_sub2" class="code" title="subfunction varargout = fluorAnalysisSettings_OutputFcn(hObject, eventdata, handles)">fluorAnalysisSettings_OutputFcn</a>, <span class="keyword">...</span>
+0033                    <span class="string">'gui_LayoutFcn'</span>,  [] , <span class="keyword">...</span>
+0034                    <span class="string">'gui_Callback'</span>,   []);
+0035 <span class="keyword">if</span> nargin &amp; isstr(varargin{1})
+0036     gui_State.gui_Callback = str2func(varargin{1});
+0037 <span class="keyword">end</span>
+0038 
+0039 <span class="keyword">if</span> nargout
+0040     [varargout{1:nargout}] = gui_mainfcn(gui_State, varargin{:});
+0041 <span class="keyword">else</span>
+0042     gui_mainfcn(gui_State, varargin{:});
+0043 <span class="keyword">end</span>
+0044 <span class="comment">% End initialization code - DO NOT EDIT</span>
+0045 
+0046 
+0047 <span class="comment">% --- Executes just before fluorAnalysisSettings is made visible.</span>
+0048 <a name="_sub1" href="#_subfunctions" class="code">function fluorAnalysisSettings_OpeningFcn(hObject, eventdata, handles, varargin)</a>
+0049 <span class="comment">% This function has no output args, see OutputFcn.</span>
+0050 <span class="comment">% hObject    handle to figure</span>
+0051 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0052 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0053 <span class="comment">% varargin   command line arguments to fluorAnalysisSettings (see VARARGIN)</span>
+0054 
+0055 <span class="comment">% Choose default command line output for fluorAnalysisSettings</span>
+0056 handles.output = hObject;
+0057 
+0058 <span class="comment">% Update handles structure</span>
+0059 guidata(hObject, handles);
+0060 
+0061 <span class="comment">% UIWAIT makes fluorAnalysisSettings wait for user response (see UIRESUME)</span>
+0062 <span class="comment">% uiwait(handles.figure1);</span>
+0063 
+0064 
+0065 <span class="comment">% --- Outputs from this function are returned to the command line.</span>
+0066 <a name="_sub2" href="#_subfunctions" class="code">function varargout = fluorAnalysisSettings_OutputFcn(hObject, eventdata, handles)</a>
+0067 <span class="comment">% varargout  cell array for returning output args (see VARARGOUT);</span>
+0068 <span class="comment">% hObject    handle to figure</span>
+0069 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0070 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0071 
+0072 <span class="comment">% Get default command line output from handles structure</span>
+0073 varargout{1} = handles.output;
+0074 
+0075 
+0076 
+0077 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0078 <a name="_sub3" href="#_subfunctions" class="code">function ratioMode1_CreateFcn(hObject, eventdata, handles)</a>
+0079 <span class="comment">% hObject    handle to ratioMode1 (see GCBO)</span>
+0080 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0081 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0082 
+0083 <span class="comment">% Hint: popupmenu controls usually have a white background on Windows.</span>
+0084 <span class="comment">%       See ISPC and COMPUTER.</span>
+0085 <span class="keyword">if</span> ispc
+0086     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0087 <span class="keyword">else</span>
+0088     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0089 <span class="keyword">end</span>
+0090 
+0091 
+0092 
+0093 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0094 <a name="_sub4" href="#_subfunctions" class="code">function ratioMode2_CreateFcn(hObject, eventdata, handles)</a>
+0095 <span class="comment">% hObject    handle to ratioMode2 (see GCBO)</span>
+0096 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0097 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0098 
+0099 <span class="comment">% Hint: popupmenu controls usually have a white background on Windows.</span>
+0100 <span class="comment">%       See ISPC and COMPUTER.</span>
+0101 <span class="keyword">if</span> ispc
+0102     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0103 <span class="keyword">else</span>
+0104     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0105 <span class="keyword">end</span>
+0106 
+0107 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0108 <a name="_sub5" href="#_subfunctions" class="code">function ratioMode3_CreateFcn(hObject, eventdata, handles)</a>
+0109 <span class="comment">% hObject    handle to ratioMode3 (see GCBO)</span>
+0110 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0111 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0112 
+0113 <span class="comment">% Hint: popupmenu controls usually have a white background on Windows.</span>
+0114 <span class="comment">%       See ISPC and COMPUTER.</span>
+0115 <span class="keyword">if</span> ispc
+0116     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0117 <span class="keyword">else</span>
+0118     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0119 <span class="keyword">end</span>
+0120 
+0121 
+0122 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0123 <a name="_sub6" href="#_subfunctions" class="code">function physiologyLinkDA_CreateFcn(hObject, eventdata, handles)</a>
+0124 <span class="comment">% hObject    handle to physiologyLinkDA (see GCBO)</span>
+0125 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0126 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0127 
+0128 <span class="comment">% Hint: popupmenu controls usually have a white background on Windows.</span>
+0129 <span class="comment">%       See ISPC and COMPUTER.</span>
+0130 <span class="keyword">if</span> ispc
+0131     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0132 <span class="keyword">else</span>
+0133     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0134 <span class="keyword">end</span>
+0135 
+0136 <a name="_sub7" href="#_subfunctions" class="code">function numberOfROI_CreateFcn(hObject, eventdata, handles)</a>
+0137 <span class="comment">% hObject    handle to numberOfROI (see GCBO)</span>
+0138 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0139 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0140 
+0141 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0142 <span class="comment">%       See ISPC and COMPUTER.</span>
+0143 <span class="keyword">if</span> ispc
+0144     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0145 <span class="keyword">else</span>
+0146     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0147 <span class="keyword">end</span>
+0148 
+0149 
+0150 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0151 <a name="_sub8" href="#_subfunctions" class="code">function avgLineScanStart_CreateFcn(hObject, eventdata, handles)</a>
+0152 <span class="comment">% hObject    handle to avgLineScanStart (see GCBO)</span>
+0153 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0154 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0155 
+0156 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0157 <span class="comment">%       See ISPC and COMPUTER.</span>
+0158 <span class="keyword">if</span> ispc
+0159     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0160 <span class="keyword">else</span>
+0161     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0162 <span class="keyword">end</span>
+0163 
+0164 
+0165 
+0166 <a name="_sub9" href="#_subfunctions" class="code">function avgLineScanStart_Callback(hObject, eventdata, handles)</a>
+0167 <span class="comment">% hObject    handle to avgLineScanStart (see GCBO)</span>
+0168 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0169 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0170 
+0171 <span class="comment">% Hints: get(hObject,'String') returns contents of avgLineScanStart as text</span>
+0172 <span class="comment">%        str2double(get(hObject,'String')) returns contents of avgLineScanStart as a double</span>
+0173 
+0174 
+0175 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0176 <a name="_sub10" href="#_subfunctions" class="code">function avgLineScanEnd_CreateFcn(hObject, eventdata, handles)</a>
+0177 <span class="comment">% hObject    handle to avgLineScanEnd (see GCBO)</span>
+0178 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0179 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0180 
+0181 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0182 <span class="comment">%       See ISPC and COMPUTER.</span>
+0183 <span class="keyword">if</span> ispc
+0184     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0185 <span class="keyword">else</span>
+0186     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0187 <span class="keyword">end</span>
+0188 
+0189 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0190 <a name="_sub11" href="#_subfunctions" class="code">function avgLineScanSmooth_CreateFcn(hObject, eventdata, handles)</a>
+0191 <span class="comment">% hObject    handle to avgLineScanSmooth (see GCBO)</span>
+0192 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0193 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0194 
+0195 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0196 <span class="comment">%       See ISPC and COMPUTER.</span>
+0197 <span class="keyword">if</span> ispc
+0198     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0199 <span class="keyword">else</span>
+0200     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0201 <span class="keyword">end</span>
+0202 
+0203 
+0204 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0205 <a name="_sub12" href="#_subfunctions" class="code">function baselineStart_CreateFcn(hObject, eventdata, handles)</a>
+0206 <span class="comment">% hObject    handle to baselineStart (see GCBO)</span>
+0207 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0208 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0209 
+0210 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0211 <span class="comment">%       See ISPC and COMPUTER.</span>
+0212 <span class="keyword">if</span> ispc
+0213     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0214 <span class="keyword">else</span>
+0215     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0216 <span class="keyword">end</span>
+0217 
+0218 
+0219 
+0220 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0221 <a name="_sub13" href="#_subfunctions" class="code">function baselineEnd_CreateFcn(hObject, eventdata, handles)</a>
+0222 <span class="comment">% hObject    handle to baselineEnd (see GCBO)</span>
+0223 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0224 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0225 
+0226 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0227 <span class="comment">%       See ISPC and COMPUTER.</span>
+0228 <span class="keyword">if</span> ispc
+0229     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0230 <span class="keyword">else</span>
+0231     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0232 <span class="keyword">end</span>
+0233 
+0234 
+0235 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0236 <a name="_sub14" href="#_subfunctions" class="code">function baseFrameStart_CreateFcn(hObject, eventdata, handles)</a>
+0237 <span class="comment">% hObject    handle to baseFrameStart (see GCBO)</span>
+0238 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0239 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0240 
+0241 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0242 <span class="comment">%       See ISPC and COMPUTER.</span>
+0243 <span class="keyword">if</span> ispc
+0244     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0245 <span class="keyword">else</span>
+0246     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0247 <span class="keyword">end</span>
+0248 
+0249 
+0250 
+0251 
+0252 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0253 <a name="_sub15" href="#_subfunctions" class="code">function baseFrameEnd_CreateFcn(hObject, eventdata, handles)</a>
+0254 <span class="comment">% hObject    handle to baseFrameEnd (see GCBO)</span>
+0255 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0256 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0257 
+0258 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0259 <span class="comment">%       See ISPC and COMPUTER.</span>
+0260 <span class="keyword">if</span> ispc
+0261     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0262 <span class="keyword">else</span>
+0263     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0264 <span class="keyword">end</span>
+0265 
+0266 
+0267 
+0268 
+0269 <span class="comment">% --------------------------------------------------------------------</span>
+0270 <a name="_sub16" href="#_subfunctions" class="code">function varargout = generic_Callback(h, eventdata, handles, varargin)</a>
+0271     <span class="comment">% Stub for Callback of the uicontrol handles</span>
+0272     <a href="../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(h);
+0273 
+0274 
+0275 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0276 <a name="_sub17" href="#_subfunctions" class="code">function analysisMode_CreateFcn(hObject, eventdata, handles)</a>
+0277 <span class="comment">% hObject    handle to analysisMode (see GCBO)</span>
+0278 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0279 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0280 
+0281 <span class="comment">% Hint: popupmenu controls usually have a white background on Windows.</span>
+0282 <span class="comment">%       See ISPC and COMPUTER.</span>
+0283 <span class="keyword">if</span> ispc
+0284     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0285 <span class="keyword">else</span>
+0286     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0287 <span class="keyword">end</span>
+0288 
+0289 
+0290 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0291 <a name="_sub18" href="#_subfunctions" class="code">function avgLineScanChannel_CreateFcn(hObject, eventdata, handles)</a>
+0292 <span class="comment">% hObject    handle to avgLineScanChannel (see GCBO)</span>
+0293 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0294 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0295 
+0296 <span class="comment">% Hint: popupmenu controls usually have a white background on Windows.</span>
+0297 <span class="comment">%       See ISPC and COMPUTER.</span>
+0298 <span class="keyword">if</span> ispc
+0299     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0300 <span class="keyword">else</span>
+0301     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0302 <span class="keyword">end</span>
+0303 
+0304 
+0305 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0306 <a name="_sub19" href="#_subfunctions" class="code">function baseLineEnd_CreateFcn(hObject, eventdata, handles)</a>
+0307 <span class="comment">% hObject    handle to baseLineEnd (see GCBO)</span>
+0308 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0309 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0310 
+0311 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0312 <span class="comment">%       See ISPC and COMPUTER.</span>
+0313 <span class="keyword">if</span> ispc
+0314     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0315 <span class="keyword">else</span>
+0316     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0317 <span class="keyword">end</span>
+0318 
+0319 
+0320 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0321 <a name="_sub20" href="#_subfunctions" class="code">function baseLineStart_CreateFcn(hObject, eventdata, handles)</a>
+0322 <span class="comment">% hObject    handle to baseLineStart (see GCBO)</span>
+0323 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0324 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0325 
+0326 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0327 <span class="comment">%       See ISPC and COMPUTER.</span>
+0328 <span class="keyword">if</span> ispc
+0329     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0330 <span class="keyword">else</span>
+0331     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0332 <span class="keyword">end</span>
+0333 
+0334 
+0335 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0336 <a name="_sub21" href="#_subfunctions" class="code">function numberOfROISlider_CreateFcn(hObject, eventdata, handles)</a>
+0337 <span class="comment">% hObject    handle to numberOfROISlider (see GCBO)</span>
+0338 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0339 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0340 
+0341 <span class="comment">% Hint: slider controls usually have a light gray background, change</span>
+0342 <span class="comment">%       'usewhitebg' to 0 to use default.  See ISPC and COMPUTER.</span>
+0343 usewhitebg = 1;
+0344 <span class="keyword">if</span> usewhitebg
+0345     set(hObject,<span class="string">'BackgroundColor'</span>,[.9 .9 .9]);
+0346 <span class="keyword">else</span>
+0347     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0348 <span class="keyword">end</span>
+0349 
+0350 
+0351 
+0352 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0353 <a name="_sub22" href="#_subfunctions" class="code">function avgLineScanStartSlider_CreateFcn(hObject, eventdata, handles)</a>
+0354 <span class="comment">% hObject    handle to avgLineScanStartSlider (see GCBO)</span>
+0355 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0356 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0357 
+0358 <span class="comment">% Hint: slider controls usually have a light gray background, change</span>
+0359 <span class="comment">%       'usewhitebg' to 0 to use default.  See ISPC and COMPUTER.</span>
+0360 usewhitebg = 1;
+0361 <span class="keyword">if</span> usewhitebg
+0362     set(hObject,<span class="string">'BackgroundColor'</span>,[.9 .9 .9]);
+0363 <span class="keyword">else</span>
+0364     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0365 <span class="keyword">end</span>
+0366 
+0367 
+0368 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0369 <a name="_sub23" href="#_subfunctions" class="code">function avgLineScanEndSlider_CreateFcn(hObject, eventdata, handles)</a>
+0370 <span class="comment">% hObject    handle to avgLineScanEndSlider (see GCBO)</span>
+0371 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0372 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0373 
+0374 <span class="comment">% Hint: slider controls usually have a light gray background, change</span>
+0375 <span class="comment">%       'usewhitebg' to 0 to use default.  See ISPC and COMPUTER.</span>
+0376 usewhitebg = 1;
+0377 <span class="keyword">if</span> usewhitebg
+0378     set(hObject,<span class="string">'BackgroundColor'</span>,[.9 .9 .9]);
+0379 <span class="keyword">else</span>
+0380     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0381 <span class="keyword">end</span>
+0382 
+0383 
+0384 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0385 <a name="_sub24" href="#_subfunctions" class="code">function avgLineScanSmoothSlider_CreateFcn(hObject, eventdata, handles)</a>
+0386 <span class="comment">% hObject    handle to avgLineScanSmoothSlider (see GCBO)</span>
+0387 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0388 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0389 
+0390 <span class="comment">% Hint: slider controls usually have a light gray background, change</span>
+0391 <span class="comment">%       'usewhitebg' to 0 to use default.  See ISPC and COMPUTER.</span>
+0392 usewhitebg = 1;
+0393 <span class="keyword">if</span> usewhitebg
+0394     set(hObject,<span class="string">'BackgroundColor'</span>,[.9 .9 .9]);
+0395 <span class="keyword">else</span>
+0396     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0397 <span class="keyword">end</span>
+0398 
+0399 
+0400 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0401 <a name="_sub25" href="#_subfunctions" class="code">function baseLineStartSlider_CreateFcn(hObject, eventdata, handles)</a>
+0402 <span class="comment">% hObject    handle to baseLineStartSlider (see GCBO)</span>
+0403 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0404 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0405 
+0406 <span class="comment">% Hint: slider controls usually have a light gray background, change</span>
+0407 <span class="comment">%       'usewhitebg' to 0 to use default.  See ISPC and COMPUTER.</span>
+0408 usewhitebg = 1;
+0409 <span class="keyword">if</span> usewhitebg
+0410     set(hObject,<span class="string">'BackgroundColor'</span>,[.9 .9 .9]);
+0411 <span class="keyword">else</span>
+0412     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0413 <span class="keyword">end</span>
+0414 
+0415 
+0416 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0417 <a name="_sub26" href="#_subfunctions" class="code">function baseLineEndSlider_CreateFcn(hObject, eventdata, handles)</a>
+0418 <span class="comment">% hObject    handle to baseLineEndSlider (see GCBO)</span>
+0419 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0420 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0421 
+0422 <span class="comment">% Hint: slider controls usually have a light gray background, change</span>
+0423 <span class="comment">%       'usewhitebg' to 0 to use default.  See ISPC and COMPUTER.</span>
+0424 usewhitebg = 1;
+0425 <span class="keyword">if</span> usewhitebg
+0426     set(hObject,<span class="string">'BackgroundColor'</span>,[.9 .9 .9]);
+0427 <span class="keyword">else</span>
+0428     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0429 <span class="keyword">end</span>
+0430 
+0431 
+0432 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0433 <a name="_sub27" href="#_subfunctions" class="code">function baseFrameStartSlider_CreateFcn(hObject, eventdata, handles)</a>
+0434 <span class="comment">% hObject    handle to baseFrameStartSlider (see GCBO)</span>
+0435 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0436 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0437 
+0438 <span class="comment">% Hint: slider controls usually have a light gray background, change</span>
+0439 <span class="comment">%       'usewhitebg' to 0 to use default.  See ISPC and COMPUTER.</span>
+0440 usewhitebg = 1;
+0441 <span class="keyword">if</span> usewhitebg
+0442     set(hObject,<span class="string">'BackgroundColor'</span>,[.9 .9 .9]);
+0443 <span class="keyword">else</span>
+0444     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0445 <span class="keyword">end</span>
+0446 
+0447 
+0448 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0449 <a name="_sub28" href="#_subfunctions" class="code">function baseFrameEndSlider_CreateFcn(hObject, eventdata, handles)</a>
+0450 <span class="comment">% hObject    handle to baseFrameEndSlider (see GCBO)</span>
+0451 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0452 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0453 
+0454 <span class="comment">% Hint: slider controls usually have a light gray background, change</span>
+0455 <span class="comment">%       'usewhitebg' to 0 to use default.  See ISPC and COMPUTER.</span>
+0456 usewhitebg = 1;
+0457 <span class="keyword">if</span> usewhitebg
+0458     set(hObject,<span class="string">'BackgroundColor'</span>,[.9 .9 .9]);
+0459 <span class="keyword">else</span>
+0460     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0461 <span class="keyword">end</span>
+0462 
+0463 
+0464 
+0465 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0466 <a name="_sub29" href="#_subfunctions" class="code">function roiWidth_CreateFcn(hObject, eventdata, handles)</a>
+0467 <span class="comment">% hObject    handle to roiWidth (see GCBO)</span>
+0468 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0469 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0470 
+0471 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0472 <span class="comment">%       See ISPC and COMPUTER.</span>
+0473 <span class="keyword">if</span> ispc
+0474     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0475 <span class="keyword">else</span>
+0476     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0477 <span class="keyword">end</span>
+0478 
+0479 
+0480 
+0481 <a name="_sub30" href="#_subfunctions" class="code">function roiWidth_Callback(hObject, eventdata, handles)</a>
+0482 <span class="comment">% hObject    handle to roiWidth (see GCBO)</span>
+0483 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0484 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0485 
+0486 <span class="comment">% Hints: get(hObject,'String') returns contents of roiWidth as text</span>
+0487 <span class="comment">%        str2double(get(hObject,'String')) returns contents of roiWidth as a double</span>
+0488 
+0489 
+0490 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0491 <a name="_sub31" href="#_subfunctions" class="code">function roiWidthSlider_CreateFcn(hObject, eventdata, handles)</a>
+0492 <span class="comment">% hObject    handle to roiWidthSlider (see GCBO)</span>
+0493 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0494 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0495 
+0496 <span class="comment">% Hint: slider controls usually have a light gray background, change</span>
+0497 <span class="comment">%       'usewhitebg' to 0 to use default.  See ISPC and COMPUTER.</span>
+0498 usewhitebg = 1;
+0499 <span class="keyword">if</span> usewhitebg
+0500     set(hObject,<span class="string">'BackgroundColor'</span>,[.9 .9 .9]);
+0501 <span class="keyword">else</span>
+0502     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0503 <span class="keyword">end</span>
+0504 
+0505 
+0506 <span class="comment">% --- Executes on slider movement.</span>
+0507 <a name="_sub32" href="#_subfunctions" class="code">function review_Callback(hObject, eventdata, handles)</a>
+0508     <a href="../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0509     <a href="reviewFluorData.html" class="code" title="function reviewFluorData(acqNumber, channelList)">reviewFluorData</a>;
+0510 
+0511 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0512 <a name="_sub33" href="#_subfunctions" class="code">function epoch_CreateFcn(hObject, eventdata, handles)</a>
+0513 <span class="comment">% hObject    handle to epoch (see GCBO)</span>
+0514 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0515 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0516 
+0517 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0518 <span class="comment">%       See ISPC and COMPUTER.</span>
+0519 <span class="keyword">if</span> ispc
+0520     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0521 <span class="keyword">else</span>
+0522     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0523 <span class="keyword">end</span>
+0524 
+0525 
+0526 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0527 <a name="_sub34" href="#_subfunctions" class="code">function epochSlider_CreateFcn(hObject, eventdata, handles)</a>
+0528 <span class="comment">% hObject    handle to epochSlider (see GCBO)</span>
+0529 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0530 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0531 
+0532 <span class="comment">% Hint: slider controls usually have a light gray background, change</span>
+0533 <span class="comment">%       'usewhitebg' to 0 to use default.  See ISPC and COMPUTER.</span>
+0534 usewhitebg = 1;
+0535 <span class="keyword">if</span> usewhitebg
+0536     set(hObject,<span class="string">'BackgroundColor'</span>,[.9 .9 .9]);
+0537 <span class="keyword">else</span>
+0538     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0539 <span class="keyword">end</span>
+0540 
+0541 
+0542 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0543 <a name="_sub35" href="#_subfunctions" class="code">function review_CreateFcn(hObject, eventdata, handles)</a>
+0544 <span class="comment">% hObject    handle to review (see GCBO)</span>
+0545 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0546 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0547 
+0548 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0549 <span class="comment">%       See ISPC and COMPUTER.</span>
+0550 <span class="keyword">if</span> ispc
+0551     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0552 <span class="keyword">else</span>
+0553     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0554 <span class="keyword">end</span>
+0555 
+0556 
+0557 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0558 <a name="_sub36" href="#_subfunctions" class="code">function reviewSlider_CreateFcn(hObject, eventdata, handles)</a>
+0559 <span class="comment">% hObject    handle to reviewSlider (see GCBO)</span>
+0560 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0561 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0562 
+0563 <span class="comment">% Hint: slider controls usually have a light gray background, change</span>
+0564 <span class="comment">%       'usewhitebg' to 0 to use default.  See ISPC and COMPUTER.</span>
+0565 usewhitebg = 1;
+0566 <span class="keyword">if</span> usewhitebg
+0567     set(hObject,<span class="string">'BackgroundColor'</span>,[.9 .9 .9]);
+0568 <span class="keyword">else</span>
+0569     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0570 <span class="keyword">end</span>
+0571 
+0572 
+0573 <span class="comment">% --- Executes on button press in selectROIButton.</span>
+0574 <a name="_sub37" href="#_subfunctions" class="code">function selectROIButton_Callback(hObject, eventdata, handles)</a>
+0575 <span class="comment">% hObject    handle to selectROIButton (see GCBO)</span>
+0576 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0577 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0578     set(hObject, <span class="string">'Enable'</span>, <span class="string">'off'</span>);    
+0579     <span class="keyword">try</span>
+0580         <span class="keyword">global</span> state gh
+0581         set(gh.fluorAnalysisSettings.selectROIButton, <span class="string">'ForeGroundColor'</span>, [0 0 1]);
+0582         <a href="../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Drag over ROI'</span>);
+0583     
+0584         <a href="../../Imaging/guis/siSelectionChannelToFront.html" class="code" title="function siSelectionChannelToFront">siSelectionChannelToFront</a>
+0585         k = waitforbuttonpress;
+0586     
+0587         <span class="keyword">if</span> isempty(findobj(gcf, <span class="string">'Type'</span>, <span class="string">'axes'</span>))
+0588             disp(<span class="string">'*** NO axes***'</span>);
+0589             set(hObject, <span class="string">'Enable'</span>, <span class="string">'on'</span>);    
+0590             set(gh.pcellControl.selectBoxButton, <span class="string">'ForeGroundColor'</span>, [0 0 0]);
+0591             <span class="keyword">return</span>
+0592         <span class="keyword">end</span>
+0593         
+0594         point1 = get(gca,<span class="string">'CurrentPoint'</span>);    <span class="comment">% button down detected</span>
+0595         finalRect = rbbox;                   <span class="comment">% return figure units</span>
+0596         set(gh.fluorAnalysisSettings.selectROIButton, <span class="string">'ForeGroundColor'</span>, [0 0 0]);
+0597         <a href="../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">''</span>);
+0598     
+0599         point2 = get(gca,<span class="string">'CurrentPoint'</span>);    <span class="comment">% button up detected</span>
+0600         point1 = point1(1,1:2);              <span class="comment">% extract x and y</span>
+0601         point2 = point2(1,1:2);
+0602         p1 = min(point1,point2);             <span class="comment">% calculate locations</span>
+0603         offset = abs(point1-point2);         <span class="comment">% and dimensions</span>
+0604         x = [p1(1) p1(1)+offset(1) p1(1)+offset(1) p1(1) p1(1)];
+0605         y = [p1(2) p1(2) p1(2)+offset(2) p1(2)+offset(2) p1(2)];
+0606         x=round(x);
+0607         y=round(y);
+0608         hold on;
+0609         axis manual;
+0610     
+0611         <span class="keyword">if</span> size(state.analysis.roiDefs, 2)==2
+0612             state.analysis.roiDefs(:,3:4)=0    ;
+0613         <span class="keyword">end</span>
+0614         
+0615         state.analysis.roiDefs(state.analysis.currentROINumber, :)=[x(1) x(2) y(1) y(3)];
+0616     <span class="keyword">catch</span>
+0617         disp([<span class="string">'ROI selection error : '</span> lasterr]);
+0618     <span class="keyword">end</span>
+0619     set(hObject, <span class="string">'Enable'</span>, <span class="string">'on'</span>);    
+0620 
+0621 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0622 <a name="_sub38" href="#_subfunctions" class="code">function currentROINumber_CreateFcn(hObject, eventdata, handles)</a>
+0623 <span class="comment">% hObject    handle to currentROINumber (see GCBO)</span>
+0624 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0625 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0626 
+0627 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0628 <span class="comment">%       See ISPC and COMPUTER.</span>
+0629 <span class="keyword">if</span> ispc
+0630     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0631 <span class="keyword">else</span>
+0632     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0633 <span class="keyword">end</span>
+0634 
+0635 
+0636 
+0637 <a name="_sub39" href="#_subfunctions" class="code">function currentROINumber_Callback(hObject, eventdata, handles)</a>
+0638 <span class="comment">% hObject    handle to currentROINumber (see GCBO)</span>
+0639 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0640 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0641 
+0642 <span class="comment">% Hints: get(hObject,'String') returns contents of currentROINumber as text</span>
+0643 <span class="comment">%        str2double(get(hObject,'String')) returns contents of currentROINumber as a double</span>
+0644     <a href="../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0645 
+0646 
+0647 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0648 <a name="_sub40" href="#_subfunctions" class="code">function currentROINumberSlider_CreateFcn(hObject, eventdata, handles)</a>
+0649 <span class="comment">% hObject    handle to currentROINumberSlider (see GCBO)</span>
+0650 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0651 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0652 
+0653 <span class="comment">% Hint: slider controls usually have a light gray background, change</span>
+0654 <span class="comment">%       'usewhitebg' to 0 to use default.  See ISPC and COMPUTER.</span>
+0655 usewhitebg = 1;
+0656 <span class="keyword">if</span> usewhitebg
+0657     set(hObject,<span class="string">'BackgroundColor'</span>,[.9 .9 .9]);
+0658 <span class="keyword">else</span>
+0659     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0660 <span class="keyword">end</span>
+0661 
+0662 
+0663 <span class="comment">% --- Executes on button press in rerunButton.</span>
+0664 <a name="_sub41" href="#_subfunctions" class="code">function rerunButton_Callback(hObject, eventdata, handles)</a>
+0665 <span class="comment">% hObject    handle to rerunButton (see GCBO)</span>
+0666 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0667 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0668     <span class="keyword">global</span> state
+0669     <a href="runFluorAnalysis.html" class="code" title="function runFluorAnalysis(acqNumber)">runFluorAnalysis</a>(state.files.lastAcquisition);
+0670 
+0671 
+0672 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0673 <a name="_sub42" href="#_subfunctions" class="code">function peakStart_CreateFcn(hObject, eventdata, handles)</a>
+0674 <span class="comment">% hObject    handle to peakStart (see GCBO)</span>
+0675 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0676 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0677 
+0678 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0679 <span class="comment">%       See ISPC and COMPUTER.</span>
+0680 <span class="keyword">if</span> ispc
+0681     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0682 <span class="keyword">else</span>
+0683     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0684 <span class="keyword">end</span>
+0685 
+0686 
+0687 
+0688 <a name="_sub43" href="#_subfunctions" class="code">function peakStart_Callback(hObject, eventdata, handles)</a>
+0689 <span class="comment">% hObject    handle to peakStart (see GCBO)</span>
+0690 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0691 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0692 
+0693 <span class="comment">% Hints: get(hObject,'String') returns contents of peakStart as text</span>
+0694 <span class="comment">%        str2double(get(hObject,'String')) returns contents of peakStart as a double</span>
+0695 
+0696 
+0697 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0698 <a name="_sub44" href="#_subfunctions" class="code">function peakEnd_CreateFcn(hObject, eventdata, handles)</a>
+0699 <span class="comment">% hObject    handle to peakEnd (see GCBO)</span>
+0700 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0701 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0702 
+0703 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0704 <span class="comment">%       See ISPC and COMPUTER.</span>
+0705 <span class="keyword">if</span> ispc
+0706     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0707 <span class="keyword">else</span>
+0708     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0709 <span class="keyword">end</span>
+0710 
+0711 
+0712 
+0713 <a name="_sub45" href="#_subfunctions" class="code">function peakEnd_Callback(hObject, eventdata, handles)</a>
+0714 <span class="comment">% hObject    handle to peakEnd (see GCBO)</span>
+0715 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0716 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0717 
+0718 <span class="comment">% Hints: get(hObject,'String') returns contents of peakEnd as text</span>
+0719 <span class="comment">%        str2double(get(hObject,'String')) returns contents of peakEnd as a double</span>
+0720 
+0721 
+0722 <span class="comment">% --- Executes on button press in peakAverage.</span>
+0723 <a name="_sub46" href="#_subfunctions" class="code">function peakAverage_Callback(hObject, eventdata, handles)</a>
+0724 <span class="comment">% hObject    handle to peakAverage (see GCBO)</span>
+0725 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0726 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0727 
+0728 <span class="comment">% Hint: get(hObject,'Value') returns toggle state of peakAverage</span>
+0729 
+0730</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

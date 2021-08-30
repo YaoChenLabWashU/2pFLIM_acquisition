@@ -1,0 +1,23 @@
+function initializePhysDaq
+
+	global state physOutputDevice
+	
+	physOutputDevice = analogoutput('nidaq', state.phys.daq.outputBoardIndex);
+	set(physOutputDevice, 'SampleRate', state.phys.settings.outputRate);
+	set(physOutputDevice, 'TriggerType', 'HwDigital');
+	set(physOutputDevice, 'HwDigitalTriggerSource', 'RTSI1');
+	set(physOutputDevice, 'TriggerCondition', 'PositiveEdge');
+	
+	if state.phys.daq.auxOutputBoardIndex>0
+		state.phys.daq.auxOutputDevice = analogoutput('nidaq', state.phys.daq.auxOutputBoardIndex);
+		set(state.phys.daq.auxOutputDevice, 'TriggerType', 'HwDigital');		
+		set(state.phys.daq.auxOutputDevice, 'HwDigitalTriggerSource', 'RTSI1');
+		set(state.phys.daq.auxOutputDevice, 'TriggerCondition', 'PositiveEdge');
+	end
+	
+	state.phys.daq.inputDevice = analoginput('nidaq', state.phys.daq.inputBoardIndex);
+    set(state.phys.daq.inputDevice, 'ExternalTriggerDriveLine', 'RTSI1');
+    set(state.phys.daq.inputDevice, 'TriggerType', 'Manual');
+    set(state.phys.daq.inputDevice, 'ManualTriggerHwOn', 'Trigger');
+	set(state.phys.daq.inputDevice, 'SamplesAcquiredFcn', {'processPhysData'});
+

@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of recordWindowPositions</title>
+  <meta name="keywords" content="recordWindowPositions">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../../index.html">Home</a> &gt;  <a href="../../../index.html">Imaging</a> &gt; <a href="../../index.html">io</a> &gt; <a href="#">file_io</a> &gt; <a href="index.html">users</a> &gt; recordWindowPositions.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../../index.html"><img alt="<" border="0" src="../../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\io\file_io\users&nbsp;<img alt=">" border="0" src="../../../../right.png"></a></td></tr></table>-->
+
+<h1>recordWindowPositions
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<div class="box"><strong>function recordWindowPositions </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../../matlabicon.gif)">
+<li><a href="../../../../Imaging/guis/gui_handling/setGlobalConfigStatus.html" class="code" title="function setGlobalConfigStatus(globalName, configStatus)">setGlobalConfigStatus</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../../matlabicon.gif)">
+<li><a href="../../../../Imaging/guis/gui_callbacks/closeConfigurationGUI.html" class="code" title="function closeConfigurationGUI">closeConfigurationGUI</a>	</li><li><a href="../../../../Timer/saveUserSettings.html" class="code" title="function saveUserSettings">saveUserSettings</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function recordWindowPositions</a>
+0002     <span class="keyword">global</span> state gh
+0003     
+0004     wins=fieldnames(gh);
+0005     
+0006     <span class="keyword">for</span> winCount=1:length(wins)
+0007         winName=wins{winCount};
+0008         <span class="keyword">if</span> ishandle(getfield(getfield(gh, winName), <span class="string">'figure1'</span>))
+0009             state.windowPositions=setfield(state.windowPositions, [winName <span class="string">'_position'</span>], get(getfield(getfield(gh, winName), <span class="string">'figure1'</span>), <span class="string">'Position'</span>));
+0010             <a href="../../../../Imaging/guis/gui_handling/setGlobalConfigStatus.html" class="code" title="function setGlobalConfigStatus(globalName, configStatus)">setGlobalConfigStatus</a>([<span class="string">'state.windowPositions.'</span> winName <span class="string">'_position'</span>], 4);
+0011             state.windowPositions=setfield(state.windowPositions, [winName <span class="string">'_visible'</span>], get(getfield(getfield(gh, winName), <span class="string">'figure1'</span>), <span class="string">'Visible'</span>));
+0012             <a href="../../../../Imaging/guis/gui_handling/setGlobalConfigStatus.html" class="code" title="function setGlobalConfigStatus(globalName, configStatus)">setGlobalConfigStatus</a>([<span class="string">'state.windowPositions.'</span> winName <span class="string">'_visible'</span>], 4);
+0013         <span class="keyword">end</span>
+0014     <span class="keyword">end</span>
+0015         
+0016     <span class="keyword">try</span>
+0017         <span class="keyword">for</span> channelCounter = 1:state.init.maximumNumberOfInputChannels
+0018             eval([<span class="string">'state.windowPositions.image'</span> num2str(channelCounter) <span class="string">'_position = get(state.internal.GraphFigure(channelCounter), ''Position'');'</span>]);
+0019             <a href="../../../../Imaging/guis/gui_handling/setGlobalConfigStatus.html" class="code" title="function setGlobalConfigStatus(globalName, configStatus)">setGlobalConfigStatus</a>([<span class="string">'state.windowPositions.image'</span> num2str(channelCounter) <span class="string">'_position'</span>], 4);
+0020             eval([<span class="string">'state.windowPositions.maxImage'</span> num2str(channelCounter) <span class="string">'_position = get(state.internal.MaxFigure(channelCounter), ''Position'');'</span>]);
+0021             <a href="../../../../Imaging/guis/gui_handling/setGlobalConfigStatus.html" class="code" title="function setGlobalConfigStatus(globalName, configStatus)">setGlobalConfigStatus</a>([<span class="string">'state.windowPositions.maxImage'</span> num2str(channelCounter) <span class="string">'_position'</span>], 4);
+0022         <span class="keyword">end</span>
+0023     <span class="keyword">catch</span>
+0024     <span class="keyword">end</span>
+0025     
+0026     <span class="keyword">try</span>
+0027         state.windowPositions.compositeImage_position = get(state.internal.compositeFigure, <span class="string">'Position'</span>);
+0028         <a href="../../../../Imaging/guis/gui_handling/setGlobalConfigStatus.html" class="code" title="function setGlobalConfigStatus(globalName, configStatus)">setGlobalConfigStatus</a>([<span class="string">'state.windowPositions.compositeImage_position'</span>], 4);
+0029     <span class="keyword">catch</span>
+0030     <span class="keyword">end</span>
+0031 
+0032     <span class="keyword">try</span>
+0033         <span class="keyword">if</span> ishandle(state.phys.internal.scopeHandle)
+0034             pos=get(state.phys.internal.scopeHandle, <span class="string">'Position'</span>);
+0035             state.windowPositions.scopeWindow_position = pos;
+0036             <a href="../../../../Imaging/guis/gui_handling/setGlobalConfigStatus.html" class="code" title="function setGlobalConfigStatus(globalName, configStatus)">setGlobalConfigStatus</a>([<span class="string">'state.windowPositions.scopeWindow_position'</span>], 4);
+0037         <span class="keyword">end</span>
+0038     <span class="keyword">catch</span>
+0039     <span class="keyword">end</span>
+0040     
+0041     <span class="keyword">try</span>
+0042         <span class="keyword">if</span> ishandle(state.phys.internal.pulsePatternPlot)
+0043             pos=get(state.phys.internal.pulsePatternPlot, <span class="string">'Position'</span>);
+0044             state.windowPositions.pulsePatternPlotWindow_position = pos;
+0045             <a href="../../../../Imaging/guis/gui_handling/setGlobalConfigStatus.html" class="code" title="function setGlobalConfigStatus(globalName, configStatus)">setGlobalConfigStatus</a>([<span class="string">'state.windowPositions.pulsePatternPlotWindow_position'</span>], 4);
+0046         <span class="keyword">end</span>
+0047     <span class="keyword">catch</span>
+0048     <span class="keyword">end</span>
+0049</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

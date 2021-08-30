@@ -1,0 +1,229 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of channelGUI</title>
+  <meta name="keywords" content="channelGUI">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Imaging</a> &gt; <a href="../index.html">guis</a> &gt; <a href="index.html">gui_building</a> &gt; channelGUI.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\guis\gui_building&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>channelGUI
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function varargout = channelGUI(varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>	</li><li><a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>	given the name of a global variable, find and update the GUI that contains it</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Imaging/io/initImaging.html" class="code" title="function initImaging(userFile, analysisMode)">initImaging</a>	</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function varargout = acquiringChannel1_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub2" class="code">function varargout = acquiringChannel2_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub3" class="code">function varargout = acquiringChannel3_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub4" class="code">function varargout = acquiringChannel4_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub5" class="code">function varargout = generic_Callback(h, eventdata, handles, varargin)</a></li><li><a href="#_sub6" class="code">function varargout = composite_Callback(h, eventdata, handles, varargin)</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function varargout = channelGUI(varargin)</a>
+0002 <span class="keyword">global</span> state
+0003 <span class="comment">% CHANNELGUI Application M-file for channelGUI.fig</span>
+0004 <span class="comment">%    FIG = CHANNELGUI launch channelGUI GUI.</span>
+0005 <span class="comment">%    CHANNELGUI('callback_name', ...) invoke the named callback.</span>
+0006 
+0007 <span class="comment">% Last Modified by GUIDE v2.5 16-Nov-2005 11:33:01</span>
+0008 
+0009 <span class="keyword">if</span> nargin == 0  <span class="comment">% LAUNCH GUI</span>
+0010 
+0011     fig = openfig(mfilename,<span class="string">'reuse'</span>);
+0012 
+0013     <span class="comment">% Generate a structure of handles to pass to callbacks, and store it.</span>
+0014     handles = guihandles(fig);
+0015     guidata(fig, handles);
+0016 
+0017     <span class="keyword">if</span> nargout &gt; 0
+0018         varargout{1} = fig;
+0019     <span class="keyword">end</span>
+0020 
+0021 <span class="keyword">elseif</span> ischar(varargin{1}) <span class="comment">% INVOKE NAMED SUBFUNCTION OR CALLBACK</span>
+0022 
+0023     <span class="keyword">try</span>
+0024         [varargout{1:nargout}] = feval(varargin{:}); <span class="comment">% FEVAL switchyard</span>
+0025     <span class="keyword">catch</span>
+0026         disp(lasterr);
+0027     <span class="keyword">end</span>
+0028 
+0029 <span class="keyword">end</span>
+0030 
+0031 
+0032 <span class="comment">%| ABOUT CALLBACKS:</span>
+0033 <span class="comment">%| GUIDE automatically appends subfunction prototypes to this file, and</span>
+0034 <span class="comment">%| sets objects' callback properties to call them through the FEVAL</span>
+0035 <span class="comment">%| switchyard above. This comment describes that mechanism.</span>
+0036 <span class="comment">%|</span>
+0037 <span class="comment">%| Each callback subfunction declaration has the following form:</span>
+0038 <span class="comment">%| &lt;SUBFUNCTION_NAME&gt;(H, EVENTDATA, HANDLES, VARARGIN)</span>
+0039 <span class="comment">%|</span>
+0040 <span class="comment">%| The subfunction name is composed using the object's Tag and the</span>
+0041 <span class="comment">%| callback type separated by '_', e.g. 'slider2_Callback',</span>
+0042 <span class="comment">%| 'figure1_CloseRequestFcn', 'axis1_ButtondownFcn'.</span>
+0043 <span class="comment">%|</span>
+0044 <span class="comment">%| H is the callback object's handle (obtained using GCBO).</span>
+0045 <span class="comment">%|</span>
+0046 <span class="comment">%| EVENTDATA is empty, but reserved for future use.</span>
+0047 <span class="comment">%|</span>
+0048 <span class="comment">%| HANDLES is a structure containing handles of components in GUI using</span>
+0049 <span class="comment">%| tags as fieldnames, e.g. handles.figure1, handles.slider2. This</span>
+0050 <span class="comment">%| structure is created at GUI startup using GUIHANDLES and stored in</span>
+0051 <span class="comment">%| the figure's application data using GUIDATA. A copy of the structure</span>
+0052 <span class="comment">%| is passed to each callback.  You can store additional information in</span>
+0053 <span class="comment">%| this structure at GUI startup, and you can change the structure</span>
+0054 <span class="comment">%| during callbacks.  Call guidata(h, handles) after changing your</span>
+0055 <span class="comment">%| copy to replace the stored original so that subsequent callbacks see</span>
+0056 <span class="comment">%| the updates. Type &quot;help guihandles&quot; and &quot;help guidata&quot; for more</span>
+0057 <span class="comment">%| information.</span>
+0058 <span class="comment">%|</span>
+0059 <span class="comment">%| VARARGIN contains any extra arguments you have passed to the</span>
+0060 <span class="comment">%| callback. Specify the extra arguments by editing the callback</span>
+0061 <span class="comment">%| property in the inspector. By default, GUIDE sets the property to:</span>
+0062 <span class="comment">%| &lt;MFILENAME&gt;('&lt;SUBFUNCTION_NAME&gt;', gcbo, [], guidata(gcbo))</span>
+0063 <span class="comment">%| Add any extra arguments after the last argument, before the final</span>
+0064 <span class="comment">%| closing parenthesis.</span>
+0065 
+0066 
+0067 
+0068 <span class="comment">% --------------------------------------------------------------------</span>
+0069 <a name="_sub1" href="#_subfunctions" class="code">function varargout = acquiringChannel1_Callback(h, eventdata, handles, varargin)</a>
+0070 <span class="comment">% Stub for Callback of the uicontrol handles.savingChannel2.</span>
+0071 <span class="comment">% updates all the checkboxes accross a row when you acquire one channel.</span>
+0072     <span class="keyword">global</span> state
+0073     state.internal.channelChanged=1;
+0074     <a href="../../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(h);
+0075     <span class="keyword">if</span> get(h, <span class="string">'Value'</span>)
+0076         state.acq.savingChannel1 = 1;
+0077         <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.savingChannel1'</span>);
+0078         state.acq.imagingChannel1 = 1;
+0079         <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.imagingChannel1'</span>);
+0080         state.acq.maxImage1 = 0;
+0081         <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.maxImage1'</span>);        
+0082     <span class="keyword">else</span>
+0083         state.acq.savingChannel1 = 0;
+0084         <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.savingChannel1'</span>);
+0085         state.acq.imagingChannel1 = 0;
+0086         <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.imagingChannel1'</span>);
+0087         state.acq.maxImage1 = 0;
+0088         <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.maxImage1'</span>);
+0089     <span class="keyword">end</span>
+0090 
+0091 <span class="comment">% --------------------------------------------------------------------</span>
+0092 <a name="_sub2" href="#_subfunctions" class="code">function varargout = acquiringChannel2_Callback(h, eventdata, handles, varargin)</a>
+0093 <span class="comment">% Stub for Callback of the uicontrol handles.imagingChannel1.</span>
+0094 <span class="comment">% updates all the checkboxes accross a row when you acquire one channel.</span>
+0095     <span class="keyword">global</span> state
+0096     state.internal.channelChanged=1;
+0097     <a href="../../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(h)
+0098     <span class="keyword">if</span> get(h, <span class="string">'Value'</span>)
+0099         state.acq.savingChannel2 = 1;
+0100         <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.savingChannel2'</span>);
+0101         state.acq.imagingChannel2 = 1;
+0102         <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.imagingChannel2'</span>);
+0103         state.acq.focusingChannel2 = 1;
+0104         <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.maxImage2'</span>);
+0105     <span class="keyword">else</span> 
+0106         state.acq.savingChannel2 = 0;
+0107         <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.savingChannel2'</span>);
+0108         state.acq.imagingChannel2 = 0;
+0109         <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.imagingChannel2'</span>);
+0110         state.acq.maxImage2 = 0;
+0111         <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.maxImage2'</span>);
+0112     <span class="keyword">end</span>
+0113 
+0114 
+0115 
+0116 <span class="comment">% --------------------------------------------------------------------</span>
+0117 <a name="_sub3" href="#_subfunctions" class="code">function varargout = acquiringChannel3_Callback(h, eventdata, handles, varargin)</a>
+0118 <span class="comment">% Stub for Callback of the uicontrol handles.imagingChannel2.</span>
+0119 <span class="comment">% updates all the checkboxes accross a row when you acquire one channel.</span>
+0120     <span class="keyword">global</span> state
+0121     state.internal.channelChanged=1;
+0122     <a href="../../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(h)
+0123     <span class="keyword">if</span> get(h, <span class="string">'Value'</span>)
+0124         state.acq.savingChannel3 = 1;
+0125         <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.savingChannel3'</span>);
+0126         state.acq.imagingChannel3 = 1;
+0127         <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.imagingChannel3'</span>);
+0128         state.acq.maxImage3 = 0;
+0129         <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.maxImage3'</span>);
+0130     <span class="keyword">else</span>
+0131         state.acq.savingChannel3 = 0;
+0132         <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.savingChannel3'</span>);
+0133         state.acq.imagingChannel3 = 0;
+0134         <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.imagingChannel3'</span>);
+0135         state.acq.maxImage3 = 0;
+0136         <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.maxImage3'</span>);
+0137     <span class="keyword">end</span>
+0138 
+0139 <span class="comment">% --------------------------------------------------------------------</span>
+0140 <a name="_sub4" href="#_subfunctions" class="code">function varargout = acquiringChannel4_Callback(h, eventdata, handles, varargin)</a>
+0141 <span class="comment">% Stub for Callback of the uicontrol handles.imagingChannel2.</span>
+0142 <span class="comment">% updates all the checkboxes accross a row when you acquire one channel.</span>
+0143     <span class="keyword">global</span> state
+0144     state.internal.channelChanged=1;
+0145     <a href="../../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(h)
+0146     <span class="keyword">if</span> get(h, <span class="string">'Value'</span>)
+0147         state.acq.savingChannel4 = 1;
+0148         <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.savingChannel4'</span>);
+0149         state.acq.imagingChannel4 = 1;
+0150         <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.imagingChannel4'</span>);
+0151         state.acq.maxImage4 = 0;
+0152         <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.maxImage4'</span>);
+0153     <span class="keyword">else</span>
+0154         state.acq.savingChannel4 = 0;
+0155         <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.savingChannel4'</span>);
+0156         state.acq.imagingChannel4 = 0;
+0157         <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.imagingChannel4'</span>);
+0158         state.acq.maxImage4 = 0;
+0159         <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.maxImage4'</span>);
+0160     <span class="keyword">end</span>
+0161 <span class="comment">% --------------------------------------------------------------------</span>
+0162 <a name="_sub5" href="#_subfunctions" class="code">function varargout = generic_Callback(h, eventdata, handles, varargin)</a>
+0163 <span class="comment">% Stub for Callback of the uicontrol handles.checkbox14.</span>
+0164     <span class="keyword">global</span> state
+0165     state.internal.channelChanged=1;
+0166     <a href="../../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(h)
+0167 
+0168 
+0169 <span class="comment">% --------------------------------------------------------------------</span>
+0170 <a name="_sub6" href="#_subfunctions" class="code">function varargout = composite_Callback(h, eventdata, handles, varargin)</a>
+0171     <a href="../../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(h)
+0172     <span class="keyword">global</span> state
+0173     <span class="keyword">if</span> state.internal.composite
+0174         set(state.internal.compositeFigure, <span class="string">'Visible'</span>, <span class="string">'on'</span>)
+0175     <span class="keyword">else</span>
+0176         set(state.internal.compositeFigure, <span class="string">'Visible'</span>, <span class="string">'off'</span>)
+0177     <span class="keyword">end</span>
+0178         
+0179 
+0180</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of advancedCycleGUI</title>
+  <meta name="keywords" content="advancedCycleGUI">
+  <meta name="description" content="ADVANCEDCYCLEGUI M-file for advancedCycleGUI.fig">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Imaging</a> &gt; <a href="../index.html">guis</a> &gt; <a href="index.html">gui_building</a> &gt; advancedCycleGUI.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\guis\gui_building&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>advancedCycleGUI
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>ADVANCEDCYCLEGUI M-file for advancedCycleGUI.fig</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function varargout = advancedCycleGUI(varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> ADVANCEDCYCLEGUI M-file for advancedCycleGUI.fig
+      ADVANCEDCYCLEGUI, by itself, creates a new ADVANCEDCYCLEGUI or raises the existing
+      singleton*.
+
+      H = ADVANCEDCYCLEGUI returns the handle to a new ADVANCEDCYCLEGUI or the handle to
+      the existing singleton*.
+
+      ADVANCEDCYCLEGUI('CALLBACK',hObject,eventData,handles,...) calls the local
+      function named CALLBACK in ADVANCEDCYCLEGUI.M with the given input arguments.
+
+      ADVANCEDCYCLEGUI('Property','Value',...) creates a new ADVANCEDCYCLEGUI or raises the
+      existing singleton*.  Starting from the left, property value pairs are
+      applied to the GUI before advancedCycleGUI_OpeningFunction gets called.  An
+      unrecognized property name or invalid value makes property application
+      stop.  All inputs are passed to advancedCycleGUI_OpeningFcn via varargin.
+
+      *See GUI Options on GUIDE's Tools menu.  Choose &quot;GUI allows only one
+      instance to run (singleton)&quot;.
+
+ See also: GUIDE, GUIDATA, GUIHANDLES</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>	</li><li><a href="../../../Imaging/io/scanFieldControl/putCurrentInCyclePos.html" class="code" title="function putCurrentInCyclePos(posNum)">putCurrentInCyclePos</a>	</li><li><a href="../../../Imaging/io/scanFieldControl/updateCycleDisplay.html" class="code" title="function updateCycleDisplay(position)">updateCycleDisplay</a>	</li><li><a href="../../../Timer/applyAdvancedCyclePosition.html" class="code" title="function applyAdvancedCyclePosition(position)">applyAdvancedCyclePosition</a>	</li><li><a href="../../../Timer/deleteCyclePosition.html" class="code" title="function deleteCyclePosition(position)">deleteCyclePosition</a>	</li><li><a href="../../../Timer/insertCyclePosition.html" class="code" title="function insertCyclePosition(position)">insertCyclePosition</a>	</li><li><a href="../../../Timer/setupCycleRandomList.html" class="code" title="function setupCycleRandomList">setupCycleRandomList</a>	</li><li><a href="../../../Timer/timerCallPackageFunctions.html" class="code" title="function status=timerCallPackageFunctions(type, package)">timerCallPackageFunctions</a>	</li><li><a href="../../../Timer/toggleCycleGUIS.html" class="code" title="function toggleCycleGUIS(onoff)">toggleCycleGUIS</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Timer/initTimer.html" class="code" title="function initTimer(analysisMode, packages)">initTimer</a>	</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function advancedCycleGUI_OpeningFcn(hObject, eventdata, handles, varargin)</a></li><li><a href="#_sub2" class="code">function varargout = advancedCycleGUI_OutputFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub3" class="code">function deleteCyclePos_Callback(h, eventdata, handles)</a></li><li><a href="#_sub4" class="code">function insertCyclePos_Callback(h, eventdata, handles)</a></li><li><a href="#_sub5" class="code">function generic_Callback(h, eventdata, handles)</a></li><li><a href="#_sub6" class="code">function repeatsDone_Callback(h, eventdata, handles)</a></li><li><a href="#_sub7" class="code">function displayCyclePosition_Callback(h, eventdata, handles)</a></li><li><a href="#_sub8" class="code">function redefineCycle_Callback(h, eventdata, handles)</a></li><li><a href="#_sub9" class="code">function writeProtect_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub10" class="code">function randomize_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub11" class="code">function useCyclePos_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub12" class="code">function loadCurrentButton_Callback(hObject, eventdata, handles)</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function varargout = advancedCycleGUI(varargin)</a>
+0002 <span class="comment">% ADVANCEDCYCLEGUI M-file for advancedCycleGUI.fig</span>
+0003 <span class="comment">%      ADVANCEDCYCLEGUI, by itself, creates a new ADVANCEDCYCLEGUI or raises the existing</span>
+0004 <span class="comment">%      singleton*.</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">%      H = ADVANCEDCYCLEGUI returns the handle to a new ADVANCEDCYCLEGUI or the handle to</span>
+0007 <span class="comment">%      the existing singleton*.</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">%      ADVANCEDCYCLEGUI('CALLBACK',hObject,eventData,handles,...) calls the local</span>
+0010 <span class="comment">%      function named CALLBACK in ADVANCEDCYCLEGUI.M with the given input arguments.</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">%      ADVANCEDCYCLEGUI('Property','Value',...) creates a new ADVANCEDCYCLEGUI or raises the</span>
+0013 <span class="comment">%      existing singleton*.  Starting from the left, property value pairs are</span>
+0014 <span class="comment">%      applied to the GUI before advancedCycleGUI_OpeningFunction gets called.  An</span>
+0015 <span class="comment">%      unrecognized property name or invalid value makes property application</span>
+0016 <span class="comment">%      stop.  All inputs are passed to advancedCycleGUI_OpeningFcn via varargin.</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">%      *See GUI Options on GUIDE's Tools menu.  Choose &quot;GUI allows only one</span>
+0019 <span class="comment">%      instance to run (singleton)&quot;.</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">% See also: GUIDE, GUIDATA, GUIHANDLES</span>
+0022 
+0023 <span class="comment">% Edit the above text to modify the response to help advancedCycleGUI</span>
+0024 
+0025 <span class="comment">% Last Modified by GUIDE v2.5 22-Oct-2009 13:15:44</span>
+0026 
+0027 <span class="comment">% Begin initialization code - DO NOT EDIT</span>
+0028 gui_Singleton = 1;
+0029 gui_State = struct(<span class="string">'gui_Name'</span>,       mfilename, <span class="keyword">...</span>
+0030                    <span class="string">'gui_Singleton'</span>,  gui_Singleton, <span class="keyword">...</span>
+0031                    <span class="string">'gui_OpeningFcn'</span>, @<a href="#_sub1" class="code" title="subfunction advancedCycleGUI_OpeningFcn(hObject, eventdata, handles, varargin)">advancedCycleGUI_OpeningFcn</a>, <span class="keyword">...</span>
+0032                    <span class="string">'gui_OutputFcn'</span>,  @<a href="#_sub2" class="code" title="subfunction varargout = advancedCycleGUI_OutputFcn(hObject, eventdata, handles)">advancedCycleGUI_OutputFcn</a>, <span class="keyword">...</span>
+0033                    <span class="string">'gui_LayoutFcn'</span>,  [] , <span class="keyword">...</span>
+0034                    <span class="string">'gui_Callback'</span>,   []);
+0035 <span class="keyword">if</span> nargin &amp; isstr(varargin{1})
+0036     gui_State.gui_Callback = str2func(varargin{1});
+0037 <span class="keyword">end</span>
+0038 
+0039 <span class="keyword">if</span> nargout
+0040     [varargout{1:nargout}] = gui_mainfcn(gui_State, varargin{:});
+0041 <span class="keyword">else</span>
+0042     gui_mainfcn(gui_State, varargin{:});
+0043 <span class="keyword">end</span>
+0044 <span class="comment">% End initialization code - DO NOT EDIT</span>
+0045 
+0046 
+0047 <span class="comment">% --- Executes just before advancedCycleGUI is made visible.</span>
+0048 <a name="_sub1" href="#_subfunctions" class="code">function advancedCycleGUI_OpeningFcn(hObject, eventdata, handles, varargin)</a>
+0049 <span class="comment">% This function has no output args, see OutputFcn.</span>
+0050 <span class="comment">% hObject    handle to figure</span>
+0051 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0052 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0053 <span class="comment">% varargin   command line arguments to advancedCycleGUI (see VARARGIN)</span>
+0054 
+0055 <span class="comment">% Choose default command line output for advancedCycleGUI</span>
+0056 handles.output = hObject;
+0057 
+0058 <span class="comment">% Update handles structure</span>
+0059 guidata(hObject, handles);
+0060 
+0061 <span class="comment">% UIWAIT makes advancedCycleGUI wait for user response (see UIRESUME)</span>
+0062 <span class="comment">% uiwait(handles.figure1);</span>
+0063 
+0064 
+0065 <span class="comment">% --- Outputs from this function are returned to the command line.</span>
+0066 <a name="_sub2" href="#_subfunctions" class="code">function varargout = advancedCycleGUI_OutputFcn(hObject, eventdata, handles)</a>
+0067     varargout{1} = handles.output;
+0068 
+0069 <a name="_sub3" href="#_subfunctions" class="code">function deleteCyclePos_Callback(h, eventdata, handles)</a>
+0070     <a href="../../../Timer/deleteCyclePosition.html" class="code" title="function deleteCyclePosition(position)">deleteCyclePosition</a>
+0071 
+0072 <a name="_sub4" href="#_subfunctions" class="code">function insertCyclePos_Callback(h, eventdata, handles)</a>
+0073     <a href="../../../Timer/insertCyclePosition.html" class="code" title="function insertCyclePosition(position)">insertCyclePosition</a>
+0074     
+0075 <a name="_sub5" href="#_subfunctions" class="code">function generic_Callback(h, eventdata, handles)</a>
+0076 <span class="comment">%    set(h, 'Enable', 'off');</span>
+0077     <a href="../../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(h);
+0078     <span class="keyword">global</span> state
+0079     <span class="keyword">if</span> state.cycle.displayCyclePosition==state.cycle.currentCyclePosition 
+0080         state.phys.internal.needNewOutputData=1;
+0081     <span class="keyword">end</span>
+0082     set(h, <span class="string">'Enable'</span>, <span class="string">'on'</span>);
+0083     
+0084 <a name="_sub6" href="#_subfunctions" class="code">function repeatsDone_Callback(h, eventdata, handles)</a>
+0085     <a href="../../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(h);
+0086 
+0087 <a name="_sub7" href="#_subfunctions" class="code">function displayCyclePosition_Callback(h, eventdata, handles)</a>
+0088     <a href="../../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(h);
+0089     <span class="keyword">global</span> state
+0090     <a href="../../../Imaging/io/scanFieldControl/updateCycleDisplay.html" class="code" title="function updateCycleDisplay(position)">updateCycleDisplay</a>(state.cycle.displayCyclePosition);
+0091 
+0092 <a name="_sub8" href="#_subfunctions" class="code">function redefineCycle_Callback(h, eventdata, handles)</a>
+0093     <a href="../../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(h);
+0094 <span class="comment">%    set(h, 'Enable', 'off');</span>
+0095 
+0096     <span class="keyword">try</span>
+0097         <span class="keyword">global</span> state
+0098         <span class="keyword">persistent</span> guiOrder
+0099         <span class="keyword">if</span> isempty(guiOrder) || ~iscell(guiOrder)
+0100             guiOrder={<span class="string">'repeats'</span>, <span class="string">'delay'</span>, <span class="string">'frames'</span>, <span class="string">'blaster'</span>, <span class="string">'imageOn'</span>, <span class="string">'physOn'</span>, <span class="string">'tracker'</span>, <span class="string">'avgFrames'</span>, <span class="string">'linescan'</span>, <span class="string">'da0'</span>, <span class="string">'da1'</span>, <span class="string">'aux4'</span>, <span class="string">'aux5'</span>, <span class="string">'aux6'</span>, <span class="string">'aux7'</span>};
+0101         <span class="keyword">end</span>
+0102         
+0103         state.internal.cycleChanged=1;
+0104         tag=get(h, <span class="string">'Tag'</span>);
+0105         <span class="keyword">if</span> ~isempty(findstr(tag, <span class="string">'Slider'</span>))
+0106             tag=tag(1:end-6);
+0107         <span class="keyword">end</span>
+0108     
+0109         <span class="keyword">if</span> isnumeric(getfield(state.cycle, tag))
+0110             eval([<span class="string">'state.cycle.'</span> tag <span class="string">'List(state.cycle.displayCyclePosition)=state.cycle.'</span> tag <span class="string">';'</span>]);
+0111         <span class="keyword">else</span>
+0112             eval([<span class="string">'state.cycle.'</span> tag <span class="string">'List{state.cycle.displayCyclePosition}=state.cycle.'</span> tag <span class="string">';'</span>]);
+0113         <span class="keyword">end</span>
+0114     
+0115         p=strcmp(guiOrder, tag);
+0116         <span class="keyword">if</span> any(p) 
+0117             <span class="keyword">global</span> gh
+0118             p=mod(find(p)+1, length(guiOrder));
+0119             <span class="keyword">if</span> p==0 
+0120                 p=length(guiOrder);
+0121             <span class="keyword">end</span>
+0122             eval([<span class="string">'uicontrol(gh.advancedCycleGui.'</span> guiOrder{p} <span class="string">');'</span>]);
+0123         <span class="keyword">end</span>
+0124     
+0125         <span class="keyword">if</span> state.cycle.displayCyclePosition==state.cycle.currentCyclePosition 
+0126             <a href="../../../Timer/applyAdvancedCyclePosition.html" class="code" title="function applyAdvancedCyclePosition(position)">applyAdvancedCyclePosition</a>;
+0127         <span class="keyword">end</span>
+0128     <span class="keyword">catch</span>
+0129         disp(lasterr);
+0130     <span class="keyword">end</span>
+0131     <a href="../../../Timer/timerCallPackageFunctions.html" class="code" title="function status=timerCallPackageFunctions(type, package)">timerCallPackageFunctions</a>(<span class="string">'CycleChanged'</span>);
+0132     set(h, <span class="string">'Enable'</span>, <span class="string">'on'</span>);
+0133 
+0134 <span class="comment">% --- Executes on button press in writeProtect.</span>
+0135 <a name="_sub9" href="#_subfunctions" class="code">function writeProtect_Callback(hObject, eventdata, handles)</a>
+0136     <a href="../../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0137     <a href="../../../Timer/toggleCycleGUIS.html" class="code" title="function toggleCycleGUIS(onoff)">toggleCycleGUIS</a>;
+0138 
+0139 <span class="comment">% --- Executes on button press in randomize.</span>
+0140 <a name="_sub10" href="#_subfunctions" class="code">function randomize_Callback(hObject, eventdata, handles)</a>
+0141     <a href="../../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0142     <a href="../../../Timer/setupCycleRandomList.html" class="code" title="function setupCycleRandomList">setupCycleRandomList</a>;
+0143 
+0144 <span class="comment">% --- Executes on button press in useCyclePos.</span>
+0145 <a name="_sub11" href="#_subfunctions" class="code">function useCyclePos_Callback(hObject, eventdata, handles)</a>
+0146     <a href="../../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0147 
+0148 <span class="comment">% --- Executes on button press in loadCurrentButton.</span>
+0149 <a name="_sub12" href="#_subfunctions" class="code">function loadCurrentButton_Callback(hObject, eventdata, handles)</a>
+0150     <a href="../../../Imaging/io/scanFieldControl/putCurrentInCyclePos.html" class="code" title="function putCurrentInCyclePos(posNum)">putCurrentInCyclePos</a>;
+0151 
+0152</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

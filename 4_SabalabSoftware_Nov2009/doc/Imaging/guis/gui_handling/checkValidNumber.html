@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of checkValidNumber</title>
+  <meta name="keywords" content="checkValidNumber">
+  <meta name="description" content="function to check if entry in GUI is valid">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Imaging</a> &gt; <a href="../index.html">guis</a> &gt; <a href="index.html">gui_handling</a> &gt; checkValidNumber.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\guis\gui_handling&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>checkValidNumber
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function to check if entry in GUI is valid</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function out=checkValidNumber(handle) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> function to check if entry in GUI is valid</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="getUserDataField.html" class="code" title="function retVal=getUserDataField(handle, field)">getUserDataField</a>	returns value of field in 'UserData' or [] if that field does not exist</li><li><a href="hasUserDataField.html" class="code" title="function r=hasUserDataField(h, f)">hasUserDataField</a>	checks if a field exists within the 'UserData' of a particular handle</li><li><a href="setUserDataField.html" class="code" title="function setUserDataField(handle, varargin)">setUserDataField</a>	sets fields in 'UserData' of a handle. Varargin should be field1, value1 [, field2, value2 ...]</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function out=checkValidNumber(handle)</a>
+0002 <span class="comment">% function to check if entry in GUI is valid</span>
+0003     out=1;
+0004     style=get(handle, <span class="string">'Style'</span>);
+0005     min=[];
+0006     max=[];
+0007     valField=[];
+0008     <span class="keyword">if</span> strcmp(style, <span class="string">'slider'</span>)
+0009         val=get(handle, <span class="string">'Value'</span>);
+0010         valField=<span class="string">'Value'</span>;
+0011         min=get(handle, <span class="string">'Min'</span>);
+0012         max=get(handle, <span class="string">'Max'</span>);
+0013     <span class="keyword">elseif</span> strcmp(style, <span class="string">'edit'</span>)
+0014         <span class="keyword">if</span> <a href="hasUserDataField.html" class="code" title="function r=hasUserDataField(h, f)">hasUserDataField</a>(handle, <span class="string">'Numeric'</span>)
+0015             <span class="keyword">if</span> ~<a href="getUserDataField.html" class="code" title="function retVal=getUserDataField(handle, field)">getUserDataField</a>(handle, <span class="string">'Numeric'</span>)
+0016                 <span class="keyword">return</span>
+0017             <span class="keyword">end</span>
+0018             val=str2double(get(handle, <span class="string">'String'</span>));
+0019         <span class="keyword">else</span>
+0020 <span class="comment">%             val=str2double(get(handle, 'String'));</span>
+0021 <span class="comment">%             if length(val)~=1</span>
+0022                 <span class="keyword">return</span>
+0023 <span class="comment">%             end</span>
+0024         <span class="keyword">end</span>
+0025         
+0026         valField=<span class="string">'String'</span>;
+0027         min=<a href="getUserDataField.html" class="code" title="function retVal=getUserDataField(handle, field)">getUserDataField</a>(handle, <span class="string">'Min'</span>);
+0028         max=<a href="getUserDataField.html" class="code" title="function retVal=getUserDataField(handle, field)">getUserDataField</a>(handle, <span class="string">'Max'</span>);
+0029     <span class="keyword">elseif</span> strcmp(style, <span class="string">'popupmenu'</span>)
+0030         val=get(handle, <span class="string">'Value'</span>);
+0031         valField=<span class="string">'Value'</span>;
+0032         min=1;
+0033         max=length(get(handle, <span class="string">'String'</span>));
+0034     <span class="keyword">elseif</span> strcmp(style, <span class="string">'checkbox'</span>) || strcmp(style, <span class="string">'radiobutton'</span>)
+0035         val=get(handle, <span class="string">'Value'</span>);
+0036     <span class="keyword">elseif</span> strcmp(style, <span class="string">'text'</span>)
+0037         <span class="keyword">return</span>
+0038     <span class="keyword">else</span>
+0039         disp([<span class="string">'checkValidNUmber: Unimplemented style :'</span> style]);
+0040     <span class="keyword">end</span>
+0041     
+0042     <span class="keyword">if</span> isnumeric(val) &amp;&amp; length(val)==1 
+0043         <span class="keyword">if</span> length(min)==1
+0044             <span class="keyword">if</span> (val &lt; min)
+0045                 val=min;
+0046             <span class="keyword">end</span>
+0047         <span class="keyword">end</span>
+0048         <span class="keyword">if</span> length(max)==1
+0049             <span class="keyword">if</span> (val &gt; max)
+0050                 val=max;
+0051             <span class="keyword">end</span>
+0052         <span class="keyword">end</span>
+0053         <span class="keyword">if</span> strcmp(style, <span class="string">'edit'</span>)
+0054             val=num2str(val);
+0055         <span class="keyword">end</span>
+0056         <span class="keyword">if</span> ~isempty(valField)
+0057             set(handle, valField, val);
+0058         <span class="keyword">end</span>
+0059         <a href="setUserDataField.html" class="code" title="function setUserDataField(handle, varargin)">setUserDataField</a>(handle, <span class="string">'LastValid'</span>, val);    
+0060     <span class="keyword">elseif</span> strcmp(style, <span class="string">'edit'</span>)
+0061         <span class="keyword">if</span> <a href="hasUserDataField.html" class="code" title="function r=hasUserDataField(h, f)">hasUserDataField</a>(handle, <span class="string">'LastValid'</span>)
+0062             set(handle, <span class="string">'String'</span>, <a href="getUserDataField.html" class="code" title="function retVal=getUserDataField(handle, field)">getUserDataField</a>(handle, <span class="string">'LastValid'</span>));
+0063         <span class="keyword">else</span>        
+0064             set(handle, <span class="string">'String'</span>, <span class="string">'0'</span>);
+0065             out=0;
+0066         <span class="keyword">end</span>
+0067     <span class="keyword">elseif</span> strcmp(style, <span class="string">'slider'</span>)
+0068         <span class="keyword">if</span> <a href="hasUserDataField.html" class="code" title="function r=hasUserDataField(h, f)">hasUserDataField</a>(handle, <span class="string">'LastValid'</span>)
+0069             set(handle, <span class="string">'Value'</span>, <a href="getUserDataField.html" class="code" title="function retVal=getUserDataField(handle, field)">getUserDataField</a>(handle, <span class="string">'LastValid'</span>));
+0070         <span class="keyword">else</span>        
+0071             out=0;
+0072         <span class="keyword">end</span>
+0073     <span class="keyword">end</span>
+0074     
+0075</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

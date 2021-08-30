@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of tracePlot</title>
+  <meta name="keywords" content="tracePlot">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">Timer</a> &gt; tracePlot.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Timer&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>tracePlot
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function tracePlot(newFigure, peaks, anaLine, anaPeak) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="traceAnalyzer.html" class="code" title="function varargout = traceAnalyzer(varargin)">traceAnalyzer</a>	TRACEANALYZER M-file for traceAnalyzer.fig</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function tracePlot(newFigure, peaks, anaLine, anaPeak)</a>
+0002     <span class="keyword">global</span> state
+0003     <span class="keyword">if</span> nargin==2
+0004         anaLine=state.analysis.displayLine;
+0005         anaPeak=state.analysis.displayPeak;
+0006     <span class="keyword">elseif</span> nargin==3
+0007         anaPeak=state.analysis.displayPeak;
+0008     <span class="keyword">elseif</span> nargin&lt;2
+0009         error(<span class="string">'tracePlot : needs 2 arguments at least'</span>);
+0010     <span class="keyword">end</span>
+0011     
+0012     traces=state.analysis.setup{anaLine, 8};
+0013     colors=<span class="string">'brkgmcybrkgmcy'</span>;
+0014     <span class="keyword">if</span> ~newFigure
+0015         k=waitforbuttonpress;
+0016         <span class="keyword">if</span> isempty(findobj(gcf, <span class="string">'Type'</span>, <span class="string">'axes'</span>))
+0017             disp(<span class="string">'*** NO axes***'</span>);
+0018             <span class="keyword">return</span>
+0019         <span class="keyword">end</span>
+0020         all=showWaves(gcf);
+0021         offset=0;
+0022         <span class="keyword">for</span> counter=1:length(all);
+0023             <span class="keyword">if</span> peaks
+0024                 <span class="keyword">if</span> findstr(<span class="string">'_pk'</span>, all{counter})
+0025                     offset=offset+1;
+0026                 <span class="keyword">end</span>
+0027             <span class="keyword">else</span>
+0028                 <span class="keyword">if</span> findstr(<span class="string">'_bl'</span>, all{counter})
+0029                     offset=offset+1;
+0030                 <span class="keyword">end</span>
+0031             <span class="keyword">end</span>                
+0032         <span class="keyword">end</span>
+0033     <span class="keyword">else</span>
+0034         offset=0;
+0035     <span class="keyword">end</span>
+0036           
+0037     <span class="keyword">if</span> ~peaks
+0038         first=1;
+0039         marker=<span class="string">'+++++++xxxxxxx'</span>;    
+0040         <span class="keyword">for</span> counter=1:length(traces)
+0041             wname=[traces{counter} <span class="string">'_bl'</span>];
+0042             <span class="keyword">if</span> ~iswave(wname)
+0043                 disp([<span class="string">'tracePlot : '</span> wname <span class="string">' is missing.  Skipping...'</span>]);
+0044             <span class="keyword">else</span>
+0045                 <span class="keyword">if</span> first &amp; newFigure
+0046                     plotxy(<span class="string">'timerAcqTime'</span>, wname);
+0047                     first=0;
+0048                 <span class="keyword">else</span>
+0049                     appendxy(<span class="string">'timerAcqTime'</span>, wname);
+0050                 <span class="keyword">end</span>
+0051                 setPlotProps(wname, <span class="string">'linestyle'</span>, <span class="string">'none'</span>, <span class="string">'marker'</span>, marker(counter+offset), <span class="string">'markerFaceColor'</span>, colors(counter+offset), <span class="string">'markerEdgeColor'</span>, colors(counter+offset))
+0052             <span class="keyword">end</span>
+0053         <span class="keyword">end</span>
+0054     <span class="keyword">else</span>
+0055         first=1;
+0056         totalCounter=1;
+0057         marker=<span class="string">'ooooooosssssss'</span>;
+0058         <span class="keyword">for</span> counter=1:length(traces)
+0059             done=0;
+0060             peakCounter=1;
+0061             <span class="keyword">while</span> ~done
+0062                 wname=[traces{counter} <span class="string">'_pk'</span> num2str(peakCounter)];
+0063                 <span class="keyword">if</span> ~iswave(wname)
+0064                     done=1;
+0065                 <span class="keyword">else</span>
+0066                     <span class="keyword">if</span> first &amp; newFigure
+0067                         plotxy(<span class="string">'timerAcqTime'</span>, wname);
+0068                         first=0;
+0069                     <span class="keyword">else</span>
+0070                         appendxy(<span class="string">'timerAcqTime'</span>, wname);
+0071                     <span class="keyword">end</span>
+0072                     setPlotProps(wname, <span class="string">'linestyle'</span>, <span class="string">'none'</span>, <span class="string">'marker'</span>, marker(counter+offset), <span class="string">'markerFaceColor'</span>, colors(totalCounter+offset))
+0073                     totalCounter=totalCounter+1;
+0074                 <span class="keyword">end</span>
+0075                 peakCounter=peakCounter+1;
+0076             <span class="keyword">end</span>
+0077         <span class="keyword">end</span>
+0078     <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

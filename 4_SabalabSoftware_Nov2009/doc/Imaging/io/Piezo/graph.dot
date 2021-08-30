@@ -1,0 +1,13 @@
+/* Created by mdot for Matlab */
+digraph m2html {
+  piezoUpdatePosition -> piezoUpdatePositionNoWait;
+  piezoUpdatePosition -> piezoWait;
+  pzGoto -> piezoUpdatePosition;
+
+  movePiezoTo [URL="movePiezoTo.html"];
+  piezoUpdatePosition [URL="piezoUpdatePosition.html"];
+  piezoUpdatePositionNoWait [URL="piezoUpdatePositionNoWait.html"];
+  piezoWait [URL="piezoWait.html"];
+  pzCal [URL="pzCal.html"];
+  pzGoto [URL="pzGoto.html"];
+}

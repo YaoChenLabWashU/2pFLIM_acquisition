@@ -1,0 +1,180 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of initImaging</title>
+  <meta name="keywords" content="initImaging">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Imaging</a> &gt; <a href="index.html">io</a> &gt; initImaging.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\io&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>initImaging
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function initImaging(userFile, analysisMode) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../Imaging/blaster/initBlaster.html" class="code" title="function initBlaster">initBlaster</a>	initBlaser % initializes the guis and variables necessary for the blaster</li><li><a href="../../Imaging/guis/gui_building/basicConfigurationGUI.html" class="code" title="function varargout = basicConfigurationGUI(varargin)">basicConfigurationGUI</a>	BASICCONFIGURATIONGUI_OLD Application M-file for configurationGUI.fig</li><li><a href="../../Imaging/guis/gui_building/channelGUI.html" class="code" title="function varargout = channelGUI(varargin)">channelGUI</a>	</li><li><a href="../../Imaging/guis/gui_building/fieldAdjustGUI.html" class="code" title="function varargout = fieldAdjustGUI(varargin)">fieldAdjustGUI</a>	FIELDADJUSTGUI M-file for fieldAdjustGUI.fig</li><li><a href="../../Imaging/guis/gui_building/imageGUI.html" class="code" title="function varargout = imageGUI(varargin)">imageGUI</a>	IMAGEGUI Application M-file for imageGUI.fig</li><li><a href="../../Imaging/guis/gui_building/makeImageFigures.html" class="code" title="function makeImageFigures">makeImageFigures</a>	</li><li><a href="../../Imaging/guis/gui_building/motorGUI.html" class="code" title="function varargout = motorGUI(varargin)">motorGUI</a>	MOTORGUI Application M-file for motorGUI.fig</li><li><a href="../../Imaging/guis/gui_building/siGUI_ImagingControls.html" class="code" title="function varargout = siGUI_ImagingControls(varargin)">siGUI_ImagingControls</a>	siGUI_ImagingControls Application M-file for siGUI_ImagingControls.fig</li><li><a href="../../Imaging/guis/gui_callbacks/setAcquisitionParameters.html" class="code" title="function setAcquisitionParameters">setAcquisitionParameters</a>	</li><li><a href="../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>	This function sets the status field in mainControls.</li><li><a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>	given the name of a global variable, find and update the GUI that contains it</li><li><a href="../../Imaging/guis/gui_handling/updateKeepAllSlicesCheckMark.html" class="code" title="function updateKeepAllSlicesCheckMark">updateKeepAllSlicesCheckMark</a>	BSMOD - 1/1/2 - sets check mark next to keepAllSlicesInMemory selection in settings menu</li><li><a href="../../Imaging/guis/siUpdateCompositeChannels.html" class="code" title="function siUpdateCompositeChannels">siUpdateCompositeChannels</a>	</li><li><a href="applyChangesToOutput.html" class="code" title="function applyChangesToOutput(force)">applyChangesToOutput</a>	</li><li><a href="../../Imaging/io/file_io/configurations/loadConfig.html" class="code" title="function loadConfig()">loadConfig</a>	</li><li><a href="../../Imaging/io/file_io/initialization/openini.html" class="code" title="function out=openini(fileName)">openini</a>	</li><li><a href="../../Imaging/io/motors/MP285/mp285Config.html" class="code" title="function out=mp285Config">mp285Config</a>	mp285Config configures the serial port for the mp285 Sutter controler</li><li><a href="../../Imaging/io/scanFieldControl/makeConfigurationMenu.html" class="code" title="function makeConfigurationMenu">makeConfigurationMenu</a>	</li><li><a href="../../Imaging/io/scanFieldControl/parkMirrors.html" class="code" title="function parkMirrors(xy)">parkMirrors</a>	</li><li><a href="../../Imaging/io/scanFieldControl/updateChannelFlags.html" class="code" title="function updateChannelFlags">updateChannelFlags</a>	</li><li><a href="../../Imaging/io/scanFieldControl/updateDataForConfiguration.html" class="code" title="function updateDataForConfiguration">updateDataForConfiguration</a>	</li><li><a href="siApplyDAQSampleRates.html" class="code" title="function siApplyDAQSampleRates">siApplyDAQSampleRates</a>	</li><li><a href="siCreateDAQDevices.html" class="code" title="function siCreateDAQDevices">siCreateDAQDevices</a>	</li><li><a href="../../Imaging/pcell/initPcellBoxSettingsManager.html" class="code" title="function initPcellBoxSettingsManager">initPcellBoxSettingsManager</a>	</li><li><a href="../../Imaging/pcell/pcellcontrol.html" class="code" title="function varargout = pcellcontrol(varargin)">pcellcontrol</a>	PCELLCONTROL Application M-file for pcellControl.fig</li><li><a href="../../Imaging/pcell/siShowHidePcellBoxControls.html" class="code" title="function siShowHidePcellBoxControls">siShowHidePcellBoxControls</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../Imaging/timerFunctions/timerInit_Imaging.html" class="code" title="function timerInit_Imaging">timerInit_Imaging</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function initImaging(userFile, analysisMode)</a>
+0002 
+0003     <span class="keyword">global</span> state gh
+0004     
+0005     <span class="keyword">if</span> nargin&lt;1
+0006         userFile=<span class="string">''</span>;
+0007         analysisMode=0;
+0008     <span class="keyword">end</span>
+0009     
+0010     <span class="keyword">if</span> nargin==1
+0011         <span class="keyword">if</span> isnumeric(userFile) &amp;&amp; ~isempty(userFile)
+0012             analysisMode=userFile;
+0013             userFile=<span class="string">''</span>;
+0014         <span class="keyword">else</span>
+0015             analysisMode=0;
+0016         <span class="keyword">end</span>
+0017     <span class="keyword">end</span>
+0018             
+0019     <span class="keyword">if</span> analysisMode
+0020         h = waitbar(0, <span class="string">'Starting ScanImage in Analysis Mode...'</span>, <span class="string">'Name'</span>, <span class="string">'ScanImage Analysis Initialization'</span>, <span class="string">'WindowStyle'</span>, <span class="string">'modal'</span>, <span class="string">'Pointer'</span>, <span class="string">'watch'</span>);
+0021     <span class="keyword">else</span>
+0022         h = waitbar(0, <span class="string">'Starting ScanImage...'</span>, <span class="string">'Name'</span>, <span class="string">'ScanImage Software Initialization'</span>, <span class="string">'WindowStyle'</span>, <span class="string">'modal'</span>, <span class="string">'Pointer'</span>, <span class="string">'watch'</span>);
+0023     <span class="keyword">end</span>
+0024     gh.imageGUI = guihandles(<a href="../../Imaging/guis/gui_building/imageGUI.html" class="code" title="function varargout = imageGUI(varargin)">imageGUI</a>);
+0025     gh.channelGUI = guihandles(<a href="../../Imaging/guis/gui_building/channelGUI.html" class="code" title="function varargout = channelGUI(varargin)">channelGUI</a>);
+0026     gh.basicConfigurationGUI=guihandles(<a href="../../Imaging/guis/gui_building/basicConfigurationGUI.html" class="code" title="function varargout = basicConfigurationGUI(varargin)">basicConfigurationGUI</a>);
+0027     gh.motorGUI =guihandles(<a href="../../Imaging/guis/gui_building/motorGUI.html" class="code" title="function varargout = motorGUI(varargin)">motorGUI</a>);
+0028     gh.siGUI_ImagingControls=guihandles(<a href="../../Imaging/guis/gui_building/siGUI_ImagingControls.html" class="code" title="function varargout = siGUI_ImagingControls(varargin)">siGUI_ImagingControls</a>);
+0029     gh.pcellControl = guihandles(<a href="../../Imaging/pcell/pcellcontrol.html" class="code" title="function varargout = pcellcontrol(varargin)">pcellcontrol</a>);
+0030     gh.fieldAdjustGUI = guihandles(<a href="../../Imaging/guis/gui_building/fieldAdjustGUI.html" class="code" title="function varargout = fieldAdjustGUI(varargin)">fieldAdjustGUI</a>);
+0031 
+0032     set(gh.fieldAdjustGUI.scanRotationSlider, <span class="string">'SliderStep'</span>, [5/360 15/360]);    <span class="comment">% 5 degree changes for slider</span>
+0033     
+0034     <span class="comment">% Open the waitbar for loading</span>
+0035     
+0036     waitbar(.1,h, <span class="string">'Reading Initialization File...'</span>);
+0037     <a href="../../Imaging/io/file_io/initialization/openini.html" class="code" title="function out=openini(fileName)">openini</a>(<span class="string">'imaging.ini'</span>);
+0038 
+0039     <span class="keyword">if</span> analysisMode
+0040         state.analysisMode=1;
+0041         state.motor.motorOn=0;
+0042     <span class="keyword">else</span>
+0043         state.analysisMode=0;
+0044     <span class="keyword">end</span>
+0045     
+0046     <a href="../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Initializing...'</span>);
+0047     
+0048     <span class="keyword">global</span> lastAcquiredFrame imageData projectionData
+0049     evalin(<span class="string">'base'</span>, <span class="string">'global state gh lastAcquiredFrame projectionData imageData compositeData'</span>)
+0050     lastAcquiredFrame=cell(1,10+state.init.maximumNumberOfInputChannels);
+0051     imageData=cell(1,10+state.init.maximumNumberOfInputChannels);
+0052     projectionData=cell(1,10+state.init.maximumNumberOfInputChannels);
+0053     
+0054     <a href="../../Imaging/pcell/initPcellBoxSettingsManager.html" class="code" title="function initPcellBoxSettingsManager">initPcellBoxSettingsManager</a>;
+0055 
+0056     waitbar(.25,h, <span class="string">'Creating Figures for Imaging'</span>);
+0057     <a href="../../Imaging/guis/gui_building/makeImageFigures.html" class="code" title="function makeImageFigures">makeImageFigures</a>;    <span class="comment">% config independent...rleies only on the .ini file for maxNumberOfChannles.</span>
+0058     <a href="../../Imaging/io/motors/MP285/mp285Config.html" class="code" title="function out=mp285Config">mp285Config</a>;
+0059     
+0060     <a href="../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Initializing...'</span>);
+0061     <span class="keyword">if</span> ~analysisMode
+0062         waitbar(.4,h, <span class="string">'Setting Up Data Acquisition Devices...'</span>);
+0063         
+0064         <a href="siCreateDAQDevices.html" class="code" title="function siCreateDAQDevices">siCreateDAQDevices</a>
+0065         <a href="siApplyDAQSampleRates.html" class="code" title="function siApplyDAQSampleRates">siApplyDAQSampleRates</a>
+0066     <span class="keyword">end</span>
+0067     
+0068     <a href="../../Imaging/io/scanFieldControl/updateChannelFlags.html" class="code" title="function updateChannelFlags">updateChannelFlags</a>;
+0069     <span class="keyword">if</span> ~analysisMode
+0070         <a href="../../Imaging/guis/gui_callbacks/setAcquisitionParameters.html" class="code" title="function setAcquisitionParameters">setAcquisitionParameters</a>;
+0071         <a href="../../Imaging/io/scanFieldControl/updateDataForConfiguration.html" class="code" title="function updateDataForConfiguration">updateDataForConfiguration</a>;
+0072     <span class="keyword">end</span>
+0073     <a href="../../Imaging/guis/gui_handling/updateKeepAllSlicesCheckMark.html" class="code" title="function updateKeepAllSlicesCheckMark">updateKeepAllSlicesCheckMark</a>; 
+0074     <a href="../../Imaging/guis/siUpdateCompositeChannels.html" class="code" title="function siUpdateCompositeChannels">siUpdateCompositeChannels</a>;
+0075     
+0076     <a href="../../Imaging/blaster/initBlaster.html" class="code" title="function initBlaster">initBlaster</a>;
+0077     
+0078     <span class="keyword">if</span> ~isempty(userFile)
+0079         waitbar(.7,h, <span class="string">'Reading User Settings...'</span>);
+0080         openAndLoadUserSettings(userFile);
+0081     <span class="keyword">else</span>
+0082         <a href="../../Imaging/io/file_io/configurations/loadConfig.html" class="code" title="function loadConfig()">loadConfig</a>;
+0083     <span class="keyword">end</span>
+0084     
+0085     <a href="../../Imaging/io/scanFieldControl/makeConfigurationMenu.html" class="code" title="function makeConfigurationMenu">makeConfigurationMenu</a>;
+0086     <span class="keyword">if</span> ~analysisMode
+0087         <a href="../../Imaging/io/scanFieldControl/parkMirrors.html" class="code" title="function parkMirrors(xy)">parkMirrors</a>;
+0088     <span class="keyword">end</span>
+0089     
+0090     <a href="../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Initializing...'</span>);
+0091     
+0092     state.internal.status=0;
+0093     state.cycle.imageOn=1;
+0094     <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.cycle.imageOn'</span>);
+0095     state.cycle.imageOnList(1)=1;
+0096 
+0097     <a href="applyChangesToOutput.html" class="code" title="function applyChangesToOutput(force)">applyChangesToOutput</a>(1);
+0098     <a href="../../Imaging/pcell/siShowHidePcellBoxControls.html" class="code" title="function siShowHidePcellBoxControls">siShowHidePcellBoxControls</a>
+0099         
+0100     waitbar(.9,h, <span class="string">'Initialization Done'</span>);
+0101     
+0102     <a href="../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Ready to use'</span>);
+0103     state.initializing=0;
+0104     waitbar(1,h, <span class="string">'Ready To Use'</span>);
+0105     
+0106     <span class="keyword">if</span> analysisMode
+0107         state.analysisMode=1;
+0108         state.motor.motorOn=0;
+0109         <span class="keyword">try</span>
+0110             set(get(gh.pcellControl.figure1, <span class="string">'Children'</span>), <span class="string">'Enable'</span>, <span class="string">'off'</span>);
+0111         <span class="keyword">catch</span>
+0112         <span class="keyword">end</span>
+0113             
+0114          set(get(gh.fieldAdjustGUI.figure1, <span class="string">'Children'</span>), <span class="string">'Enable'</span>, <span class="string">'off'</span>);
+0115 
+0116         set(get(gh.motorGUI.figure1, <span class="string">'Children'</span>), <span class="string">'Enable'</span>, <span class="string">'off'</span>);
+0117         set(gh.siGUI_ImagingControls.focusButton, <span class="string">'Enable'</span>, <span class="string">'off'</span>)
+0118         set(gh.siGUI_ImagingControls.grabOneButton, <span class="string">'Enable'</span>, <span class="string">'off'</span>)
+0119  <span class="comment">%       set(get(gh.basicConfigurationGUI.figure1, 'Children'), 'Enable', 'off')</span>
+0120          set(gh.fieldAdjustGUI.figure1, <span class="string">'Visible'</span>, <span class="string">'off'</span>)
+0121          set(gh.pcellControl.figure1, <span class="string">'Visible'</span>, <span class="string">'off'</span>)
+0122         set(gh.motorGUI.figure1, <span class="string">'Visible'</span>, <span class="string">'off'</span>);
+0123         set(gh.blaster.figure1, <span class="string">'Visible'</span>, <span class="string">'off'</span>);
+0124         set(state.internal.GraphFigure, <span class="string">'Visible'</span>, <span class="string">'off'</span>)
+0125         set(state.internal.MaxFigure, <span class="string">'Visible'</span>, <span class="string">'off'</span>)
+0126         set(state.internal.compositeFigure, <span class="string">'Visible'</span>, <span class="string">'off'</span>)
+0127         set(gh.imageGUI.figure1, <span class="string">'VIsible'</span>, <span class="string">'off'</span>)        
+0128          initAvgAnalysis;
+0129     <span class="keyword">else</span>
+0130         state.analysisMode=0;
+0131     <span class="keyword">end</span>
+0132 
+0133     close(h);</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

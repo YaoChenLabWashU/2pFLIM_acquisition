@@ -1,0 +1,165 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of findValidCyclePosition</title>
+  <meta name="keywords" content="findValidCyclePosition">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">Timer</a> &gt; findValidCyclePosition.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Timer&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>findValidCyclePosition
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function valid=findValidCyclePosition </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>	This function sets the status field in mainControls.</li><li><a href="../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>	given the name of a global variable, find and update the GUI that contains it</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="timerMainLoop.html" class="code" title="function timerMainLoop">timerMainLoop</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function valid=findValidCyclePosition</a>
+0002     <span class="keyword">global</span> state
+0003     
+0004     valid=0;
+0005     
+0006     <span class="keyword">if</span> state.cycle.randomize
+0007         fullcycle=0;
+0008         first=1;
+0009         startingPosition=state.internal.randomPosition;
+0010         
+0011         <span class="keyword">while</span> ~valid &amp;&amp; ~fullcycle
+0012             <span class="comment">% if we're at the end of the cycle, start again</span>
+0013             <span class="keyword">if</span> state.internal.randomPosition &gt; length(state.internal.randomPositionsList)
+0014                 state.internal.randomPosition=1;
+0015                 state.cycle.repeatsDone=0;
+0016                 disp(<span class="string">'*** New cycle started. ***'</span>);
+0017             <span class="keyword">end</span>
+0018             
+0019             <span class="comment">% is the current position valid?</span>
+0020             <span class="comment">% is imaging on?</span>
+0021             <span class="keyword">if</span> state.cycle.imageOnList(state.cycle.currentCyclePosition)
+0022                 valid=1;
+0023             <span class="keyword">end</span>
+0024             <span class="comment">% if phys on?  and is there a non zero entry in the output list?</span>
+0025             <span class="keyword">if</span> state.cycle.physOnList(state.cycle.currentCyclePosition)
+0026                 <span class="keyword">if</span> state.cycle.da0List(state.cycle.currentCyclePosition) || state.cycle.da1List(state.cycle.currentCyclePosition) <span class="keyword">...</span>
+0027                         || state.cycle.aux4List(state.cycle.currentCyclePosition) || state.cycle.aux5List(state.cycle.currentCyclePosition) <span class="keyword">...</span>
+0028                         || state.cycle.aux6List(state.cycle.currentCyclePosition) || state.cycle.aux7List(state.cycle.currentCyclePosition)
+0029                     valid=1;
+0030                 <span class="keyword">end</span>
+0031             <span class="keyword">end</span>
+0032             
+0033             <span class="keyword">if</span> ~valid
+0034                 state.internal.randomPosition = state.internal.randomPosition + 1;
+0035                 <span class="keyword">if</span> state.internal.randomPosition &gt; length(state.internal.randomPositionsList)
+0036                     state.internal.randomPosition=1;
+0037                     disp(<span class="string">'*** New cycle started. ***'</span>);
+0038                 <span class="keyword">end</span>
+0039             <span class="keyword">end</span>
+0040             
+0041             <span class="keyword">if</span> ~valid &amp;&amp; ~first &amp;&amp; (startingPosition==state.internal.randomPosition)
+0042                 fullcycle=1;
+0043                 <a href="../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'INVALID CYCLE'</span>);
+0044                 error(<span class="string">'findValidCyclePosition: no valid cycle position found'</span>);
+0045             <span class="keyword">end</span>
+0046             first=0;
+0047             
+0048             state.cycle.currentCyclePosition=state.internal.randomPositionsList(state.internal.randomPosition);
+0049             <a href="../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.cycle.currentCyclePosition'</span>);
+0050             <span class="keyword">if</span> state.internal.randomPosition&gt;1
+0051                 state.cycle.repeatsDone=length(find(state.internal.randomPositionsList(1:state.internal.randomPosition-1)==state.cycle.currentCyclePosition));
+0052             <span class="keyword">else</span>
+0053                 state.cycle.repeatsDone=0;
+0054             <span class="keyword">end</span>
+0055             <a href="../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.cycle.repeatsDone'</span>);
+0056         <span class="keyword">end</span>        
+0057     <span class="keyword">else</span>
+0058         fullcycle=0;
+0059         first=1;
+0060 
+0061         startingPosition=state.cycle.currentCyclePosition;
+0062         
+0063         <span class="keyword">while</span> ~valid &amp;&amp; ~fullcycle
+0064             <span class="comment">% if we did all the repeats, then advance in the cycle</span>
+0065     
+0066             <span class="keyword">if</span> state.cycle.repeatsDone&gt;=state.cycle.repeatsList(state.cycle.currentCyclePosition)
+0067                 state.cycle.currentCyclePosition = state.cycle.currentCyclePosition + 1;
+0068                 state.cycle.repeatsDone=0;
+0069                 <a href="../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.cycle.currentCyclePosition'</span>);
+0070                 <a href="../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.cycle.repeatsDone'</span>);
+0071             <span class="keyword">end</span>
+0072             
+0073             <span class="comment">% if we're at the end of the cycle, start again</span>
+0074             <span class="keyword">if</span> state.cycle.currentCyclePosition &gt; length(state.cycle.delayList)
+0075                 state.cycle.currentCyclePosition=1;
+0076                 state.cycle.repeatsDone=0;
+0077                 <a href="../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.cycle.currentCyclePosition'</span>);
+0078                 <a href="../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.cycle.repeatsDone'</span>);
+0079                 disp(<span class="string">'*** New cycle started. ***'</span>);
+0080             <span class="keyword">end</span>
+0081             
+0082             <span class="comment">% is the current position valid?</span>
+0083             <span class="comment">% is imaging on?</span>
+0084             <span class="keyword">if</span> state.cycle.imageOnList(state.cycle.currentCyclePosition)
+0085                 valid=1;
+0086             <span class="keyword">end</span>
+0087             <span class="comment">% if phys on?  and is there a non zero entry in the output list?</span>
+0088             <span class="keyword">if</span> state.cycle.physOnList(state.cycle.currentCyclePosition)
+0089                 valid=1;
+0090             <span class="keyword">end</span>
+0091             <span class="comment">% there is something to do at this position because of a</span>
+0092             <span class="comment">% function call</span>
+0093             <span class="keyword">if</span> ~isempty(state.cycle.functionNameList{state.cycle.currentCyclePosition})
+0094                 valid=1;
+0095             <span class="keyword">end</span>
+0096             
+0097             <span class="keyword">if</span> ~valid
+0098                 state.cycle.currentCyclePosition = state.cycle.currentCyclePosition + 1;
+0099                 state.cycle.repeatsDone=0;
+0100                 <span class="keyword">if</span> state.cycle.currentCyclePosition &gt; length(state.cycle.delayList)
+0101                     state.cycle.currentCyclePosition=1;
+0102                     disp(<span class="string">'*** New cycle started. ***'</span>);
+0103                 <span class="keyword">end</span>
+0104                 <a href="../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.cycle.currentCyclePosition'</span>);
+0105                 <a href="../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.cycle.repeatsDone'</span>);
+0106             <span class="keyword">end</span>
+0107             
+0108             <span class="keyword">if</span> ~valid &amp;&amp; ~first &amp;&amp; (startingPosition==state.cycle.currentCyclePosition)
+0109                 fullcycle=1;
+0110                 <a href="../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'INVALID CYCLE'</span>);
+0111                 error(<span class="string">'findValidCyclePosition: no valid cycle position found'</span>);
+0112             <span class="keyword">end</span>
+0113             first=0;
+0114         <span class="keyword">end</span>
+0115     <span class="keyword">end</span>
+0116         
+0117         
+0118</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

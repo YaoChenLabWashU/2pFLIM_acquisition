@@ -1,0 +1,196 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of siProcessImageStripe</title>
+  <meta name="keywords" content="siProcessImageStripe">
+  <meta name="description" content="siProcessImageStripe.m*****">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Imaging</a> &gt; <a href="../index.html">io</a> &gt; <a href="index.html">ad_da</a> &gt; siProcessImageStripe.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\io\ad_da&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>siProcessImageStripe
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>siProcessImageStripe.m*****</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function siProcessImageStripe(stripeData, averaging) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> siProcessImageStripe.m*****
+ Takes data from data acquisition engine,
+ formats it into a proper intensity image,
+ and displays it
+
+ Written by: Bernardo Sabatini
+ Harvard Medical School
+ HHMI
+ 2009</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="add2d.html" class="code" title="function Aout = add2d(A, Bx)">add2d</a>	add2d.m*****</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="makeFrameByStripes.html" class="code" title="function makeFrameByStripes(ai, SamplesAcquired)">makeFrameByStripes</a>	</li><li><a href="makeStripe.html" class="code" title="function makeStripe(aiF, SamplesAcquired)">makeStripe</a>	makeStripe.m*****</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function siProcessImageStripe(stripeData, averaging)</a>
+0002 
+0003 <span class="comment">% siProcessImageStripe.m*****</span>
+0004 <span class="comment">% Takes data from data acquisition engine,</span>
+0005 <span class="comment">% formats it into a proper intensity image,</span>
+0006 <span class="comment">% and displays it</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% Written by: Bernardo Sabatini</span>
+0009 <span class="comment">% Harvard Medical School</span>
+0010 <span class="comment">% HHMI</span>
+0011 <span class="comment">% 2009</span>
+0012 
+0013     <span class="keyword">global</span> state lastAcquiredFrame compositeData
+0014     
+0015     <span class="keyword">if</span> nargin&lt;2
+0016         averaging=0;
+0017     <span class="keyword">end</span>
+0018     
+0019     <span class="keyword">if</span> state.acq.dualLaserMode==2    <span class="comment">% we are acquiring with alternating</span>
+0020         tempStripe=cell(1, state.init.maximumNumberOfInputChannels);
+0021     <span class="keyword">else</span>
+0022         tempStripe=cell(1, state.init.maximumNumberOfInputChannels+10);
+0023     <span class="keyword">end</span>
+0024     
+0025     channelList=find(state.acq.acquiringChannel);
+0026     startLine = 1 + state.acq.linesPerFrame/state.internal.numberOfStripes*state.internal.stripeCounter;
+0027     stopLine = startLine + state.acq.linesPerFrame/state.internal.numberOfStripes - 1;
+0028     
+0029     <span class="keyword">for</span> channelCounter = 1:length(channelList)
+0030         channel=channelList(channelCounter);
+0031         <span class="keyword">if</span> state.acq.acquiringChannel(channel)  <span class="comment">% are we acquiring data on this channel?</span>
+0032             <span class="keyword">if</span> getfield(state.acq, [<span class="string">'pmtOffsetAutoSubtractChannel'</span> num2str(channelCounter)])
+0033                 offset=getfield(state.acq, [<span class="string">'pmtOffsetChannel'</span> num2str(channelCounter)]); <span class="comment">% get PMT offset for channel</span>
+0034             <span class="keyword">else</span>
+0035                 offset=0;
+0036             <span class="keyword">end</span>
+0037                                 
+0038             <span class="keyword">if</span> state.acq.dualLaserMode==1 <span class="comment">% both lasers are on at once</span>
+0039                 displayChannel=channel;
+0040                 
+0041                 processedData = reshape(stripeData(:, channelCounter)/state.internal.intensityScaleFactor,  <span class="keyword">...</span>
+0042                     state.internal.samplesPerLine, <span class="keyword">...</span>
+0043                     (state.acq.linesPerFrame/state.internal.numberOfStripes))' <span class="keyword">...</span>
+0044                     - offset;
+0045                 
+0046                 <span class="keyword">if</span> state.acq.bidi        <span class="comment">% We are acquiring in both directions</span>
+0047                     <span class="comment">% so flip every other line</span>
+0048                     vStripeW=0; <span class="comment">% even line pixel offset</span>
+0049                      processedData(2:2:<span class="keyword">end</span>,:)=fliplr(processedData(2:2:<span class="keyword">end</span>,:));
+0050                     <span class="keyword">if</span> vStripeW&gt;0
+0051                         vStripe=processedData(2:2:<span class="keyword">end</span>,end-vStripeW:end);
+0052                         processedData(2:2:<span class="keyword">end</span>, :)=[vStripe processedData(2:2:<span class="keyword">end</span>, 1:end-vStripeW-1)];
+0053                     <span class="keyword">end</span>
+0054                 <span class="keyword">end</span>
+0055                 
+0056                 tempStripe{channel}=<span class="keyword">...</span>
+0057                     <a href="add2d.html" class="code" title="function Aout = add2d(A, Bx)">add2d</a>(<span class="keyword">...</span>
+0058                     processedData(:, state.internal.startDataColumnInLine:state.internal.endDataColumnInLine), <span class="keyword">...</span>
+0059                     state.acq.binFactor<span class="keyword">...</span>
+0060                     );  
+0061             <span class="keyword">elseif</span> state.acq.dualLaserMode==2 <span class="comment">% we are acquiring with alternating</span>
+0062                 <span class="comment">% lasers.  So process as two separate channels</span>
+0063                 displayChannel=[channel channel+10];
+0064                 
+0065                 processedData=reshape(stripeData(:, channelCounter)/state.internal.intensityScaleFactor,  <span class="keyword">...</span>
+0066                     state.internal.samplesPerLine, <span class="keyword">...</span>
+0067                     (2*state.acq.linesPerFrame/state.internal.numberOfStripes))' <span class="keyword">...</span>
+0068                     - offset; <span class="comment">% get twice as much data</span>
+0069 
+0070                 <span class="keyword">if</span> state.acq.bidi        <span class="comment">% We are acquiring in both directions</span>
+0071                     <span class="comment">% so flip every other line</span>
+0072                      processedData(2:2:<span class="keyword">end</span>,:)=fliplr(processedData(2:2:<span class="keyword">end</span>,:));
+0073                 <span class="keyword">end</span>
+0074                 
+0075                 tempStripe{channel}=<span class="keyword">...</span>
+0076                     <a href="add2d.html" class="code" title="function Aout = add2d(A, Bx)">add2d</a>(<span class="keyword">...</span>
+0077                     processedData(1:2:end-1, state.internal.startDataColumnInLine:state.internal.endDataColumnInLine), <span class="keyword">...</span>
+0078                     state.acq.binFactor<span class="keyword">...</span>
+0079                     );  
+0080                 
+0081                 tempStripe{channel+10}=<span class="keyword">...</span>
+0082                     <a href="add2d.html" class="code" title="function Aout = add2d(A, Bx)">add2d</a>(<span class="keyword">...</span>
+0083                     processedData(2:2:<span class="keyword">end</span>, state.internal.startDataColumnInLine:state.internal.endDataColumnInLine), <span class="keyword">...</span>
+0084                     state.acq.binFactor<span class="keyword">...</span>
+0085                     );  
+0086             <span class="keyword">else</span>
+0087                 disp(<span class="string">'error'</span>)
+0088             <span class="keyword">end</span>
+0089             
+0090             clear processedData
+0091 
+0092             <span class="keyword">for</span> channelToDisplay=displayChannel
+0093                 <span class="keyword">if</span> averaging &amp;&amp; (state.internal.frameCounter&gt;1)
+0094                     lastAcquiredFrame{channelToDisplay}(startLine:stopLine,:) = <span class="keyword">...</span>
+0095                         (((state.internal.frameCounter - 1) <span class="keyword">...</span><span class="comment">    </span>
+0096                         * lastAcquiredFrame{channelToDisplay}(startLine:stopLine,:))<span class="keyword">...</span>
+0097                         + tempStripe{channelToDisplay})<span class="keyword">...</span>
+0098                         /state.internal.frameCounter;                    
+0099                 <span class="keyword">else</span>
+0100                     lastAcquiredFrame{channelToDisplay}(startLine:stopLine,:) = tempStripe{channelToDisplay};
+0101                 <span class="keyword">end</span>
+0102                 
+0103                 <span class="keyword">if</span> state.acq.imagingChannel(channel)
+0104                     set(state.internal.imagehandle(channelToDisplay), <span class="string">'EraseMode'</span>, <span class="string">'none'</span>, <span class="string">'CData'</span>, <span class="keyword">...</span>
+0105                         lastAcquiredFrame{channelToDisplay}(startLine:stopLine,:), <span class="keyword">...</span>
+0106                         <span class="string">'YData'</span>, [startLine stopLine]);
+0107                 <span class="keyword">end</span>
+0108             <span class="keyword">end</span>
+0109         <span class="keyword">end</span>    
+0110     <span class="keyword">end</span>
+0111     
+0112 
+0113     <span class="keyword">if</span> state.internal.composite
+0114         <span class="keyword">for</span> counter=1:3
+0115             channel=state.internal.compositeChannelSelections(counter);
+0116             
+0117             <span class="keyword">if</span> channel&gt;0 &amp;&amp; channel&lt;99 &amp;&amp; state.acq.acquiringChannel(mod(channel,10)) &amp;&amp; <span class="keyword">...</span>
+0118                     (state.acq.dualLaserMode==2 || (state.acq.dualLaserMode==1 &amp;&amp; channel&lt;=4))
+0119                 
+0120                 low = getfield(state.internal, [<span class="string">'lowPixelValue'</span> num2str(channel)]);
+0121                 high = getfield(state.internal, [<span class="string">'highPixelValue'</span> num2str(channel)]);
+0122 
+0123                 compositeData(startLine:stopLine,:,counter)=<span class="keyword">...</span>
+0124                     min(max(<span class="keyword">...</span>
+0125                     (lastAcquiredFrame{channel}(startLine:stopLine,:) - low) / <span class="keyword">...</span>
+0126                     max(high-low,1)<span class="keyword">...</span>
+0127                     ,0)<span class="keyword">...</span>
+0128                     ,1);
+0129             <span class="keyword">end</span>
+0130         <span class="keyword">end</span>
+0131         set(state.internal.compositeImagehandle, <span class="string">'EraseMode'</span>, <span class="string">'none'</span>, <span class="string">'CData'</span>, compositeData(startLine:stopLine,:,:), <span class="keyword">...</span>
+0132             <span class="string">'YData'</span>, [startLine stopLine]);
+0133     <span class="keyword">end</span>
+0134     
+0135     clear tempStripe displayChannel
+0136     drawnow;
+0137 
+0138 
+0139 
+0140 
+0141</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

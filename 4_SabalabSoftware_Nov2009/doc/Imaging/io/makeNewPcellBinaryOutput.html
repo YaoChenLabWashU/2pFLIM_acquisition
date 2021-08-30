@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of makeNewPcellBinaryOutput</title>
+  <meta name="keywords" content="makeNewPcellBinaryOutput">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Imaging</a> &gt; <a href="index.html">io</a> &gt; makeNewPcellBinaryOutput.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\io&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>makeNewPcellBinaryOutput
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function makeNewPcellBinaryOutput </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="applyChangesToOutput.html" class="code" title="function applyChangesToOutput(force)">applyChangesToOutput</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function makeNewPcellBinaryOutput</a>
+0002     <span class="keyword">return</span>
+0003 
+0004     <span class="keyword">global</span> state 
+0005 
+0006     state.internal.lineDelay = state.acq.lineDelay/state.acq.msPerLine; <span class="comment">% calculate fractional line delay</span>
+0007     pOut = zeros(state.internal.lengthOfXData ,1);                    <span class="comment">% Fill with zero for the flyback</span>
+0008     <span class="keyword">if</span> state.acq.bidi
+0009         state.internal.flybackDecimal = 1-state.acq.fillFraction-state.internal.lineDelay;
+0010         pStart =  1+round(state.internal.lengthOfXData * <span class="keyword">...</span>
+0011             ((state.internal.lineDelay/2+state.acq.mirrorLag-state.pcell.pcellDelay)/state.acq.msPerLine));
+0012         pEnd =  1+round(state.internal.lengthOfXData * <span class="keyword">...</span>
+0013             ((state.acq.mirrorLag-state.pcell.pcellDelay)/state.acq.msPerLine+state.acq.fillFraction));
+0014     <span class="keyword">else</span>
+0015         pStart = round(state.internal.lengthOfXData * <span class="keyword">...</span>
+0016             (state.acq.lineDelay+state.acq.mirrorLag-state.pcell.pcellDelay)/state.acq.msPerLine);
+0017         pEnd =  round(state.internal.lengthOfXData * <span class="keyword">...</span>
+0018             ((state.acq.lineDelay+state.acq.mirrorLag-state.pcell.pcellDelay)/state.acq.msPerLine+state.acq.fillFraction));
+0019     <span class="keyword">end</span>
+0020     pOut(max(pStart,1):min(pEnd,state.internal.lengthOfXData))=1;            <span class="comment">% Fill with 1 for scanning portion</span>
+0021     state.acq.pcellSingleLineBinary=pOut;
+0022     
+0023     <span class="keyword">if</span> state.acq.bidi
+0024         <span class="comment">% for bidirectional scan, the pcell in the second line must be</span>
+0025         <span class="comment">% inverted timing compared to line 1</span>
+0026         pOutBack = zeros(state.internal.lengthOfXData ,1);                    <span class="comment">% Fill with zero for the flyback</span>
+0027         pOutBack(max(end-pEnd+1,1):min(end-pStart+1,state.internal.lengthOfXData))=1; <span class="comment">% Fill with 1 for scanning portion</span>
+0028         
+0029         <span class="keyword">if</span> state.acq.dualLaserMode==1
+0030             state.acq.pcellBinaryOutput = repmat([pOut; flipdim(pOut,1)], [state.acq.linesPerFrame/2 1]);                         <span class="comment">% Final Pockell Data for one frame</span>
+0031         <span class="keyword">elseif</span> state.acq.dualLaserMode==2
+0032             state.acq.pcellBinaryOutput = repmat([pOut' zeros(1, length(pOut))]', [state.acq.linesPerFrame 1]);                         <span class="comment">% Final Pockell Data for one frame</span>
+0033             state.acq.pcellBinaryOutputComp = repmat([zeros(1, length(pOutBack)) pOutBack']', [state.acq.linesPerFrame 1]);                         <span class="comment">% Final Pockell Data for one frame</span>
+0034         <span class="keyword">end</span>        
+0035     <span class="keyword">else</span>
+0036         <span class="keyword">if</span> state.acq.dualLaserMode==1
+0037             state.acq.pcellBinaryOutput = repmat(pOut, [state.acq.linesPerFrame 1]);                         <span class="comment">% Final Pockell Data for one frame</span>
+0038         <span class="keyword">elseif</span> state.acq.dualLaserMode==2
+0039             state.acq.pcellBinaryOutput = repmat([pOut' zeros(1, length(pOut))]', [state.acq.linesPerFrame 1]);                         <span class="comment">% Final Pockell Data for one frame</span>
+0040             state.acq.pcellBinaryOutputComp = repmat([zeros(1, length(pOut)) pOut']', [state.acq.linesPerFrame 1]);                         <span class="comment">% Final Pockell Data for one frame</span>
+0041         <span class="keyword">end</span>        
+0042     <span class="keyword">end</span>
+0043</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

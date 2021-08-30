@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of makeTilerOutput</title>
+  <meta name="keywords" content="makeTilerOutput">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Imaging</a> &gt; <a href="index.html">tiler</a> &gt; makeTilerOutput.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\tiler&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>makeTilerOutput
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function makeTilerOutput </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../Imaging/FluoProcessing/smooth.html" class="code" title="function out=smooth(in, n)">smooth</a>	</li><li><a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>	given the name of a global variable, find and update the GUI that contains it</li><li><a href="../../Imaging/pcell/powerToPcellVoltage.html" class="code" title="function voltage=powerToPcellVoltage(power, chan)">powerToPcellVoltage</a>	</li><li><a href="setTilerStatusString.html" class="code" title="function setTilerStatusString(st)">setTilerStatusString</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="initTiler.html" class="code" title="function initTiler">initTiler</a>	</li><li><a href="tilerControls.html" class="code" title="function varargout = tilerControls(varargin)">tilerControls</a>	TILERCONTROLS Application M-file for tilerControls.fig</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function makeTilerOutput</a>
+0002     <span class="keyword">global</span> state
+0003     
+0004     <span class="keyword">if</span> state.tiler.duration &lt; (state.tiler.startPulse1 + state.tiler.pulseLength1) | <span class="keyword">...</span>
+0005             state.tiler.duration &lt; (state.tiler.startPulse2 + state.tiler.pulseLength2)
+0006         disp(<span class="string">'makePulseData: pulse continues past end of acquisition'</span>);
+0007         disp(<span class="string">'    makePulseData failed.  Please adjust parameters'</span>);
+0008         <a href="setTilerStatusString.html" class="code" title="function setTilerStatusString(st)">setTilerStatusString</a>(<span class="string">'ERROR'</span>);
+0009     <span class="keyword">else</span>
+0010         <a href="setTilerStatusString.html" class="code" title="function setTilerStatusString(st)">setTilerStatusString</a>(<span class="string">''</span>);
+0011     <span class="keyword">end</span>
+0012     
+0013     nTiles = state.tiler.nTilesX * state.tiler.nTilesY;
+0014     p=primes(nTiles);
+0015     f=find(p&gt;nTiles/2);
+0016     state.tiler.primeStep=p(f(floor((1+end)/2)));
+0017     
+0018     <span class="comment">% for X Y mirrors</span>
+0019     
+0020     totalTime = state.tiler.pulseSeparation/1000 * nTiles;
+0021     state.tiler.mirrorPointsPerPulse = state.tiler.pulseSeparation/1000 * state.tiler.mirrorActualOutputRate;
+0022     state.tiler.mirrorTotalPoints = state.tiler.mirrorPointsPerPulse * nTiles;
+0023     state.tiler.pcellPointsPerPulse = state.tiler.pulseSeparation/1000 * state.tiler.pcellActualOutputRate;
+0024     state.tiler.pcellTotalPoints = state.tiler.pcellPointsPerPulse * nTiles;
+0025     
+0026     state.tiler.mirrorTotalInputPoints = state.tiler.pulseSeparation/1000 * state.tiler.mirrorActualInputRate * nTiles;
+0027     state.tiler.mirrorInputPointsPerPulse = round(state.tiler.duration/1000 *state.tiler.mirrorActualInputRate);
+0028     state.tiler.physTotalInputPoints = state.tiler.pulseSeparation/1000 * state.tiler.physActualInputRate * nTiles;
+0029     
+0030     
+0031     state.tiler.mirrorOutput=zeros(state.tiler.mirrorTotalPoints, 2);
+0032     state.tiler.pcellOutput=zeros(state.tiler.pcellPointsPerPulse, 2);
+0033     
+0034     state.tiler.pcellOutput(:,1)=<a href="../../Imaging/pcell/powerToPcellVoltage.html" class="code" title="function voltage=powerToPcellVoltage(power, chan)">powerToPcellVoltage</a>(state.tiler.offset1, 1);
+0035     state.tiler.pcellOutput(:,1)=<a href="../../Imaging/pcell/powerToPcellVoltage.html" class="code" title="function voltage=powerToPcellVoltage(power, chan)">powerToPcellVoltage</a>(state.tiler.offset2, 2);
+0036     
+0037     state.tiler.pcellOutput(round(state.tiler.startPulse1/1000 * state.tiler.pcellActualOutputRate + 1) : <span class="keyword">...</span>
+0038         round((state.tiler.startPulse1 + state.tiler.pulseLength1)/1000 * state.tiler.pcellActualOutputRate + 1), 1) = <span class="keyword">...</span>
+0039         <a href="../../Imaging/pcell/powerToPcellVoltage.html" class="code" title="function voltage=powerToPcellVoltage(power, chan)">powerToPcellVoltage</a>(state.tiler.amplitude1, 1);
+0040 
+0041     state.tiler.pcellOutput(round(state.tiler.startPulse2/1000 * state.tiler.pcellActualOutputRate + 1) : <span class="keyword">...</span>
+0042         round((state.tiler.startPulse2 + state.tiler.pulseLength2)/1000 * state.tiler.pcellActualOutputRate + 1), 2) = <span class="keyword">...</span>
+0043         <a href="../../Imaging/pcell/powerToPcellVoltage.html" class="code" title="function voltage=powerToPcellVoltage(power, chan)">powerToPcellVoltage</a>(state.tiler.amplitude2, 2);
+0044 
+0045     <span class="keyword">if</span> state.tiler.nTilesX==1
+0046         deltaX = 0;
+0047     <span class="keyword">else</span>
+0048         deltaX = (state.tiler.maxX-state.tiler.minX)/(state.tiler.nTilesX-1);
+0049     <span class="keyword">end</span>
+0050     
+0051     <span class="keyword">if</span> state.tiler.nTilesY==1
+0052         deltaY = 0;
+0053     <span class="keyword">else</span>
+0054         deltaY = (state.tiler.maxY-state.tiler.minY)/(state.tiler.nTilesY-1);
+0055     <span class="keyword">end</span>
+0056 
+0057     state.tiler.XYLookup=zeros(2, nTiles);
+0058     state.tiler.counterLookup=zeros(2, nTiles);
+0059     
+0060     <span class="keyword">for</span> counter=1:nTiles
+0061         primePlace=(counter*state.tiler.primeStep)-nTiles*floor((counter*state.tiler.primeStep)/nTiles);
+0062         yCounter=floor(primePlace/state.tiler.nTilesX)+1;
+0063         xCounter=primePlace-(yCounter-1)*state.tiler.nTilesX+1;
+0064         xVal = state.tiler.minX + (xCounter-1)*deltaX;
+0065         yVal = state.tiler.minY + (yCounter-1)*deltaY;
+0066 
+0067         state.tiler.counterLookup(:, counter) = [xCounter yCounter]';
+0068         state.tiler.XYLookup(:, counter) = [xVal yVal]';
+0069         state.tiler.mirrorOutput((counter-1)*state.tiler.mirrorPointsPerPulse + 1 : counter*state.tiler.mirrorPointsPerPulse, 1) = xVal;
+0070         state.tiler.mirrorOutput((counter-1)*state.tiler.mirrorPointsPerPulse + 1 : counter*state.tiler.mirrorPointsPerPulse, 2) = yVal;
+0071     <span class="keyword">end</span>
+0072     
+0073     set(state.tiler.mirrorInputObj, <span class="string">'SamplesPerTrigger'</span>, state.tiler.mirrorTotalInputPoints);
+0074     set(state.tiler.mirrorInputObj, <span class="string">'SamplesAcquiredFcnCount'</span>, state.tiler.mirrorPointsPerPulse);
+0075     
+0076     set(state.tiler.mirrorOutputObj, <span class="string">'RepeatOutput'</span>, 0);
+0077     
+0078     set(state.tiler.pcellOutputObj, <span class="string">'RepeatOutput'</span>, nTiles);
+0079     
+0080     set(state.tiler.physInputObj, <span class="string">'SamplesPerTrigger'</span>, state.tiler.physTotalInputPoints);
+0081     set(state.tiler.physInputObj, <span class="string">'samplesAcquiredFcnCount'</span>, state.tiler.mirrorPointsPerPulse);
+0082     
+0083     state.tiler.tilerCounter=0;
+0084     <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.tiler.tilerCounter'</span>);
+0085     
+0086     nSmooth = round(state.tiler.shutterDelay/1000*state.tiler.pcellActualOutputRate);
+0087     shutterControl = <a href="../../Imaging/FluoProcessing/smooth.html" class="code" title="function out=smooth(in, n)">smooth</a>((state.tiler.pcellOutput(:,1)' + state.tiler.pcellOutput(:,2)') &gt; (<a href="../../Imaging/pcell/powerToPcellVoltage.html" class="code" title="function voltage=powerToPcellVoltage(power, chan)">powerToPcellVoltage</a>(0, 1) + <a href="../../Imaging/pcell/powerToPcellVoltage.html" class="code" title="function voltage=powerToPcellVoltage(power, chan)">powerToPcellVoltage</a>(0, 2)), nSmooth)&gt;0;
+0088     shutterControl = [shutterControl(round(nSmooth/2):end) repmat(0, 1, round(nSmooth/2)-1)];
+0089     state.tiler.pcellOutput(:, end+1) = shutterControl;
+0090</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

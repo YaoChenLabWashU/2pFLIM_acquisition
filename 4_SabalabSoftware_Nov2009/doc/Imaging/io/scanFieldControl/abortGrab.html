@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of abortGrab</title>
+  <meta name="keywords" content="abortGrab">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Imaging</a> &gt; <a href="../index.html">io</a> &gt; <a href="index.html">scanFieldControl</a> &gt; abortGrab.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\io\scanFieldControl&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>abortGrab
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function abortGrab </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>	This function sets the status field in mainControls.</li><li><a href="../../../Imaging/io/ad_da/resetCounters.html" class="code" title="function resetCounters">resetCounters</a>	</li><li><a href="../../../Imaging/io/motors/MP285/mp285Flush.html" class="code" title="function temp=mp285Flush">mp285Flush</a>	</li><li><a href="../../../Imaging/io/motors/executeGoHome.html" class="code" title="function moved=executeGoHome">executeGoHome</a>	</li><li><a href="../../../Imaging/pcell/setPcellsToDefault.html" class="code" title="function setPcellsToDefault">setPcellsToDefault</a>	</li><li><a href="../../../Timer/timerCheckIfAllAborted.html" class="code" title="function timerCheckIfAllAborted">timerCheckIfAllAborted</a>	</li><li><a href="../../../Timer/timerSetPackageStatus.html" class="code" title="function timerSetPackageStatus(status, package)">timerSetPackageStatus</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Imaging/io/ad_da/makeFrameByStripes.html" class="code" title="function makeFrameByStripes(ai, SamplesAcquired)">makeFrameByStripes</a>	</li><li><a href="../../../Imaging/timerFunctions/timerAbort_Imaging.html" class="code" title="function timerAbort_Imaging">timerAbort_Imaging</a>	</li><li><a href="../../../Imaging/timerFunctions/timerForceAbort_Imaging.html" class="code" title="function timerForceAbort_Imaging">timerForceAbort_Imaging</a>	</li><li><a href="../../../Imaging/timerFunctions/timerProcess_Imaging.html" class="code" title="function timerProcess_Imaging">timerProcess_Imaging</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function abortGrab</a>
+0002     <span class="keyword">global</span> state gh
+0003     <span class="keyword">global</span> grabInput grabOutput pcellGrabOutput
+0004     <a href="../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Aborting Grab...'</span>);
+0005 
+0006     stop(grabInput)
+0007 
+0008     stop([pcellGrabOutput grabOutput grabInput]);
+0009 
+0010     <span class="keyword">while</span> ~strcmp(get(pcellGrabOutput, <span class="string">'Running'</span>), <span class="string">'Off'</span>)
+0011         pause(0.01);
+0012     <span class="keyword">end</span>
+0013     state.internal.abortActionFunctions=0;
+0014     <a href="../../../Imaging/pcell/setPcellsToDefault.html" class="code" title="function setPcellsToDefault">setPcellsToDefault</a>;
+0015 
+0016     set(gh.siGUI_ImagingControls.grabOneButton, <span class="string">'Enable'</span>, <span class="string">'off'</span>);
+0017 
+0018     <span class="keyword">while</span> ~any(strcmp(get([pcellGrabOutput grabOutput grabInput], <span class="string">'Running'</span>), <span class="string">'Off'</span>))
+0019         pause(0.001);
+0020     <span class="keyword">end</span>
+0021 
+0022     state.internal.status=0;
+0023     <span class="keyword">try</span>
+0024         flushData(grabInput);
+0025     <span class="keyword">catch</span>
+0026 <span class="comment">%        disp('abortGrab: error in input flush data.  proceeding...');</span>
+0027     <span class="keyword">end</span>
+0028         
+0029     <a href="../../../Imaging/io/motors/MP285/mp285Flush.html" class="code" title="function temp=mp285Flush">mp285Flush</a>;
+0030     
+0031     <a href="../../../Imaging/io/motors/executeGoHome.html" class="code" title="function moved=executeGoHome">executeGoHome</a>;
+0032 
+0033     set(gh.siGUI_ImagingControls.grabOneButton, <span class="string">'String'</span>, <span class="string">'GRAB'</span>);
+0034     set(gh.siGUI_ImagingControls.grabOneButton, <span class="string">'Enable'</span>, <span class="string">'on'</span>);
+0035     set(gh.siGUI_ImagingControls.focusButton, <span class="string">'Visible'</span>, <span class="string">'On'</span>);
+0036 
+0037 <span class="comment">%    siRedrawImages([], max(state.internal.frameCounter,1));</span>
+0038     <a href="../../../Timer/timerSetPackageStatus.html" class="code" title="function timerSetPackageStatus(status, package)">timerSetPackageStatus</a>(0, <span class="string">'Imaging'</span>);
+0039     <a href="../../../Timer/timerCheckIfAllAborted.html" class="code" title="function timerCheckIfAllAborted">timerCheckIfAllAborted</a>;
+0040     <a href="../../../Imaging/io/ad_da/resetCounters.html" class="code" title="function resetCounters">resetCounters</a>;
+0041     <a href="../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">''</span>);
+0042</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

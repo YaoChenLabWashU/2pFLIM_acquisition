@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of makeGraphicalLUT</title>
+  <meta name="keywords" content="makeGraphicalLUT">
+  <meta name="description" content="THis will make a grpahical interface for editing">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Imaging</a> &gt; <a href="../index.html">guis</a> &gt; <a href="index.html">gui_building</a> &gt; makeGraphicalLUT.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\guis\gui_building&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>makeGraphicalLUT
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>THis will make a grpahical interface for editing</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function makeGraphicalLUT </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> THis will make a grpahical interface for editing
+ the LUT for the ScanImage software.
+ Each channel is represented by a different plot.
+ green = channel 1
+ red = channel 2;
+ black = channel 3
+ The middle point controsl the highPixelValue of the respective channel.</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function makeGraphicalLUT</a>
+0002 <span class="comment">% THis will make a grpahical interface for editing</span>
+0003 <span class="comment">% the LUT for the ScanImage software.</span>
+0004 <span class="comment">% Each channel is represented by a different plot.</span>
+0005 <span class="comment">% green = channel 1</span>
+0006 <span class="comment">% red = channel 2;</span>
+0007 <span class="comment">% black = channel 3</span>
+0008 <span class="comment">% The middle point controsl the highPixelValue of the respective channel.</span>
+0009 
+0010 <span class="keyword">global</span> state gh
+0011 state.internal.graphicalLUTFig=figure(<span class="string">'NumberTitle'</span>,<span class="string">'off'</span>,<span class="string">'name'</span>,<span class="string">'Graphical LUT'</span>, <span class="string">'DoubleBuffer'</span>,<span class="string">'on'</span>,<span class="string">'color'</span>,<span class="string">'white'</span>,<span class="string">'visible'</span>,<span class="string">'off'</span>,<span class="keyword">...</span>
+0012     <span class="string">'CloseRequestFcn'</span>,<span class="string">'set(gcf,''visible'',''off'')'</span>);
+0013 a1=axes(<span class="string">'Parent'</span>,state.internal.graphicalLUTFig,<span class="string">'NextPlot'</span>,<span class="string">'Add'</span>);
+0014 set(get(a1,<span class="string">'XLabel'</span>),<span class="string">'String'</span>,<span class="string">'Channels'</span>);
+0015 set(get(a1,<span class="string">'YLabel'</span>),<span class="string">'String'</span>,<span class="string">'High Pixel Value'</span>);
+0016 title(<span class="string">'Graphical LUT for ScanImage'</span>);
+0017 ch1=plot([0 1 2],[3000 state.internal.highPixelValue1 state.internal.lowPixelValue1], <span class="keyword">...</span>
+0018     <span class="string">'tag'</span>,<span class="string">'channel1'</span>,<span class="string">'color'</span>,<span class="string">'green'</span>,<span class="string">'marker'</span>,<span class="string">'o'</span>);
+0019 ch2=plot([0 1 2],[3000 state.internal.highPixelValue2 state.internal.lowPixelValue2], <span class="keyword">...</span>
+0020     <span class="string">'tag'</span>,<span class="string">'channel2'</span>,<span class="string">'color'</span>,<span class="string">'red'</span>,<span class="string">'marker'</span>,<span class="string">'o'</span>);
+0021 ch3=plot([0 1 2],[3000 state.internal.highPixelValue3 state.internal.lowPixelValue3], <span class="keyword">...</span>
+0022     <span class="string">'tag'</span>,<span class="string">'channel3'</span>,<span class="string">'color'</span>,<span class="string">'black'</span>,<span class="string">'marker'</span>,<span class="string">'o'</span>);
+0023 legend(<span class="string">'Channel 1'</span>, <span class="string">'Channel 2'</span>, <span class="string">'Channel 3'</span>);
+0024 movePlot(ch1,<span class="string">'y'</span>);
+0025 movePlot(ch2,<span class="string">'y'</span>);
+0026 movePlot(ch3,<span class="string">'y'</span>);
+0027</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

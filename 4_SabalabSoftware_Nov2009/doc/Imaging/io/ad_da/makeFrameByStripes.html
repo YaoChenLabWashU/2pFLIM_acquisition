@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of makeFrameByStripes</title>
+  <meta name="keywords" content="makeFrameByStripes">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Imaging</a> &gt; <a href="../index.html">io</a> &gt; <a href="index.html">ad_da</a> &gt; makeFrameByStripes.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\io\ad_da&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>makeFrameByStripes
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function makeFrameByStripes(ai, SamplesAcquired) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>	This function sets the status field in mainControls.</li><li><a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>	given the name of a global variable, find and update the GUI that contains it</li><li><a href="../../../Imaging/guis/siRedrawImages.html" class="code" title="function siRedrawImages(channelList, frame)">siRedrawImages</a>	</li><li><a href="endAcquisition.html" class="code" title="function endAcquisition">endAcquisition</a>	</li><li><a href="siProcessImageStripe.html" class="code" title="function siProcessImageStripe(stripeData, averaging)">siProcessImageStripe</a>	siProcessImageStripe.m*****</li><li><a href="../../../Imaging/io/motors/startMoveStackFocus.html" class="code" title="function startMoveStackFocus">startMoveStackFocus</a>	</li><li><a href="../../../Imaging/io/scanFieldControl/abortGrab.html" class="code" title="function abortGrab">abortGrab</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function makeFrameByStripes(ai, SamplesAcquired)</a>
+0002     <span class="keyword">global</span> state imageData
+0003 
+0004 <span class="comment">% makeFrame.m*****</span>
+0005 <span class="comment">% Data Acquisition (SamplesAcquired) Action Function</span>
+0006 <span class="comment">% Used with the contMode.m script to update frames on the screen after each frame.</span>
+0007 <span class="comment">% Takes data from data acquisition engine and formats it into a proper intensity image.</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">% This function will take the datainput from the DAQ engine and remove the data for the</span>
+0010 <span class="comment">% lines that are acquired.  It will then bin the matrix along the columns to produce a final image</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% The image will update every frame on the screen as data is recorded.</span>
+0013 <span class="comment">% The data is stored in the cell array imageData{X}(:,:,frames)(X = 1,2,3...) , where X is the channel Acquired the frames are indexed in the third dimension.</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">% This action function also handles averaging over frames.</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">% Written by: Thomas Pologruto and Bernardo Sabatini</span>
+0018 <span class="comment">% Cold Spring Harbor Labs</span>
+0019 <span class="comment">% January 31, 2001</span>
+0020 
+0021 <span class="comment">% Write complete header string  for only the first frame</span>
+0022     
+0023     <span class="keyword">global</span> grabInput
+0024     stripeData = getdata(grabInput, state.internal.samplesPerStripe, <span class="string">'double'</span>); 
+0025     <span class="comment">% Gets enoogh data for one stripe from the DAQ engine for all channels present</span>
+0026 
+0027     <span class="keyword">if</span> state.internal.stripeCounter==0
+0028         <span class="keyword">if</span> state.internal.looping==1
+0029             state.internal.secondsCounter=floor(state.internal.lastTimeDelay-etime(clock,state.internal.triggerTime));
+0030         <span class="keyword">else</span>
+0031             state.internal.secondsCounter=floor(etime(clock,state.internal.triggerTime));
+0032         <span class="keyword">end</span>
+0033         <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.internal.secondsCounter'</span>);
+0034     <span class="keyword">end</span>
+0035     
+0036     <span class="keyword">try</span>
+0037         <span class="keyword">if</span> (state.internal.frameCounter==state.acq.numberOfFrames-1) &amp;&amp; (state.internal.stripeCounter==state.internal.numberOfStripes-1)
+0038             <span class="keyword">if</span> state.acq.numberOfZSlices &gt; 1
+0039                 <a href="../../../Imaging/io/motors/startMoveStackFocus.html" class="code" title="function startMoveStackFocus">startMoveStackFocus</a>;     <span class="comment">% start movement - focal plane down one step</span>
+0040             <span class="keyword">end</span>
+0041         <span class="keyword">end</span>
+0042     <span class="keyword">catch</span>
+0043         disp([<span class="string">'Error in makeFromByStripes (1) : '</span> lasterr]);
+0044     <span class="keyword">end</span>
+0045     
+0046      <span class="keyword">try</span>
+0047         <a href="siProcessImageStripe.html" class="code" title="function siProcessImageStripe(stripeData, averaging)">siProcessImageStripe</a>(stripeData, state.acq.averaging);
+0048         state.internal.stripeCounter = state.internal.stripeCounter + 1;
+0049     <span class="keyword">catch</span>
+0050         <span class="keyword">if</span> state.internal.abortActionFunctions
+0051             <a href="../../../Imaging/io/scanFieldControl/abortGrab.html" class="code" title="function abortGrab">abortGrab</a>
+0052             <a href="../../../Imaging/guis/siRedrawImages.html" class="code" title="function siRedrawImages(channelList, frame)">siRedrawImages</a>
+0053             <span class="keyword">return</span>
+0054         <span class="keyword">else</span>
+0055             <a href="../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Error in frame by stripes'</span>);
+0056             disp(<span class="string">'makeFrameByStripes: Error in action function'</span>);
+0057             disp(lasterr);
+0058         <span class="keyword">end</span>
+0059     <span class="keyword">end</span>
+0060     
+0061     
+0062     <span class="keyword">if</span> state.internal.stripeCounter==state.internal.numberOfStripes <span class="comment">% we finished a fram</span>
+0063         state.internal.frameCounter=state.internal.frameCounter + 1;    <span class="comment">% Increments the frameCounter to ensure proper image storage and display</span>
+0064         <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.internal.frameCounter'</span>);    <span class="comment">% Updates the frame Counter on the main controls GUI.</span>
+0065         state.internal.stripeCounter=0;
+0066         
+0067         <span class="keyword">if</span> state.internal.keepAllSlicesInMemory
+0068             <span class="keyword">if</span> state.acq.averaging
+0069                 framePosition=state.internal.zSliceCounter + 1;
+0070             <span class="keyword">else</span>
+0071                 framePosition=(state.internal.frameCounter + state.internal.zSliceCounter*state.acq.numberOfFrames);
+0072             <span class="keyword">end</span>
+0073         <span class="keyword">else</span>
+0074             <span class="keyword">if</span> state.acq.averaging
+0075                 framePosition=1;
+0076             <span class="keyword">else</span>
+0077                 framePosition = state.internal.frameCounter;
+0078             <span class="keyword">end</span>
+0079         <span class="keyword">end</span>
+0080         
+0081         <span class="keyword">global</span> lastAcquiredFrame
+0082         <span class="keyword">for</span> channel=find(state.acq.acquiringChannel)
+0083             imageData{channel}(:,:,framePosition)=lastAcquiredFrame{channel}(:,:);
+0084             <span class="keyword">if</span> state.acq.dualLaserMode==2
+0085                 imageData{channel+10}(:,:,framePosition)=lastAcquiredFrame{channel+10}(:,:);
+0086             <span class="keyword">end</span>
+0087             
+0088         <span class="keyword">end</span>
+0089         
+0090         <span class="keyword">if</span> state.internal.abortActionFunctions
+0091             <a href="../../../Imaging/io/scanFieldControl/abortGrab.html" class="code" title="function abortGrab">abortGrab</a>
+0092             <a href="../../../Imaging/guis/siRedrawImages.html" class="code" title="function siRedrawImages(channelList, frame)">siRedrawImages</a>
+0093             <span class="keyword">return</span>
+0094         <span class="keyword">end</span>
+0095 
+0096         <span class="keyword">if</span> state.internal.frameCounter &gt;= state.acq.numberOfFrames 
+0097             <a href="endAcquisition.html" class="code" title="function endAcquisition">endAcquisition</a>    <span class="comment">% we finished the required frames for this slice</span>
+0098         <span class="keyword">end</span>
+0099     <span class="keyword">end</span>
+0100 
+0101     
+0102     <span class="keyword">if</span> state.internal.abortActionFunctions
+0103         <a href="../../../Imaging/io/scanFieldControl/abortGrab.html" class="code" title="function abortGrab">abortGrab</a>
+0104         <a href="../../../Imaging/guis/siRedrawImages.html" class="code" title="function siRedrawImages(channelList, frame)">siRedrawImages</a>
+0105         <span class="keyword">return</span>
+0106     <span class="keyword">end</span>
+0107</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

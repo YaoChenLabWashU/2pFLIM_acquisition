@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of piezoUpdatePositionNoWait</title>
+  <meta name="keywords" content="piezoUpdatePositionNoWait">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Imaging</a> &gt; <a href="../index.html">io</a> &gt; <a href="index.html">Piezo</a> &gt; piezoUpdatePositionNoWait.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\io\Piezo&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>piezoUpdatePositionNoWait
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function piezoUpdatePositionNoWait() </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>	given the name of a global variable, find and update the GUI that contains it</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="piezoUpdatePosition.html" class="code" title="function piezoUpdatePosition()">piezoUpdatePosition</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function piezoUpdatePositionNoWait()</a>
+0002 
+0003 <span class="keyword">global</span> state
+0004 
+0005 <span class="comment">% if(nargin==1)</span>
+0006 <span class="comment">%     state.piezo.next_pos=varargin{1};</span>
+0007 <span class="comment">% end</span>
+0008 <span class="keyword">if</span>(state.piezo.next_pos&lt;0)
+0009     state.piezo.next_pos=0;
+0010 <span class="keyword">end</span>
+0011 
+0012 <span class="keyword">if</span> isempty(state.piezo.next_pos)
+0013     disp(<span class="string">'*** PIEZO END MISSING.  MOVING TO ZERO ***'</span>);
+0014     state.piezo.next_pos=0;
+0015 <span class="keyword">end</span>
+0016 
+0017 <span class="keyword">if</span> isempty(state.piezo.last_pos)
+0018     disp(<span class="string">'*** PIEZO START MISSING.  ABRUPT MOVE ***'</span>);
+0019     state.piezo.last_pos=state.piezo.next_pos;
+0020 <span class="keyword">end</span>
+0021 
+0022 vstart=state.piezo.last_pos/state.piezo.gain ;
+0023 vend=state.piezo.next_pos/state.piezo.gain ;
+0024 
+0025 state.piezo.tsec=abs(state.piezo.last_pos-state.piezo.next_pos)/state.piezo.velocity ;
+0026 nsamples=round(state.piezo.tsec*10000) ; <span class="comment">%10 kHz</span>
+0027 vdata=linspace(vstart, vend, nsamples)' ;
+0028 
+0029 <span class="keyword">if</span>(nsamples&gt;0)
+0030     putdata(state.piezo.Output, vdata) ;
+0031     start(state.piezo.Output);
+0032 <span class="keyword">end</span>
+0033 
+0034 <span class="comment">%putsample(state.piezo.Output, vend) ;</span>
+0035 
+0036 state.piezo.last_pos=state.piezo.next_pos ;
+0037 
+0038 <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.piezo.next_pos'</span>);</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

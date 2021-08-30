@@ -1,0 +1,13 @@
+/* Created by mdot for Matlab */
+digraph m2html {
+  openAndLoadConfiguration -> loadConfig;
+  openAndLoadConfiguration -> saveCurrentConfig;
+  opencfg -> saveCurrentConfig;
+  saveCurrentConfigAs -> saveCurrentConfig;
+
+  loadConfig [URL="loadConfig.html"];
+  openAndLoadConfiguration [URL="openAndLoadConfiguration.html"];
+  opencfg [URL="opencfg.html"];
+  saveCurrentConfig [URL="saveCurrentConfig.html"];
+  saveCurrentConfigAs [URL="saveCurrentConfigAs.html"];
+}

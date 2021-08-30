@@ -1,0 +1,82 @@
+structure state
+	structure lm
+		devices
+		lineMonitorActive=0		Config 4 Gui gh.lmSettings.lineMonitorActive
+		pollDuringWait=1		Config 4 Gui gh.lmSettings.pollDuringWait
+		pollEachAcq=0			Config 4 Gui gh.lmSettings.pollEachAcq		
+
+		paramName1='first'	Config 4 Gui gh.lmSettings.paramName1
+		paramName2='second'	Config 4 Gui gh.lmSettings.paramName2
+		paramName3='third'	Config 4 Gui gh.lmSettings.paramName3
+		paramName4='fourth'	Config 4 Gui gh.lmSettings.paramName4
+		paramName5='fifth'	Config 4 Gui gh.lmSettings.paramName5
+		paramName6='sixth'	Config 4 Gui gh.lmSettings.paramName6
+		
+		paramValue1=0	Config 4 Gui gh.lmSettings.paramValue1
+		paramValue2=0	Config 4 Gui gh.lmSettings.paramValue2
+		paramValue3=0	Config 4 Gui gh.lmSettings.paramValue3
+		paramValue4=0	Config 4 Gui gh.lmSettings.paramValue4
+		paramValue5=0	Config 4 Gui gh.lmSettings.paramValue5
+		paramValue6=0	Config 4 Gui gh.lmSettings.paramValue6
+
+		active1=1	Config 4 Gui gh.lmSettings.active1
+		active2=1	Config 4 Gui gh.lmSettings.active2
+		active3=1	Config 4 Gui gh.lmSettings.active3
+		active4=1	Config 4 Gui gh.lmSettings.active4
+		active5=1	Config 4 Gui gh.lmSettings.active5
+		active6=1	Config 4 Gui gh.lmSettings.active6		
+		
+		dev1=1		Config 4 Gui gh.lmSettings.dev1 Min 1 Numeric 1
+		dev2=1		Config 4 Gui gh.lmSettings.dev2 Min 1 Numeric 1
+		dev3=1		Config 4 Gui gh.lmSettings.dev3 Min 1 Numeric 1
+		dev4=1		Config 4 Gui gh.lmSettings.dev4 Min 1 Numeric 1
+		dev5=1		Config 4 Gui gh.lmSettings.dev5 Min 1 Numeric 1
+		dev6=1		Config 4 Gui gh.lmSettings.dev6	Min 1 Numeric 1
+		
+		ad1=0		Config 4 Gui gh.lmSettings.ad1 Min 1 Numeric 1
+		ad2=1		Config 4 Gui gh.lmSettings.ad2 Min 1 Numeric 1
+		ad3=2		Config 4 Gui gh.lmSettings.ad3 Min 1 Numeric 1
+		ad4=3		Config 4 Gui gh.lmSettings.ad4 Min 1 Numeric 1
+		ad5=4		Config 4 Gui gh.lmSettings.ad5 Min 1 Numeric 1
+		ad6=5		Config 4 Gui gh.lmSettings.ad6 Min 1 Numeric 1
+
+		linear1=0	Config 4 Gui gh.lmSettings.linear1
+		linear2=0	Config 4 Gui gh.lmSettings.linear2
+		linear3=0	Config 4 Gui gh.lmSettings.linear3
+		linear4=0	Config 4 Gui gh.lmSettings.linear4
+		linear5=0	Config 4 Gui gh.lmSettings.linear5
+		linear6=0	Config 4 Gui gh.lmSettings.linear6			
+		
+		linearOffset1=0		Config 4 Gui gh.lmSettings.linearOffset1 Numeric 1
+		linearOffset2=0		Config 4 Gui gh.lmSettings.linearOffset2 Numeric 1
+		linearOffset3=0		Config 4 Gui gh.lmSettings.linearOffset3 Numeric 1
+		linearOffset4=0		Config 4 Gui gh.lmSettings.linearOffset4 Numeric 1
+		linearOffset5=0		Config 4 Gui gh.lmSettings.linearOffset5 Numeric 1
+		linearOffset6=0		Config 4 Gui gh.lmSettings.linearOffset6 Numeric 1		
+		
+		linearSlope1=1		Config 4 Gui gh.lmSettings.linearSlope1 Numeric 1
+		linearSlope2=1		Config 4 Gui gh.lmSettings.linearSlope2 Numeric 1
+		linearSlope3=1		Config 4 Gui gh.lmSettings.linearSlope3 Numeric 1
+		linearSlope4=1		Config 4 Gui gh.lmSettings.linearSlope4 Numeric 1
+		linearSlope5=1		Config 4 Gui gh.lmSettings.linearSlope5 Numeric 1
+		linearSlope6=1		Config 4 Gui gh.lmSettings.linearSlope6 Numeric 1		
+		
+		transformFunction1=''	Config 4 Gui gh.lmSettings.transformFunction1
+		transformFunction2=''	Config 4 Gui gh.lmSettings.transformFunction2
+		transformFunction3=''	Config 4 Gui gh.lmSettings.transformFunction3
+		transformFunction4=''	Config 4 Gui gh.lmSettings.transformFunction4
+		transformFunction5=''	Config 4 Gui gh.lmSettings.transformFunction5
+		transformFunction6=''	Config 4 Gui gh.lmSettings.transformFunction6			
+
+		linearOffset1=0		Config 4 Gui gh.lmSettings.linearOffset1 Numeric 1
+		linearOffset2=0		Config 4 Gui gh.lmSettings.linearOffset2 Numeric 1
+		linearOffset3=0		Config 4 Gui gh.lmSettings.linearOffset3 Numeric 1
+		linearOffset4=0		Config 4 Gui gh.lmSettings.linearOffset4 Numeric 1
+		linearOffset5=0		Config 4 Gui gh.lmSettings.linearOffset5 Numeric 1
+		linearOffset6=0		Config 4 Gui gh.lmSettings.linearOffset6 Numeric 1	
+	endstructure
+endstructure
+		
+		
+		
+		

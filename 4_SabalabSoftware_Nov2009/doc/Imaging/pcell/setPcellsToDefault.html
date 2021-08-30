@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of setPcellsToDefault</title>
+  <meta name="keywords" content="setPcellsToDefault">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Imaging</a> &gt; <a href="index.html">pcell</a> &gt; setPcellsToDefault.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\pcell&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>setPcellsToDefault
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function setPcellsToDefault </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="powerToPcellVoltage.html" class="code" title="function voltage=powerToPcellVoltage(power, chan)">powerToPcellVoltage</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../Imaging/io/ad_da/endAcquisition.html" class="code" title="function endAcquisition">endAcquisition</a>	</li><li><a href="../../Imaging/io/applyChangesToOutput.html" class="code" title="function applyChangesToOutput(force)">applyChangesToOutput</a>	</li><li><a href="../../Imaging/io/scanFieldControl/abortFocus.html" class="code" title="function abortFocus">abortFocus</a>	</li><li><a href="../../Imaging/io/scanFieldControl/abortGrab.html" class="code" title="function abortGrab">abortGrab</a>	</li><li><a href="../../Imaging/io/scanFieldControl/abortPCells.html" class="code" title="function abortPCells">abortPCells</a>	</li><li><a href="../../Imaging/io/scanFieldControl/stopAndRestartFocus.html" class="code" title="function stopAndRestartFocus">stopAndRestartFocus</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function setPcellsToDefault</a>
+0002     <span class="keyword">global</span> state
+0003 
+0004 
+0005     <span class="keyword">if</span> ~state.pcell.pcellOn
+0006         <span class="keyword">return</span>
+0007     <span class="keyword">end</span>
+0008     
+0009     <span class="keyword">global</span> pcellFocusOutput pcellGrabOutput
+0010     stop([pcellFocusOutput pcellGrabOutput]);
+0011     vec=[];
+0012 
+0013     <span class="keyword">for</span> counter=1:state.pcell.numberOfPcells
+0014         pow=getfield(state.pcell, [<span class="string">'pcellDefaultLevel'</span> num2str(counter)]);
+0015         <span class="keyword">if</span> pow==-1
+0016           pow=getfield(state.pcell, [<span class="string">'pcellScanning'</span> num2str(counter)]);          
+0017         <span class="keyword">end</span>
+0018         vec(counter)=<a href="powerToPcellVoltage.html" class="code" title="function voltage=powerToPcellVoltage(power, chan)">powerToPcellVoltage</a>(pow, counter);
+0019         vec(counter+state.pcell.numberOfPcells) = 5 * state.shutter.closed;
+0020     <span class="keyword">end</span>
+0021 
+0022     putsample(pcellFocusOutput, vec);    
+0023 
+0024 
+0025</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

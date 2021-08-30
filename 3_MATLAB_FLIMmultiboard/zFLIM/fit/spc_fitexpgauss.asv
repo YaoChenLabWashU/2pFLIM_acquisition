@@ -1,0 +1,120 @@
+function betahat=spc_fitexpgauss;
+% GY: fit single exponential + gaussian
+% modified from Ryohei's code to reduce dimensionality of fit when
+% parameters are fixed
+global spc;
+global gui;
+
+
+range = spc.fit.range;
+lifetime = spc.lifetime(range(1):1:range(2));
+x = [1:1:length(lifetime)];
+
+[val_max, pos_max] = max(lifetime);
+
+%beta0 = [max(lifetime), sum(lifetime)/max(lifetime), 0, 0, pos_max, tau_g];
+try
+	handles = gui.spc.spc_main;
+	beta0(1)=str2double(get(handles.beta1, 'String'));
+	beta0(2)=str2double(get(handles.beta2, 'String'));
+	beta0(3)=str2double(get(handles.beta3, 'String'));
+	beta0(4)=str2double(get(handles.beta4, 'String'));
+	beta0(5)=str2double(get(handles.beta5, 'String'));
+    beta0(6)=str2double(get(handles.beta6, 'String'));
+	beta0(2) = beta0(2)*1000/spc.datainfo.psPerUnit;
+	beta0(4) = beta0(4)*1000/spc.datainfo.psPerUnit;
+	beta0(5) = beta0(5)*1000/spc.datainfo.psPerUnit;
+    beta0(6) = beta0(6)*1000/spc.datainfo.psPerUnit;
+catch
+    beta0 = [0, 0, 0, 0, 0, 0];
+end
+% GY: Parameter fixing moved here from inside routine
+fix1 = get(gui.spc.spc_main.fixtau1, 'value');
+fix2 = get(gui.spc.spc_main.fixtau2, 'value');
+fix_g = get(gui.spc.spc_main.fix_g, 'value');
+fix_d = get(gui.spc.spc_main.fix_delta, 'value');
+
+if beta0(1) <= 100 | beta0(2) <= 0.5*1000/spc.datainfo.psPerUnit | beta0(2) >=5*1000/spc.datainfo.psPerUnit
+    beta0(1) = max(spc.lifetime(range(1):1:range(2)));
+    beta0(2) = sum(spc.lifetime(range(1):1:range(2)))/beta0(1);
+end
+beta0(3) = 0;
+beta0(4) = 0;
+if beta0(5) <= -1*1000/spc.datainfo.psPerUnit | beta0(5) >= 5*1000/spc.datainfo.psPerUnit 
+    beta0(5) = 1000/spc.datainfo.psPerUnit;
+end
+if beta0(6) <= 0.05*1000/spc.datainfo.psPerUnit | beta0(6) >= 1.0*1000/spc.datainfo.psPerUnit 
+    beta0(6) = 0.15*1000/spc.datainfo.psPerUnit;
+end
+
+% GY: first transform some parameters:
+%       tau to log(tau) -- so that there is no odd behavior with zero and negatives
+
+fitParams = [beta0(1) log(beta0(2)) beta0(5) beta0(6)];  % Ampl1, tau1, delta, gaussian
+fixedParams = [0 fix1 fix_d fix_g];
+floats = find(1-fixedParams);
+pVar=fitParams(floats);
+
+% this is different from Ryohei's version in two ways
+%  first - this is a minimization function (simplex search).  the called
+%  function should return the (weighted) lsq difference from the measured
+%  lifetimes.
+%  second - the fixed parameters are not searched at all, so the fit
+%  should be more efficient.
+optopt = optimset('MaxIter',500,'MaxFunEvals',50000,'Display','iter');
+% all params after optopt get passed to the expgaussLSQ function
+pVarFitted = fminsearchGY(@expgaussLSQ, pVar, optopt, x, lifetime, sqrt(lifetime)/sqrt(max(lifetime)), fitParams, floats);   
+% now move the found parameters back in several steps
+fitParams(floats)=pVarFitted;
+fitParams(2)=exp(fitParams(2)); % translate tau back from the log domain
+betahat = beta0;
+betahat([1 2 5 6])=fitParams;
+% END GY modifications
+
+%betahat = spc_nlinfit(x, lifetime, sqrt(lifetime)/sqrt(max(lifetime)), @expgauss, beta0);
+
+%Drawing
+
+fit = expgauss(betahat, x);
+t = [range(1):1:range(2)];
+t = t*spc.datainfo.psPerUnit/1000;
+
+spc_drawfit (t, fit, lifetime, betahat);
+
+function y = expgaussLSQ(params, x, lifetime, weights, fitParams, floats)
+% GY: modified from Ryohei's to explicitly fix parameters outside of the
+% nlinfit call.
+% params has only the floating parameters, passed from NLINFIT
+% beta0 has the original parameters
+% floats has a list of the floating (nonfixed) parameters
+%beta0(1): peak
+%beta0(2): exp tau
+%beta0(5): center
+%beta0(6): gaussian width
+% 1/2*erfc[(s^2-tau*x)/{sqrt(2)*s*tau}] * exp[s^2/2/tau^2 - x/tau]
+% called as: pVarFitted = fminsearchGY(@expgaussLSQ, pVar, optopt, 
+%    x, lifetime, sqrt(lifetime)/sqrt(max(lifetime)), fitParams, floats);   
+
+global spc;
+pulseI=spc.datainfo.pulseInt / spc.datainfo.psPerUnit*1000;
+
+% GY: first get the parameters in order:
+par = fitParams;        % copy the initial values
+par(floats) = params;   % now copy the floating (fit attempt) values
+ampl = par(1);
+tau1 = par(2);
+tau_d = par(3);
+tau_g = par(4);
+
+y1 = ampl*exp(tau_g^2/2/tau1^2 - (x-tau_d)/tau1);
+y2 = erfc((tau_g^2-tau1*(x-tau_d))/(sqrt(2)*tau1*tau_g));
+y=y1.*y2;
+
+%"Pre" pulse
+y1 = ampl*exp(tau_g^2/2/tau1^2 - (x-tau_d+pulseI)/tau1);
+y2 = erfc((tau_g^2-tau1*(x-tau_d+pulseI))/(sqrt(2)*tau1*tau_g));
+y = y1.*y2+y ;
+y=y/2;
+
+% GY: now include weighting and least-squares calc
+

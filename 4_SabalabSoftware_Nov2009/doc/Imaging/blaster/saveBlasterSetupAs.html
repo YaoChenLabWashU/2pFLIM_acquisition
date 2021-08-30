@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of saveBlasterSetupAs</title>
+  <meta name="keywords" content="saveBlasterSetupAs">
+  <meta name="description" content="save pulse set to disk with new name">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Imaging</a> &gt; <a href="index.html">blaster</a> &gt; saveBlasterSetupAs.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\blaster&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>saveBlasterSetupAs
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>save pulse set to disk with new name</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function saveBlasterSetupAs </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> save pulse set to disk with new name</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="makeBlasterConfigMenu.html" class="code" title="function makeBlasterConfigMenu">makeBlasterConfigMenu</a>	</li><li><a href="saveBlasterSetup.html" class="code" title="function saveBlasterSetup">saveBlasterSetup</a>	</li><li><a href="../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>	This function sets the status field in mainControls.</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="saveBlasterSetup.html" class="code" title="function saveBlasterSetup">saveBlasterSetup</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function saveBlasterSetupAs</a>
+0002 <span class="comment">% save pulse set to disk with new name</span>
+0003 
+0004     <span class="keyword">global</span> state
+0005     
+0006     <span class="keyword">if</span> ~isempty(state.blaster.setupPath)
+0007         <span class="keyword">try</span>
+0008             cd(state.blaster.setupPath)
+0009         <span class="keyword">catch</span>
+0010         <span class="keyword">end</span>            
+0011     <span class="keyword">end</span>
+0012     
+0013     [fname, pname]=uiputfile(<span class="string">'*.mat'</span>, <span class="string">'Choose file for blaster setup'</span>);
+0014 
+0015     <span class="keyword">if</span> ~isnumeric(fname)
+0016         periods=findstr(fname, <span class="string">'.'</span>);
+0017         <span class="keyword">if</span> any(periods)                                
+0018             fname=fname(1:periods(1)-1);
+0019         <span class="keyword">end</span>        
+0020         fname=[fname <span class="string">'.mat'</span>];
+0021         
+0022         state.blaster.setupName = fname;
+0023         state.blaster.setupPath = pname;
+0024         <a href="saveBlasterSetup.html" class="code" title="function saveBlasterSetup">saveBlasterSetup</a>;
+0025         <a href="makeBlasterConfigMenu.html" class="code" title="function makeBlasterConfigMenu">makeBlasterConfigMenu</a>
+0026     <span class="keyword">else</span>
+0027         <a href="../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Cannot open file'</span>);
+0028     <span class="keyword">end</span>
+0029</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

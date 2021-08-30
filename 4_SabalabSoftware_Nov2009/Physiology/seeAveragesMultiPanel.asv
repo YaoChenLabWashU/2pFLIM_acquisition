@@ -1,0 +1,59 @@
+function seeAveragesMultiPanel(pulses, channels) 
+	global state
+	
+	if nargin==0
+		if state.cycle.useCyclePos
+			pulses=1:size(state.cycle.delayList,2);
+		else
+			pulses=unique(state.cycle.da0List);
+		end
+		
+	end
+	
+	if nargin<2 || isempty(channels)
+		channelList=zeros(1,8);
+		for channel=0:7
+			if getfield(state.phys.settings, ['acq' num2str(channel)]) && getfield(state.phys.settings, ['disp' num2str(channel)])
+				channelList(channel+1)=1;
+			end
+		end
+		channels=find(channelList)-1;
+	end
+
+	counter=1;
+	title='AVERAGE DATA AD';
+		
+	sq=floor(sqrt(length(channels)));
+	
+	if sq==sqrt(length(channels))
+		xl=sq;
+		yl=sq;
+	else
+		xl=sq;
+		yl=sq+1;
+	end
+	
+	for channel=channels
+		name=physAvgName(state.epoch, channel, pulse);
+		if ~iswave(name);
+			wave(name, []);
+		end
+		
+		if counter==1
+			figure;
+			state.phys.internal.dataPlot=gcf;
+			set(gcf, 'NumberTitle', 'off', 'Name', 'INCOMING DATA');
+		end
+		subplot(xl,yl,counter);
+		append(['dataWave' num2str(channel)]);
+		counter=counter+1;
+	end
+	
+	if first
+		figure;
+	end
+	set(gcf, 'Name', ['EPOCH ' num2str(state.epoch) ', Chan ' num2str(channelsUsed) ', Pulses ' num2str(pulsesUsed)], ...
+		'NumberTitle', 'off');
+
+
+

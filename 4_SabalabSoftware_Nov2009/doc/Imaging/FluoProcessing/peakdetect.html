@@ -1,0 +1,321 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of peakdetect</title>
+  <meta name="keywords" content="peakdetect">
+  <meta name="description" content="PEAKDETECT peak detection">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Imaging</a> &gt; <a href="index.html">FluoProcessing</a> &gt; peakdetect.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\FluoProcessing&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>peakdetect
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>PEAKDETECT peak detection</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [pospeakind,negpeakind]=peakdetect(signal) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">    PEAKDETECT peak detection
+
+    [pospeakind,negpeakind]=peakdetect(signal)
+
+    The positive and negative polarity (concave down and up) peak index vectors are
+    generated from the signal vector and graphically displayed.  Positive and negative
+    polarity peaks occur at points of positive to negative and negative to positive
+    slope adjacency, respectively.  The typically rare contingencies of peaks
+    occurring at the lagging edges of constant intervals are supported.  Complex
+    signals are modified to the modulus of the elements.  If unspecified, the signal
+    vector is entered after the prompt from the keyboard.</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="findROI_LineScan.html" class="code" title="function [outx, outy]=findROI_LineScan(lineData, numROI, width, offset, minPeak, minDip)">findROI_LineScan</a>	find ROIs in lineData scanes</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [pospeakind,negpeakind]=peakdetect(signal)</a>
+0002 
+0003 <span class="comment">%    PEAKDETECT peak detection</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">%    [pospeakind,negpeakind]=peakdetect(signal)</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">%    The positive and negative polarity (concave down and up) peak index vectors are</span>
+0008 <span class="comment">%    generated from the signal vector and graphically displayed.  Positive and negative</span>
+0009 <span class="comment">%    polarity peaks occur at points of positive to negative and negative to positive</span>
+0010 <span class="comment">%    slope adjacency, respectively.  The typically rare contingencies of peaks</span>
+0011 <span class="comment">%    occurring at the lagging edges of constant intervals are supported.  Complex</span>
+0012 <span class="comment">%    signals are modified to the modulus of the elements.  If unspecified, the signal</span>
+0013 <span class="comment">%    vector is entered after the prompt from the keyboard.</span>
+0014 
+0015 <span class="comment">%    Implemented using MATLAB 6.0.0</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">%    Examples:</span>
+0018 <span class="comment">%</span>
+0019 <span class="comment">%    » [p,n]=peakdetect([-1 -1 0 1 0 1 0 -1 -1])</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">%    p =</span>
+0022 <span class="comment">%</span>
+0023 <span class="comment">%         4     6</span>
+0024 <span class="comment">%</span>
+0025 <span class="comment">%    n =</span>
+0026 <span class="comment">%</span>
+0027 <span class="comment">%         1     5     8</span>
+0028 <span class="comment">%</span>
+0029 <span class="comment">%    » [p,n]=peakdetect(cos(2*pi*(0:999999)/500000))</span>
+0030 <span class="comment">%</span>
+0031 <span class="comment">%    p =</span>
+0032 <span class="comment">%</span>
+0033 <span class="comment">%               1      500001     1000000</span>
+0034 <span class="comment">%</span>
+0035 <span class="comment">%    n =</span>
+0036 <span class="comment">%</span>
+0037 <span class="comment">%          250001      750001</span>
+0038 <span class="comment">%</span>
+0039 <span class="comment">%    Copyright (c) 2001</span>
+0040 <span class="comment">%    Tom McMurray</span>
+0041 <span class="comment">%    mcmurray@teamcmi.com</span>
+0042 
+0043 <span class="comment">%    if signal is not input, enter signal or return for empty outputs</span>
+0044 
+0045 <span class="keyword">if</span> ~nargin
+0046    signal=input(<span class="string">'enter signal vector or return for empty outputs\n'</span>);
+0047    <span class="keyword">if</span> isempty(signal)
+0048       pospeakind=[];
+0049       negpeakind=[];
+0050       <span class="keyword">return</span>
+0051    <span class="keyword">end</span>
+0052 <span class="keyword">end</span>
+0053 sizsig=size(signal);
+0054 
+0055 <span class="comment">%    while signal is unsupported, enter supported signal or return for empty outputs</span>
+0056 
+0057 <span class="keyword">while</span> isempty(signal)|~isnumeric(signal)|~all(all(isfinite(signal)))<span class="keyword">...</span>
+0058       |length(sizsig)&gt;2|min(sizsig)~=1
+0059    signal=input([<span class="string">'signal is empty, nonnumeric, nonfinite, or nonvector:\nenter '</span><span class="keyword">...</span>
+0060          <span class="string">'finite vector or return for empty outputs\n'</span>]);
+0061    <span class="keyword">if</span> isempty(signal)
+0062       pospeakind=[];
+0063       negpeakind=[];
+0064       <span class="keyword">return</span>
+0065    <span class="keyword">end</span>
+0066    sizsig=size(signal);
+0067 <span class="keyword">end</span>
+0068 
+0069 <span class="comment">%    if signal is complex, modify to modulus of the elements</span>
+0070 
+0071 <span class="keyword">if</span> ~isreal(signal)
+0072    signal=abs(signal);
+0073 <span class="keyword">end</span>
+0074 
+0075 <span class="comment">%    if signal is constant, return empty outputs</span>
+0076 
+0077 <span class="keyword">if</span> ~any(signal-signal(1))
+0078    pospeakind=[];
+0079    negpeakind=[];
+0080    disp(<span class="string">'constant signal graph suppressed'</span>)
+0081    <span class="keyword">return</span>
+0082 <span class="keyword">end</span>
+0083 sizsig1=sizsig(1);
+0084 lensig=sizsig1;
+0085 
+0086 <span class="comment">%    if signal is a row vector, modify to a column vector</span>
+0087 
+0088 <span class="keyword">if</span> lensig==1
+0089    signal=signal(:);
+0090    lensig=sizsig(2);
+0091 <span class="keyword">end</span>
+0092 lensig1=lensig-1;
+0093 lensig2=lensig1-1;
+0094 
+0095 <span class="comment">%    if signal length is 2, return max/min as positive/negative polarity peaks</span>
+0096 
+0097 <span class="keyword">if</span> ~lensig2
+0098    [sig,pospeakind]=max(signal);
+0099    [sig,negpeakind]=min(signal);
+0100    disp(<span class="string">'2 element signal graph suppressed'</span>)
+0101    <span class="keyword">return</span>
+0102 <span class="keyword">end</span>
+0103 
+0104 <span class="comment">%    generate difference signal</span>
+0105 
+0106 difsig=diff(signal);
+0107 
+0108 <span class="comment">%    generate vectors corresponding to positive slope indices</span>
+0109 
+0110 dsgt0=difsig&gt;0;
+0111 dsgt00=dsgt0(1:lensig2);
+0112 dsgt01=dsgt0(2:lensig1);
+0113 
+0114 <span class="comment">%    generate vectors corresponding to negative slope indices</span>
+0115 
+0116 dslt0=difsig&lt;0;
+0117 dslt00=dslt0(1:lensig2);
+0118 dslt01=dslt0(2:lensig1);
+0119 
+0120 <span class="comment">%    generate vectors corresponding to constant intervals</span>
+0121 
+0122 dseq0=difsig==0;
+0123 dseq01=dseq0(2:lensig1);
+0124 clear difsig
+0125 
+0126 <span class="comment">%    positive to negative slope adjacencies define positive polarity peaks</span>
+0127 
+0128 pospeakind=find(dsgt00&amp;dslt01)+1;
+0129 
+0130 <span class="comment">%    negative to positive slope adjacencies define negative polarity peaks</span>
+0131 
+0132 negpeakind=find(dsgt01&amp;dslt00)+1;
+0133 
+0134 <span class="comment">%    positive slope to constant interval adjacencies initiate positive polarity peaks</span>
+0135 
+0136 peakind=find(dsgt00&amp;dseq01)+1;
+0137 lenpeakind=length(peakind);
+0138 
+0139 <span class="comment">%    determine positive polarity peak terminations</span>
+0140 
+0141 <span class="keyword">for</span> k=1:lenpeakind
+0142    peakindk=peakind(k);
+0143    l=peakindk+1;
+0144    
+0145 <span class="comment">%    if end constant interval occurs, positive polarity peak exists</span>
+0146    
+0147    <span class="keyword">if</span> l==lensig
+0148       pospeakind=[pospeakind;peakindk];
+0149       
+0150 <span class="comment">%    else l&lt;lensig, determine next nonzero slope index</span>
+0151       
+0152    <span class="keyword">else</span>
+0153       dseq0l=dseq0(l);
+0154       <span class="keyword">while</span> dseq0l&amp;l&lt;lensig1
+0155          l=l+1;
+0156          dseq0l=dseq0(l);
+0157       <span class="keyword">end</span>
+0158       
+0159 <span class="comment">%    if negative slope or end constant interval occurs, positive polarity peaks exist</span>
+0160       
+0161       <span class="keyword">if</span> dslt0(l)|dseq0l;
+0162          pospeakind=[pospeakind;peakindk];
+0163       <span class="keyword">end</span>
+0164    <span class="keyword">end</span>
+0165 <span class="keyword">end</span>
+0166 
+0167 <span class="comment">%    negative slope to constant interval adjacencies initiate negative polarity peaks</span>
+0168 
+0169 peakind=find(dslt00&amp;dseq01)+1;
+0170 lenpeakind=length(peakind);
+0171 clear dseq01
+0172 
+0173 <span class="comment">%    determine negative polarity peak terminations</span>
+0174 
+0175 <span class="keyword">for</span> k=1:lenpeakind
+0176    peakindk=peakind(k);
+0177    l=peakindk+1;
+0178    
+0179 <span class="comment">%    if end constant interval occurs, negative polarity peak exists</span>
+0180    
+0181    <span class="keyword">if</span> l==lensig
+0182       negpeakind=[negpeakind;peakindk];
+0183    
+0184 <span class="comment">%    else l&lt;lensig, determine next nonzero slope index</span>
+0185       
+0186    <span class="keyword">else</span>
+0187       dseq0l=dseq0(l);
+0188       <span class="keyword">while</span> dseq0l&amp;l&lt;lensig1
+0189          l=l+1;
+0190          dseq0l=dseq0(l);
+0191       <span class="keyword">end</span>
+0192       
+0193 <span class="comment">%    if positive slope or end constant interval occurs, negative polarity peaks exist</span>
+0194       
+0195       <span class="keyword">if</span> dsgt0(l)|dseq0l;
+0196          negpeakind=[negpeakind;peakindk];
+0197       <span class="keyword">end</span>
+0198    <span class="keyword">end</span>
+0199 <span class="keyword">end</span>
+0200 clear dsgt0 peakind
+0201 
+0202 <span class="comment">%    if initial negative slope occurs, initial positive polarity peak exists</span>
+0203 
+0204 <span class="keyword">if</span> dslt00(1)
+0205    pospeakind=[1;pospeakind];
+0206    
+0207 <span class="comment">%    elseif initial positive slope occurs, initial negative polarity peak exists</span>
+0208 
+0209 <span class="keyword">elseif</span> dsgt00(1)
+0210    negpeakind=[1;negpeakind];
+0211    
+0212 <span class="comment">%    else initial constant interval occurs, determine next nonzero slope index</span>
+0213 
+0214 <span class="keyword">else</span>
+0215    k=2;
+0216    dseq0k=dseq0(2);
+0217    <span class="keyword">while</span> dseq0k
+0218       k=k+1;
+0219       dseq0k=dseq0(k);
+0220    <span class="keyword">end</span>
+0221    
+0222 <span class="comment">%    if negative slope occurs, initial positive polarity peak exists</span>
+0223    
+0224    <span class="keyword">if</span> dslt0(k)
+0225       pospeakind=[1;pospeakind];
+0226       
+0227 <span class="comment">%    else positive slope occurs, initial negative polarity peak exists</span>
+0228       
+0229    <span class="keyword">else</span>
+0230       negpeakind=[1;negpeakind];
+0231    <span class="keyword">end</span>
+0232 <span class="keyword">end</span>
+0233 clear dsgt00 dslt0 dslt00 dseq0
+0234 
+0235 <span class="comment">%    if final positive slope occurs, final positive polarity peak exists</span>
+0236 
+0237 <span class="keyword">if</span> dsgt01(lensig2)
+0238    pospeakind=[pospeakind;lensig];
+0239    
+0240 <span class="comment">%    elseif final negative slope occurs, final negative polarity peak exists</span>
+0241 
+0242 <span class="keyword">elseif</span> dslt01(lensig2)
+0243    negpeakind=[negpeakind;lensig];   
+0244 <span class="keyword">end</span>
+0245 clear dsgt01 dslt01
+0246 
+0247 <span class="comment">%    if peak indices are not ascending, order peak indices</span>
+0248 
+0249 <span class="keyword">if</span> any(diff(pospeakind)&lt;0)
+0250    pospeakind=sort(pospeakind);
+0251 <span class="keyword">end</span>
+0252 <span class="keyword">if</span> any(diff(negpeakind)&lt;0)
+0253    negpeakind=sort(negpeakind);
+0254 <span class="keyword">end</span>
+0255 
+0256 <span class="comment">%    if signal is a row vector, modify peak indices to row vectors</span>
+0257 
+0258 <span class="keyword">if</span> sizsig1==1
+0259    pospeakind=pospeakind.';
+0260    negpeakind=negpeakind.';
+0261 <span class="keyword">end</span>
+0262 
+0263 <span class="comment">%    plot signal peaks</span>
+0264</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

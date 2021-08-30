@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of timerFormatExcel</title>
+  <meta name="keywords" content="timerFormatExcel">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">Timer</a> &gt; timerFormatExcel.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Timer&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>timerFormatExcel
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function timerFormatExcel </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="timerOpenExcel.html" class="code" title="function timerOpenExcel">timerOpenExcel</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function timerFormatExcel</a>
+0002     <span class="keyword">global</span> state
+0003     
+0004     ddepoke(state.internal.excelChannel, <span class="string">'r3c1'</span>, <span class="string">'Start Time'</span>);
+0005     ddepoke(state.internal.excelChannel, <span class="string">'r3c2'</span>, state.internal.startupTimeString);
+0006     ddepoke(state.internal.excelChannel, <span class="string">'r4c1'</span>, <span class="string">'Basename'</span>);
+0007     ddepoke(state.internal.excelChannel, <span class="string">'r4c2'</span>, state.files.baseName);
+0008     ddepoke(state.internal.excelChannel, <span class="string">'r5c1'</span>, <span class="string">'SavePath'</span>);
+0009     ddepoke(state.internal.excelChannel, <span class="string">'r5c2'</span>, state.files.savePath);
+0010     ddepoke(state.internal.excelChannel, <span class="string">'r6c1'</span>, <span class="string">'Species'</span>);
+0011     ddepoke(state.internal.excelChannel, <span class="string">'r7c1'</span>, <span class="string">'Age'</span>);
+0012     ddepoke(state.internal.excelChannel, <span class="string">'r8c1'</span>, <span class="string">'DOB'</span>);
+0013     ddepoke(state.internal.excelChannel, <span class="string">'r9c1'</span>, <span class="string">'DIV'</span>);
+0014     ddepoke(state.internal.excelChannel, <span class="string">'r10c1'</span>, <span class="string">'DPT'</span>);    
+0015     ddepoke(state.internal.excelChannel, <span class="string">'r11c1'</span>, <span class="string">'Temp'</span>);
+0016     ddepoke(state.internal.excelChannel, <span class="string">'r12c1'</span>, <span class="string">'Internal'</span>);
+0017     ddepoke(state.internal.excelChannel, <span class="string">'r13c1'</span>, <span class="string">'External'</span>);
+0018     ddepoke(state.internal.excelChannel, <span class="string">'r14c1'</span>, <span class="string">'Drugs'</span>);
+0019     ddepoke(state.internal.excelChannel, <span class="string">'r15c1'</span>, <span class="string">'Comments'</span>);
+0020     ddepoke(state.internal.excelChannel, <span class="string">'r16c1'</span>, <span class="string">'Rationale'</span>);
+0021     
+0022     items={<span class="string">'acq #'</span>, <span class="string">'eTime'</span>, <span class="string">'epoch'</span>, <span class="string">'cycle'</span>, <span class="string">'cyclePos'</span>, <span class="string">'analysis'</span>};
+0023     <span class="keyword">for</span> itemCounter=1:length(items)
+0024         ddepoke(state.internal.excelChannel, [<span class="string">'r25c'</span> num2str(itemCounter)], items{itemCounter});
+0025     <span class="keyword">end</span>
+0026 
+0027     ddepoke(state.internal.excelChannel, <span class="string">'r24c10'</span>, <span class="string">'IMAGING'</span>);
+0028     items={<span class="keyword">...</span>
+0029             <span class="string">'acq #'</span>, <span class="string">'epoch'</span>, <span class="string">'radius'</span>, <span class="string">'config'</span>, <span class="string">'frames'</span>, <span class="string">'avg'</span>, <span class="string">'slices'</span>, <span class="string">'zoom'</span>, <span class="string">'rotation'</span>, <span class="keyword">...</span>
+0030             <span class="string">'linescan'</span>, <span class="string">'blaster'</span>, <span class="string">'b setup'</span>, <span class="string">'b config'</span>, <span class="string">'b name'</span>, <span class="keyword">...</span>
+0031             <span class="string">'tracker'</span>, <span class="string">'offset1'</span>, <span class="string">'offset2'</span>, <span class="string">'offset3'</span>, <span class="string">'binFactor'</span>};
+0032     <span class="keyword">for</span> itemCounter=1:length(items)
+0033         ddepoke(state.internal.excelChannel, [<span class="string">'r25c'</span> num2str(itemCounter+9)], items{itemCounter});
+0034     <span class="keyword">end</span>
+0035     
+0036     ddepoke(state.internal.excelChannel, <span class="string">'r24c30'</span>, <span class="string">'PHYSIOLOGY'</span>);
+0037     items={<span class="string">'acq #'</span>, <span class="string">'epoch'</span>, <span class="string">'pat set'</span>, <span class="string">'pat 0'</span>, <span class="string">'pat 1'</span>, <span class="string">'extra gain0'</span>, <span class="string">'extra gain1'</span>, <span class="string">'min0'</span>, <span class="string">'cc0'</span>, <span class="string">'vm0'</span>, <span class="string">'im0'</span>, <span class="keyword">...</span>
+0038             <span class="string">'rm0'</span>, <span class="string">'rs0'</span>, <span class="string">'cm0'</span>, <span class="string">'min1'</span>, <span class="string">'cc1'</span>, <span class="string">'vm1'</span>, <span class="string">'im1'</span>, <span class="string">'rm1'</span>, <span class="string">'rs1'</span>, <span class="string">'cm1'</span>, <span class="keyword">...</span>
+0039             };
+0040     <span class="keyword">for</span> itemCounter=1:length(items)
+0041         ddepoke(state.internal.excelChannel, [<span class="string">'r25c'</span> num2str(itemCounter+29)], items{itemCounter});
+0042     <span class="keyword">end</span>
+0043 
+0044     
+0045     ddepoke(state.internal.excelChannel, <span class="string">'r24c57'</span>, <span class="string">'FLUOR TRACE ANALYSIS'</span>);
+0046     ddepoke(state.internal.excelChannel, <span class="string">'r25c57'</span>, <span class="string">'acq #'</span>);
+0047     ddepoke(state.internal.excelChannel, <span class="string">'r25c58'</span>, <span class="string">'epoch'</span>); 
+0048     ddepoke(state.internal.excelChannel, <span class="string">'r25c59'</span>, <span class="string">'pat 0'</span>);
+0049     ddepoke(state.internal.excelChannel, <span class="string">'r24c107'</span>, <span class="string">'PHYS TRACE ANALYSIS'</span>);
+0050     ddepoke(state.internal.excelChannel, <span class="string">'r25c107'</span>, <span class="string">'acq #'</span>);
+0051     ddepoke(state.internal.excelChannel, <span class="string">'r25c108'</span>, <span class="string">'epoch'</span>);
+0052     ddepoke(state.internal.excelChannel, <span class="string">'r25c109'</span>, <span class="string">'pat 0'</span>);
+0053</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

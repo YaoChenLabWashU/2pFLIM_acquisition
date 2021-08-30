@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of updateCycleDisplay</title>
+  <meta name="keywords" content="updateCycleDisplay">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Imaging</a> &gt; <a href="../index.html">io</a> &gt; <a href="index.html">scanFieldControl</a> &gt; updateCycleDisplay.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\io\scanFieldControl&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>updateCycleDisplay
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function updateCycleDisplay(position) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>	given the name of a global variable, find and update the GUI that contains it</li><li><a href="../../../Timer/timerCallPackageFunctions.html" class="code" title="function status=timerCallPackageFunctions(type, package)">timerCallPackageFunctions</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Imaging/guis/gui_building/advancedCycleGUI.html" class="code" title="function varargout = advancedCycleGUI(varargin)">advancedCycleGUI</a>	ADVANCEDCYCLEGUI M-file for advancedCycleGUI.fig</li><li><a href="TNDefCycle.html" class="code" title="function TNDefCycle()">TNDefCycle</a>	</li><li><a href="TNDefCycleSlow.html" class="code" title="function TNDefCycle()">TNDefCycleSlow</a>	</li><li><a href="TNDefCycleTrackerOnly.html" class="code" title="function TNDefCycleTrackerOnly">TNDefCycleTrackerOnly</a>	</li><li><a href="../../../Timer/deleteCyclePosition.html" class="code" title="function deleteCyclePosition(position)">deleteCyclePosition</a>	</li><li><a href="../../../Timer/initTimer.html" class="code" title="function initTimer(analysisMode, packages)">initTimer</a>	</li><li><a href="../../../Timer/insertCyclePosition.html" class="code" title="function insertCyclePosition(position)">insertCyclePosition</a>	</li><li><a href="../../../Timer/loadCycle.html" class="code" title="function loadCycle(pname, fname)">loadCycle</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function updateCycleDisplay(position)</a>
+0002     <span class="keyword">global</span> state
+0003 
+0004     createPosition=0;
+0005     <span class="keyword">if</span> nargin&lt;1
+0006         position=state.cycle.displayCyclePosition;
+0007     <span class="keyword">else</span>
+0008         <span class="keyword">if</span> position&gt;length(state.cycle.delayList)
+0009             position=length(state.cycle.delayList)+1;
+0010             createPosition=1;
+0011         <span class="keyword">end</span>
+0012         state.cycle.displayCyclePosition=position;
+0013         <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.cycle.displayCyclePosition'</span>);
+0014     <span class="keyword">end</span>
+0015     
+0016     <span class="keyword">for</span> counter=1:length(state.internal.cycleListNames)
+0017         <span class="keyword">if</span> createPosition
+0018             <span class="keyword">if</span> strcmp(state.internal.cycleListNames{counter}, <span class="string">'frames'</span>)
+0019                 state.cycle.framesList(state.cycle.displayCyclePosition)=1;
+0020             <span class="keyword">elseif</span> strcmp(state.internal.cycleListNames{counter}, <span class="string">'delay'</span>)
+0021                 state.cycle.delayList(state.cycle.displayCyclePosition)=10;
+0022             <span class="keyword">elseif</span> strcmp(state.internal.cycleListNames{counter}, <span class="string">'repeats'</span>)
+0023                 state.cycle.repeatsList(state.cycle.displayCyclePosition)=1;
+0024             <span class="keyword">elseif</span> strcmp(state.internal.cycleListNames{counter}, <span class="string">'zStepSize'</span>)
+0025                 state.cycle.zStepSizeList(state.cycle.displayCyclePosition)=1;
+0026             <span class="keyword">elseif</span> strcmp(state.internal.cycleListNames{counter}, <span class="string">'numberOfZSlices'</span>)
+0027                 state.cycle.numberOfZSlicesList(state.cycle.displayCyclePosition)=1;
+0028             <span class="keyword">elseif</span> strcmp(state.internal.cycleListNames{counter}, <span class="string">'functionName'</span>)
+0029                 state.cycle.functionNameList{state.cycle.displayCyclePosition}=<span class="string">''</span>;
+0030             <span class="keyword">else</span>
+0031                 eval([<span class="string">'state.cycle.'</span> state.internal.cycleListNames{counter} <span class="string">'List(state.cycle.displayCyclePosition) = 0;'</span>]);
+0032             <span class="keyword">end</span>
+0033         <span class="keyword">end</span>
+0034         <span class="keyword">if</span> isnumeric(getfield(state.cycle, state.internal.cycleListNames{counter}))
+0035             eval([<span class="string">'state.cycle.'</span> state.internal.cycleListNames{counter} <span class="string">'=state.cycle.'</span> state.internal.cycleListNames{counter} <span class="string">'List(state.cycle.displayCyclePosition);'</span>]);
+0036         <span class="keyword">else</span>
+0037             eval([<span class="string">'state.cycle.'</span> state.internal.cycleListNames{counter} <span class="string">'=state.cycle.'</span> state.internal.cycleListNames{counter} <span class="string">'List{state.cycle.displayCyclePosition};'</span>]);
+0038         <span class="keyword">end</span>
+0039         <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>([<span class="string">'state.cycle.'</span> state.internal.cycleListNames{counter}]);
+0040     <span class="keyword">end</span>
+0041     
+0042     <a href="../../../Timer/timerCallPackageFunctions.html" class="code" title="function status=timerCallPackageFunctions(type, package)">timerCallPackageFunctions</a>(<span class="string">'CycleChanged'</span>);</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

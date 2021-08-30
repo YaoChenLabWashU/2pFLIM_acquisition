@@ -1,0 +1,132 @@
+function processPhysData(ai, SamplesAcquired)
+	global state physInputDevice
+
+	if state.phys.internal.stopInfiniteAcq
+		stop(physInputDevice);
+		setPhysStatusString('Proccesing...');
+	end
+	
+	% extract the data
+	data=getdata(physInputDevice, state.phys.internal.samplesPerStripe);
+
+	% do the proper scaling
+	channelList=get(physInputDevice, 'Channel');
+
+	if state.phys.internal.stripeCounter==1
+		% record the trigger time
+		eventLog=get(physInputDevice, 'EventLog');
+		f=find(strcmp({eventLog.Type}, 'Trigger'));
+		if isempty(f)
+			disp('*** processPhysData: ERROR:  No trigger information returned');
+			abortPhysiology;
+			return
+		end
+		state.phys.internal.triggerClock=eventLog(f(1)).Data.AbsTime;
+		updateMinInCell(state.phys.internal.triggerClock);
+
+		state.phys.acquisitionFiles=cell(4, length(channelList));
+		% this cell structure will save information about the waves of each
+		% channel as follows:
+		%	state.phys.acquisitionFiles{1, :} will have the AD channel #
+		%	state.phys.acquisitionFiles{2, :} will have the name of the
+		%		display wave (e.g. dataWave0)
+		%	state.phys.acquisitionFiles{3, :} will have the name of the
+		%		acquisition wave (e.g. AD0_9)
+		%	state.phys.acquisitionFiles{4, :} will have the name of the
+		%		average wave (e.g. AD0_e1p1avg)
+	end
+
+	% At this point, we got the data and recorded the trigger time.
+
+	% Below, put it in data waves, calculate Rs if appropriate, store headerString,
+	% save, average, and, if desired, kill
+
+	startData=state.phys.internal.samplesPerStripe*(state.phys.internal.stripeCounter-1)+1;
+	endData=state.phys.internal.samplesPerStripe*state.phys.internal.stripeCounter;
+% 	dataRangeString=[...
+% 		'(' ...
+% 		num2str(startData) ...
+% 		':' ...
+% 		num2str(endData) ...
+% 		')'...
+% 		];
+
+	global physData
+	for counter=1:length(channelList)
+		channel=get(channelList(counter), 'HwChannel');			% what DA #
+
+		physData(counter, startData:endData)=...
+			state.phys.internal.channelGains(channel+1)*data(:,counter)'';
+
+		if state.phys.internal.stripeCounter==1
+			state.phys.acquisitionFiles{1, counter}=channel;
+			state.phys.acquisitionFiles{2, counter}=['dataWave' num2str(channel)];
+			if ~iswave(['dataWave' num2str(channel)])
+				waveo(['dataWave' num2str(channel)], physData(counter), ...
+					'xscale', [0 1000/state.phys.settings.inputRate]);
+			else
+				setwave(['dataWave' num2str(channel)], 'xscale', [0 1000/state.phys.settings.inputRate]);
+				eval(['global dataWave' num2str(channel)]);
+				eval(['dataWave' num2str(channel) '(startData:endData)=physData(counter, startData:endData)']);
+			end
+
+			setfield(['dataWave' num2str(channel)], 'headerString', state.headerString);
+ 		elseif (state.phys.internal.stripeCounter==state.phys.internal.stripes)
+% 			if size(getfield(state.phys, ['data' num2str(channel)]),2)>endData
+% 				eval(['state.phys.data' num2str(channel) '(' num2str(endData+1) ':end) = [];']);
+% 			end
+			setWave(['dataWave' num2str(channel)], 'data', phys
+			getfield(state.phys, ['data' num2str(channel)]));
+		else
+			eval(['global dataWave' num2str(channel)]);
+			eval(['dataWave' num2str(channel) '(startData:endData)=physData(counter, startData:endData);']);
+		end
+
+		% this adds a small leading blank as the data appears on the screen
+		if state.phys.internal.stripeCounter<state.phys.internal.stripes
+			eval(['dataWave' num2str(channel) '(endData+1:round(endData+state.phys.internal.samplesPerStripe/2))=NaN;']);
+				
+% 			
+% 			state.phys.internal.samplesPerStripe*(displayStripe+0.5=physData(counter, startData:endData']);
+% 			nextDataRangeString=[...
+% 				'(' ...
+% 				num2str(displayEndData+1) ...
+% 				':' ...
+% 				num2str(round(state.phys.internal.samplesPerStripe*(displayStripe+0.5)))...
+% 				')'...
+% 				];
+% 			eval(['global dataWave' num2str(channel)]);
+% 			eval(['dataWave' num2str(channel) nextDataRangeString '=NaN;']);
+		end
+	end
+
+	if (state.phys.internal.stripeCounter==state.phys.internal.stripes) || state.phys.internal.stopInfiniteAcq % last one, process everything
+		if (state.phys.internal.runningMode==1) % we are in the live mode.  Let's overwrite data
+			state.phys.internal.stripeCounter=1;
+			return
+		elseif (get(physInputDevice, 'SamplesPerTrigger')==Inf) && ~state.phys.internal.stopInfiniteAcq
+				state.phys.internal.stripeCounter=state.phys.internal.stripeCounter+1;		
+			return
+		end
+		
+		if (get(physInputDevice, 'SamplesPerTrigger')==Inf)
+			% we were in infinite mode.  We need to reload data from the
+			% drive
+			phReloadLoggedData(fullfile(state.files.savePath, physDiskLogName));
+		end
+			
+		phEndAcquisitionProcessing
+		global physOutputDevice
+		while strcmp(get(physOutputDevice, 'Running'), 'On')
+			setPhysStatusString('waiting for output');
+			pause(0.05);
+		end
+		timerRegisterPackageDone('Physiology');
+	else
+		state.phys.internal.stripeCounter=state.phys.internal.stripeCounter+1;
+		if (get(physInputDevice, 'SamplesPerTrigger')==Inf)
+			setPhysStatusString('Infinite acq');
+		end
+	end
+
+

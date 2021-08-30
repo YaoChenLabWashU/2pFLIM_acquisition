@@ -1,0 +1,167 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of imageTracker</title>
+  <meta name="keywords" content="imageTracker">
+  <meta name="description" content="IMAGETRACKER M-file for imageTracker.fig">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Imaging</a> &gt; <a href="../index.html">guis</a> &gt; <a href="index.html">gui_building</a> &gt; imageTracker.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\guis\gui_building&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>imageTracker
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>IMAGETRACKER M-file for imageTracker.fig</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function varargout = imageTracker(varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> IMAGETRACKER M-file for imageTracker.fig
+      IMAGETRACKER, by itself, creates a new IMAGETRACKER or raises the existing
+      singleton*.
+
+      H = IMAGETRACKER returns the handle to a new IMAGETRACKER or the handle to
+      the existing singleton*.
+
+      IMAGETRACKER('CALLBACK',hObject,eventData,handles,...) calls the local
+      function named CALLBACK in IMAGETRACKER.M with the given input arguments.
+
+      IMAGETRACKER('Property','Value',...) creates a new IMAGETRACKER or raises the
+      existing singleton*.  Starting from the left, property value pairs are
+      applied to the GUI before imageTracker_OpeningFunction gets called.  An
+      unrecognized property name or invalid value makes property application
+      stop.  All inputs are passed to imageTracker_OpeningFcn via varargin.
+
+      *See GUI Options on GUIDE's Tools menu.  Choose &quot;GUI allows only one
+      instance to run (singleton)&quot;.
+
+ See also: GUIDE, GUIDATA, GUIHANDLES</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>	</li><li><a href="../../../Imaging/io/scanFieldControl/setTrackerReference.html" class="code" title="function setTrackerReference">setTrackerReference</a>	</li><li><a href="../../../Imaging/io/scanFieldControl/updateReferenceImage.html" class="code" title="function updateReferenceImage">updateReferenceImage</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function imageTracker_OpeningFcn(hObject, eventdata, handles, varargin)</a></li><li><a href="#_sub2" class="code">function varargout = imageTracker_OutputFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub3" class="code">function trackerChannel_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub4" class="code">function maxShift_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub5" class="code">function shiftX_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub6" class="code">function shiftY_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub7" class="code">function pixelShiftX_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub8" class="code">function pixelShiftY_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub9" class="code">function setReference_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub10" class="code">function generic_Callback(hObject, eventdata, handles)</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function varargout = imageTracker(varargin)</a>
+0002 <span class="comment">% IMAGETRACKER M-file for imageTracker.fig</span>
+0003 <span class="comment">%      IMAGETRACKER, by itself, creates a new IMAGETRACKER or raises the existing</span>
+0004 <span class="comment">%      singleton*.</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">%      H = IMAGETRACKER returns the handle to a new IMAGETRACKER or the handle to</span>
+0007 <span class="comment">%      the existing singleton*.</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">%      IMAGETRACKER('CALLBACK',hObject,eventData,handles,...) calls the local</span>
+0010 <span class="comment">%      function named CALLBACK in IMAGETRACKER.M with the given input arguments.</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">%      IMAGETRACKER('Property','Value',...) creates a new IMAGETRACKER or raises the</span>
+0013 <span class="comment">%      existing singleton*.  Starting from the left, property value pairs are</span>
+0014 <span class="comment">%      applied to the GUI before imageTracker_OpeningFunction gets called.  An</span>
+0015 <span class="comment">%      unrecognized property name or invalid value makes property application</span>
+0016 <span class="comment">%      stop.  All inputs are passed to imageTracker_OpeningFcn via varargin.</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">%      *See GUI Options on GUIDE's Tools menu.  Choose &quot;GUI allows only one</span>
+0019 <span class="comment">%      instance to run (singleton)&quot;.</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">% See also: GUIDE, GUIDATA, GUIHANDLES</span>
+0022 
+0023 <span class="comment">% Edit the above text to modify the response to help imageTracker</span>
+0024 
+0025 <span class="comment">% Last Modified by GUIDE v2.5 13-Jan-2003 10:01:32</span>
+0026 
+0027 <span class="comment">% Begin initialization code - DO NOT EDIT</span>
+0028 gui_Singleton = 1;
+0029 gui_State = struct(<span class="string">'gui_Name'</span>,       mfilename, <span class="keyword">...</span>
+0030                    <span class="string">'gui_Singleton'</span>,  gui_Singleton, <span class="keyword">...</span>
+0031                    <span class="string">'gui_OpeningFcn'</span>, @<a href="#_sub1" class="code" title="subfunction imageTracker_OpeningFcn(hObject, eventdata, handles, varargin)">imageTracker_OpeningFcn</a>, <span class="keyword">...</span>
+0032                    <span class="string">'gui_OutputFcn'</span>,  @<a href="#_sub2" class="code" title="subfunction varargout = imageTracker_OutputFcn(hObject, eventdata, handles)">imageTracker_OutputFcn</a>, <span class="keyword">...</span>
+0033                    <span class="string">'gui_LayoutFcn'</span>,  [] , <span class="keyword">...</span>
+0034                    <span class="string">'gui_Callback'</span>,   []);
+0035 <span class="keyword">if</span> nargin &amp; isstr(varargin{1})
+0036     gui_State.gui_Callback = str2func(varargin{1});
+0037 <span class="keyword">end</span>
+0038 
+0039 <span class="keyword">if</span> nargout
+0040     [varargout{1:nargout}] = gui_mainfcn(gui_State, varargin{:});
+0041 <span class="keyword">else</span>
+0042     gui_mainfcn(gui_State, varargin{:});
+0043 <span class="keyword">end</span>
+0044 <span class="comment">% End initialization code - DO NOT EDIT</span>
+0045 
+0046 
+0047 <span class="comment">% --- Executes just before imageTracker is made visible.</span>
+0048 <a name="_sub1" href="#_subfunctions" class="code">function imageTracker_OpeningFcn(hObject, eventdata, handles, varargin)</a>
+0049 handles.output = hObject;
+0050 
+0051 <span class="comment">% Update handles structure</span>
+0052 guidata(hObject, handles);
+0053 
+0054 <span class="comment">% UIWAIT makes imageTracker wait for user response (see UIRESUME)</span>
+0055 <span class="comment">% uiwait(handles.figure1);</span>
+0056 
+0057 
+0058 <span class="comment">% --- Outputs from this function are returned to the command line.</span>
+0059 <a name="_sub2" href="#_subfunctions" class="code">function varargout = imageTracker_OutputFcn(hObject, eventdata, handles)</a>
+0060 varargout{1} = handles.output;
+0061 
+0062 
+0063 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0064 <a name="_sub3" href="#_subfunctions" class="code">function trackerChannel_CreateFcn(hObject, eventdata, handles)</a>
+0065 <span class="keyword">if</span> ispc
+0066     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0067 <span class="keyword">else</span>
+0068     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0069 <span class="keyword">end</span>
+0070 
+0071 
+0072 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0073 <a name="_sub4" href="#_subfunctions" class="code">function maxShift_CreateFcn(hObject, eventdata, handles)</a>
+0074 <span class="keyword">if</span> ispc
+0075     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0076 <span class="keyword">else</span>
+0077     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0078 <span class="keyword">end</span>
+0079 
+0080 
+0081 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0082 <a name="_sub5" href="#_subfunctions" class="code">function shiftX_CreateFcn(hObject, eventdata, handles)</a>
+0083     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0084 
+0085 <a name="_sub6" href="#_subfunctions" class="code">function shiftY_CreateFcn(hObject, eventdata, handles)</a>
+0086     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0087 
+0088 <a name="_sub7" href="#_subfunctions" class="code">function pixelShiftX_CreateFcn(hObject, eventdata, handles)</a>
+0089     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0090 
+0091 <a name="_sub8" href="#_subfunctions" class="code">function pixelShiftY_CreateFcn(hObject, eventdata, handles)</a>
+0092     set(hObject,<span class="string">'BackgroundColor'</span>,get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>));
+0093 
+0094 <a name="_sub9" href="#_subfunctions" class="code">function setReference_Callback(hObject, eventdata, handles)</a>
+0095     <a href="../../../Imaging/io/scanFieldControl/setTrackerReference.html" class="code" title="function setTrackerReference">setTrackerReference</a>;
+0096     
+0097 <a name="_sub10" href="#_subfunctions" class="code">function generic_Callback(hObject, eventdata, handles)</a>
+0098     <a href="../../../Imaging/guis/gui_handling/genericCallback.html" class="code" title="function genericCallback(handle)">genericCallback</a>(hObject);
+0099     <a href="../../../Imaging/io/scanFieldControl/updateReferenceImage.html" class="code" title="function updateReferenceImage">updateReferenceImage</a>;</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of mp285StartMove</title>
+  <meta name="keywords" content="mp285StartMove">
+  <meta name="description" content="mp285SetPos controls the position of the mp285">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../../index.html">Home</a> &gt;  <a href="../../../index.html">Imaging</a> &gt; <a href="../../index.html">io</a> &gt; <a href="../index.html">motors</a> &gt; <a href="index.html">MP285</a> &gt; mp285StartMove.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../../index.html"><img alt="<" border="0" src="../../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\io\motors\MP285&nbsp;<img alt=">" border="0" src="../../../../right.png"></a></td></tr></table>-->
+
+<h1>mp285StartMove
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<div class="box"><strong>mp285SetPos controls the position of the mp285</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<div class="box"><strong>function out=mp285StartMove(xyz, resolution) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> mp285SetPos controls the position of the mp285
+ 
+ mp285SetPos 
+ 
+ Class Support
+   -------------
+   The input variable [x y z] contains the absolute motor target positions in microns. 
+   The optional paramter 'resolution' contains the resolution in nm (nanometers)
+    The value used depends on the mp285 microcode 
+        
+   Karel Svoboda 8/28/00 Matlab 6.0R
+    svoboda@cshl.org
+     Modified 2/5/1 by Bernardo Sabatini to support global state and preset serialPortHandle</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../../matlabicon.gif)">
+<li><a href="../../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>	This function sets the status field in mainControls.</li><li><a href="mp285Flush.html" class="code" title="function temp=mp285Flush">mp285Flush</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../../matlabicon.gif)">
+<li><a href="../../../../Imaging/io/motors/startMoveStackFocus.html" class="code" title="function startMoveStackFocus">startMoveStackFocus</a>	</li><li><a href="../../../../Imaging/io/motors/startSetMotorPosition.html" class="code" title="function startSetMotorPosition(newPos)">startSetMotorPosition</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 
+0002 <a name="_sub0" href="#_subfunctions" class="code">function out=mp285StartMove(xyz, resolution)</a>
+0003 <span class="comment">% mp285SetPos controls the position of the mp285</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% mp285SetPos</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">% Class Support</span>
+0008 <span class="comment">%   -------------</span>
+0009 <span class="comment">%   The input variable [x y z] contains the absolute motor target positions in microns.</span>
+0010 <span class="comment">%   The optional paramter 'resolution' contains the resolution in nm (nanometers)</span>
+0011 <span class="comment">%    The value used depends on the mp285 microcode</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">%   Karel Svoboda 8/28/00 Matlab 6.0R</span>
+0014 <span class="comment">%    svoboda@cshl.org</span>
+0015 <span class="comment">%     Modified 2/5/1 by Bernardo Sabatini to support global state and preset serialPortHandle</span>
+0016 
+0017 <span class="keyword">global</span> state
+0018 <span class="keyword">if</span> state.motor.motorOn==0
+0019     <span class="keyword">return</span>
+0020 <span class="keyword">end</span>
+0021 
+0022 <span class="keyword">if</span> state.motor.movePending
+0023     disp(<span class="string">'mp285StartMove: Error: Move already pending'</span>);
+0024     <a href="../../../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Move pending'</span>);
+0025     out=1;
+0026     <span class="keyword">return</span>
+0027 <span class="keyword">end</span>
+0028 
+0029 <span class="keyword">if</span> nargin &lt; 1
+0030      disp([<span class="string">'-------------------------------'</span>]);  
+0031      disp([<span class="string">' mp285SetPos v'</span>,version])
+0032      disp([<span class="string">'-------------------------------'</span>]);
+0033      disp([<span class="string">' usage: Mmp285SetPos([x y z])'</span>]);
+0034      error([<span class="string">'### incomplete parameters; cannot proceed'</span>]); 
+0035 <span class="keyword">end</span> 
+0036 
+0037 <span class="keyword">if</span> nargin &lt; 2
+0038      resolution=100; <span class="comment">% 100nm resolution default</span>
+0039 <span class="keyword">end</span>
+0040 
+0041 <span class="keyword">if</span> length(xyz) ~=3
+0042      disp([<span class="string">'-------------------------------'</span>]);  
+0043      disp([<span class="string">' mp285SetPos v'</span>,version])
+0044      disp([<span class="string">'-------------------------------'</span>]);
+0045      disp([<span class="string">' usage: mp285SetPos([x y z])'</span>])
+0046      error([<span class="string">'### incomplete or ambiguous parameters; cannot proceed'</span>]); 
+0047 <span class="keyword">end</span> 
+0048 
+0049 <span class="keyword">if</span> length(state.motor.serialPortHandle) == 0
+0050     disp([<span class="string">'mp285SetPos: mp285 not configured'</span>]);
+0051     state.motor.lastPositionRead=[];
+0052     out=1;
+0053     <span class="keyword">return</span>;
+0054 <span class="keyword">end</span>
+0055  
+0056 <span class="comment">% convert microns to units of nm  mod resolution (i.e. 100nm resolution);</span>
+0057 xyz2=fix(xyz*10).*[state.motor.calibrationFactorX state.motor.calibrationFactorY state.motor.calibrationFactorZ];
+0058 
+0059 <span class="comment">% flush all the junk out</span>
+0060 <a href="mp285Flush.html" class="code" title="function temp=mp285Flush">mp285Flush</a>;
+0061 state.motor.movePending=1;
+0062 state.motor.requestedPosition=xyz;
+0063 <span class="comment">% send move command</span>
+0064 <span class="keyword">try</span>
+0065     fwrite(state.motor.serialPortHandle, <span class="string">'m'</span>);
+0066     fwrite(state.motor.serialPortHandle, xyz2, <span class="string">'long'</span>);
+0067     fwrite(state.motor.serialPortHandle, 13);
+0068 <span class="keyword">catch</span>
+0069     disp(<span class="string">'mp285StartMove: mp285 communication error'</span>);
+0070 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

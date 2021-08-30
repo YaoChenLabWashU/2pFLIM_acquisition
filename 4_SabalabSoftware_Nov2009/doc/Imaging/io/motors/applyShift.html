@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of applyShift</title>
+  <meta name="keywords" content="applyShift">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Imaging</a> &gt; <a href="../index.html">io</a> &gt; <a href="index.html">motors</a> &gt; applyShift.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\io\motors&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>applyShift
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function applyShift(position) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="updateMotorPosition.html" class="code" title="function out=updateMotorPosition(updateHeader)">updateMotorPosition</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Imaging/guis/gui_building/motorGUI.html" class="code" title="function varargout = motorGUI(varargin)">motorGUI</a>	MOTORGUI Application M-file for motorGUI.fig</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function applyShift(position)</a>
+0002     <span class="keyword">global</span> state
+0003     
+0004     <span class="keyword">if</span> isempty(state.motor.positionVectors)
+0005         disp(<span class="string">'applyShift: No positions defined'</span>);
+0006         <span class="keyword">return</span>
+0007     <span class="keyword">end</span>
+0008     
+0009     n=size(state.motor.positionVectors);
+0010     n=n(1);
+0011     <span class="keyword">if</span> position&gt;n
+0012         disp([<span class="string">'applyShift: Position '</span> num2str(position) <span class="string">' not defined.'</span>]);
+0013         <span class="keyword">return</span>
+0014     <span class="keyword">end</span>
+0015     
+0016     flag=<a href="updateMotorPosition.html" class="code" title="function out=updateMotorPosition(updateHeader)">updateMotorPosition</a>;
+0017     <span class="keyword">if</span> isempty(flag)
+0018         disp(<span class="string">'applyShiftXY : Unable to shift XY.  MP285 Error'</span>);
+0019         beep;
+0020     <span class="keyword">else</span>
+0021         sh=state.motor.lastPositionRead-state.motor.positionVectors(position, :);
+0022         <span class="keyword">for</span> i=1:n
+0023             state.motor.positionVectors(i,:)=state.motor.positionVectors(i,:)+sh;
+0024         <span class="keyword">end</span>
+0025     <span class="keyword">end</span>
+0026</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

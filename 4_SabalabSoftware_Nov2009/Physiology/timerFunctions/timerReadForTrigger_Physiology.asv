@@ -1,0 +1,18 @@
+function status=timerReadForTrigger_Physiology
+	global state 
+		
+	status=1;	% good to do
+   	if (~isempty(state.phys.daq.auxOutputBoardIndex)) && any(state.cycle.lastUsedAuxPulses) 
+		if state.phys.internal.forceTrigger || ~state.cycle.imageOnList(state.cycle.currentCyclePosition)
+			get(state.phys.daq.auxOutputDevice, 'Running')
+			get(state.phys.daq.auxOutputDevice, 'Sending')
+		end			
+	end	
+
+	get(state.phys.daq.outputDevice, 'Running')
+	get(state.phys.daq.outputDevice, 'Sending')
+
+	get(state.phys.daq.inputDevice, 'Running')
+	get(state.phys.daq.inputDevice, 'Logging')
+
+

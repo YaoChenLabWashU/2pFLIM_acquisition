@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of loadFluorAnalysisSettings</title>
+  <meta name="keywords" content="loadFluorAnalysisSettings">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Imaging</a> &gt; <a href="index.html">FluoProcessing</a> &gt; loadFluorAnalysisSettings.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\FluoProcessing&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>loadFluorAnalysisSettings
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function loadFluorAnalysisSettings(pname, fname) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>	This function sets the status field in mainControls.</li><li><a href="../../Imaging/io/file_io/initialization/initGUIs.html" class="code" title="function [out,fname,pname,ext]=initGUIs(fileName, callCallbacks, file)">initGUIs</a>	opens and interprets and initialization file</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="selectFluorAnalysisFromMenu.html" class="code" title="function selectFluorAnalysisFromMenu">selectFluorAnalysisFromMenu</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function loadFluorAnalysisSettings(pname, fname)</a>
+0002 
+0003     <span class="keyword">global</span> state gh
+0004     <a href="../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Loading analysis settings...'</span>);
+0005 
+0006     <span class="keyword">if</span> nargin&lt;2
+0007         <span class="keyword">if</span> ~isempty(state.analysis.analysisSetupPath)
+0008             <span class="keyword">try</span>
+0009                 cd(state.analysis.analysisSetupPath);
+0010             <span class="keyword">catch</span>
+0011             <span class="keyword">end</span>
+0012         <span class="keyword">end</span>
+0013         
+0014         [fname, pname]=uigetfile(<span class="string">'*.ana'</span>, <span class="string">'Choose fluorescence analysis settings file to load'</span>);
+0015     <span class="keyword">end</span>
+0016 
+0017     <span class="keyword">if</span> ~isnumeric(fname)
+0018         periods=findstr(fname, <span class="string">'.'</span>);
+0019         <span class="keyword">if</span> any(periods)                                
+0020             fname=fname(1:periods(1)-1);
+0021         <span class="keyword">else</span>
+0022             disp(<span class="string">'loadFluorAnalysisSettings: Error: found file name without extension'</span>);
+0023             <a href="../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Can''t open file...'</span>);
+0024             <span class="keyword">return</span>
+0025         <span class="keyword">end</span>        
+0026         
+0027         fileName=fullfile(pname, [fname <span class="string">'.ana'</span>]);
+0028         
+0029         [fid, message]=fopen(fileName);
+0030         <span class="keyword">if</span> fid&lt;0
+0031             disp([<span class="string">'loadFluorAnalysisSettings: Error opening '</span> fileName <span class="string">': '</span> message]);
+0032             <span class="keyword">return</span>
+0033         <span class="keyword">end</span>
+0034         [fileName, permission, machineormat] = fopen(fid);
+0035         fclose(fid);
+0036 
+0037         <a href="../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Reading analysis settings...'</span>);
+0038         
+0039         disp([<span class="string">'*** CURRENT FLUORESCENCE ANALYSIS SETTINGS FILE = '</span> fileName <span class="string">' ***'</span>]);
+0040         <a href="../../Imaging/io/file_io/initialization/initGUIs.html" class="code" title="function [out,fname,pname,ext]=initGUIs(fileName, callCallbacks, file)">initGUIs</a>(fileName);
+0041 
+0042         [path,name,ext] = fileparts(fileName);
+0043         
+0044         <span class="keyword">global</span> state
+0045         state.analysis.analysisSetupFileName=name;
+0046         state.analysis.analysisSetupPath=pname;
+0047 
+0048         <a href="../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Analysis Settings Loaded'</span>);
+0049     <span class="keyword">end</span>
+0050     
+0051</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

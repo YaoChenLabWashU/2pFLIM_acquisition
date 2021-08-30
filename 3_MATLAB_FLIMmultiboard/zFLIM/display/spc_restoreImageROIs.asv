@@ -1,0 +1,40 @@
+function spc_makeImageROI(chan,type)
+% type=1 for projectN figure, =2 for lifetimeMap figure
+% not used right now, but could be if we decide not to duplicate in all
+% figs
+global gui FLIMchannels
+try
+    numROI=length(gui.gy.rois);
+catch
+    return
+end
+gui.gy.roiColors={'r' 'm' [0 .7 0] 'w' [1 0.5 0] 'y'};
+for nROI=1:numROI
+    for fc=FLIMchannels
+        for t=1:2
+            if ~isvalid(gui.gy.rois{nROI}.obj{fc,t})
+                % need to fix the display object
+color=gui.gy.roiColors{mod(nROI-1,numel(gui.gy.roiColors))+1};
+
+for fc=FLIMchannels
+    for t=1:2
+        switch t
+            case 1
+                newObj=impoly(gui.spc.projects{fc}.axes,posROI);
+            case 2
+                newObj=impoly(gui.spc.lifetimeMaps{fc}.axes,posROI);
+        end
+        gui.gy.rois{nROI}.obj{fc,t}=newObj;
+        setColor(newObj,color);
+        set(newObj,'UserData',{nROI fc t posROI});
+        addNewPositionCallback(newObj,@roiMovedCallback);
+        % can't get much info from the callback, so instead stored the
+        % original position in the UserData and use occasional calls to
+        % 'spc_conformROIpositions' to reconcile the positions
+    end
+end
+spc_calculateROIvals(0);  % non-verbose
+
+function roiMovedCallback(pos)
+global gui 
+gui.gy.roisHaveMoved=1;

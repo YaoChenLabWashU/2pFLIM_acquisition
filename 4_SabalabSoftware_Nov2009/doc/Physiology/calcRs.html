@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of calcRs</title>
+  <meta name="keywords" content="calcRs">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">Physiology</a> &gt; calcRs.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Physiology&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>calcRs
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function [rin, rs, cm, error]=calcRs(data, dx, pulseAmp, pulseStart, pulseLength, baselineStart, baselineEnd) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="phEndAcquisitionProcessing.html" class="code" title="function phEndAcquisitionProcessing">phEndAcquisitionProcessing</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [rin, rs, cm, error]=calcRs(data, dx, pulseAmp, pulseStart, pulseLength, baselineStart, baselineEnd)</a>
+0002         rin=0;
+0003         rs=0;
+0004         cm=0;
+0005         error=0;
+0006         
+0007         dataPulseStart = 1+round(pulseStart/dx);
+0008         dataPulseEnd = 1+round((pulseStart+pulseLength)/dx);
+0009         
+0010         <span class="keyword">if</span> dataPulseStart&gt;size(data, 2)
+0011             disp(<span class="string">'calcRs: start of pulse is beyond end of data'</span>)
+0012             error=1;
+0013             <span class="keyword">return</span>
+0014         <span class="keyword">end</span>
+0015         
+0016        <span class="keyword">if</span> dataPulseEnd&gt;size(data, 2)
+0017             disp(<span class="string">'calcRs: end of pulse is beyond end of data.  Fitting to available data'</span>)
+0018             dataPulseEnd=size(data, 2);
+0019        <span class="keyword">end</span>
+0020         
+0021         <span class="keyword">if</span> pulseAmp&gt;0
+0022             [peak, peakloc]=max(data(dataPulseStart:dataPulseEnd));
+0023         <span class="keyword">else</span>
+0024             [peak, peakloc]=min(data(dataPulseStart:dataPulseEnd));
+0025         <span class="keyword">end</span>
+0026         peakloc=peakloc+round(pulseStart/dx)-1;
+0027         
+0028         delta=round(0.1*pulseLength/dx);
+0029         endline=mean(data(round((pulseStart+pulseLength*0.7)/dx)+1:round((pulseStart+pulseLength)/dx)));
+0030         baseline=mean(data(round(baselineStart/dx)+1:round(baselineEnd/dx)-1));
+0031         
+0032         <span class="keyword">if</span> pulseAmp&gt;0
+0033             above=find(data(dataPulseStart:round((pulseStart+pulseLength)/dx))&gt;(peak-endline)/5+endline);
+0034             <span class="keyword">if</span> isempty(above)
+0035                 error=1;
+0036                 <span class="keyword">return</span>;
+0037             <span class="keyword">end</span>
+0038             last=above(end)+round(pulseStart/dx);
+0039         <span class="keyword">else</span>
+0040             above=find(data(dataPulseStart:round((pulseStart+pulseLength)/dx))&lt;(peak-endline)/5+endline);
+0041             <span class="keyword">if</span> isempty(above)
+0042                 error=1;
+0043                 <span class="keyword">return</span>;
+0044             <span class="keyword">end</span>
+0045             last=above(end)+round(pulseStart/dx);
+0046         <span class="keyword">end</span>
+0047 
+0048         delta=round((last-peakloc)/2);
+0049         clear above last
+0050         
+0051         peak1=peak-endline;
+0052         peak2=data(delta+peakloc)-endline;
+0053         peak3=data(2*delta+peakloc)-endline;
+0054         peakloc=peakloc-round(pulseStart/dx)-1;
+0055         
+0056         tau=delta*(1/log(peak1/peak2)+1/log(peak2/peak3)+2/log(peak1/peak3))/3;
+0057         amp=(peak1/exp(-peakloc/tau)+peak2/exp(-(peakloc+delta)/tau)+peak3/exp(-(peakloc+2*delta)/tau))/3;
+0058         
+0059         rs=1000*pulseAmp/amp;
+0060         rin=1000*pulseAmp/(endline-baseline)-rs;
+0061         cm=1000*tau*dx/rs;
+0062 
+0063         waveo(<span class="string">'calcRsFit'</span>, endline+amp*exp(-[0:round(pulseLength/dx)]/tau), <span class="string">'xscale'</span>, [pulseStart dx]);
+0064         clear tau amp peak peak1 peak2 peak3 peakloc endlkine baseline
+0065</pre></div>
+<hr><address>Generated on Fri 17-Aug-2012 10:39:43 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

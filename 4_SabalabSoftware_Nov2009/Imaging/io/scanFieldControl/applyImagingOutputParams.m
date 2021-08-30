@@ -1,0 +1,21 @@
+function applyImagingOutputParams
+	global state
+	global grabInput
+	
+	if state.analysisMode
+		return
+	end
+	
+	flushFocusData;
+	flushGrabData;
+	
+	if state.acq.dualLaserMode==1 % if the lasers are on simulataneously then nothing special
+		sampleFactor=1;
+	elseif state.acq.dualLaserMode==2
+		sampleFactor=2;	% if they are alternating, then double the number of acqs before trigger the trigger function
+	else
+		disp('	setupInputChannels needs more for lasermodes');
+	end
+	set(grabInput, 'SamplesPerTrigger', sampleFactor*state.internal.samplesPerFrame*state.acq.numberOfFrames);
+
+	applyChangesToOutput(1);	

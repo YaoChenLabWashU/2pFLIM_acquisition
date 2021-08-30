@@ -1,0 +1,64 @@
+Existing configuration 20120216
+
+COM1 motor
+COM3 laser [USB-converted "USB-to-Serial Comm Port]
+
+PCI-Express
+NI PCIe-6259  (PCIe-X1) (168mm)
+[16 bit, 1Ms/s, 32 AI, 4AO(2.8Ms/s), 48 DIO, 32 bit counters]
+
+
+PCI Standard
+Becker-Hickl SPC-830 (312mm)
+NI PCI-6110 [12 bit, 5 Ms/s/ch, simult AI, 2AO(2.5Ms/s), 8DIO] (312mm)
+NI PCI-6713 [12 bit, 1 Ms/ch 8AO, 8DIO] (175mm)
+
+
+
+Video
+NVIDIA GeForce 9400 GT  (PCI x16?)
+
+Processor Intel Core i7 860@2.80GHz  (quad core; Family 6 Model 30)
+
+
+====================================
+
+New Configuration
+
+2 slot BH SPC-152 replaces BH SPC-830
+May need detector controller board (1 per two hybrid detectors)
+
+
+
+
+PCI x16
+	Video controller
+
+PCI x1175 
+	PCIe-6259
+
+PCI std
+	SPC-152 (two slots)
+	PCI-6110
+	PCI-6713
+	? DCC-100
+	? DCC-100
+
+Monitors
+Dell widescreen (existing, with video in)
++ Second Dell widescreen vertical??
+
+
+SL-4U-SBC-Q57-HA (http://www.superlogics.com/industrial-computers/rack-mount-pc-computer/SL-4U-SBC-Q57-HA/269-3908.htm)
+has
+8 PCI slots / 3 PCI x1 / 1 PCI x16 
+onboard 10/100/1000 LAN
+
+
+Single qty
+SL-4U-SBC-Q57-HA	$1345
+upgrade to 4Gb memory	$28
+upgrade to i7 2.93GHz	$320
+add PNY GeForce GT520	$84
+			=====
+TOTAL			$1777

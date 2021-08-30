@@ -1,0 +1,29 @@
+/* Created by mdot for Matlab */
+digraph m2html {
+  applyChangesToOutput -> makeNewPcellBinaryOutput;
+  applyChangesToOutput -> makeNewPcellPowerOutput;
+  applyChangesToOutput -> makeNewPcellRepeatedOutput;
+  applyChangesToOutput -> makeNewRepeatedMirrorOutput;
+  applyChangesToOutput -> makeNewRotatedMirrorOutput;
+  applyChangesToOutput -> makeNewSawToothMirrorOutput;
+  applyChangesToOutput -> makeNewSawToothMirrorOutputBi;
+  initImaging -> applyChangesToOutput;
+  initImaging -> siApplyDAQSampleRates;
+  initImaging -> siCreateDAQDevices;
+  stackAndBlast -> applyChangesToOutput;
+
+  applyChangesToOutput [URL="applyChangesToOutput.html"];
+  initImaging [URL="initImaging.html"];
+  makeNewPcellBinaryOutput [URL="makeNewPcellBinaryOutput.html"];
+  makeNewPcellPowerOutput [URL="makeNewPcellPowerOutput.html"];
+  makeNewPcellRepeatedOutput [URL="makeNewPcellRepeatedOutput.html"];
+  makeNewRepeatedMirrorOutput [URL="makeNewRepeatedMirrorOutput.html"];
+  makeNewRotatedMirrorOutput [URL="makeNewRotatedMirrorOutput.html"];
+  makeNewSawToothMirrorOutput [URL="makeNewSawToothMirrorOutput.html"];
+  makeNewSawToothMirrorOutputBi [URL="makeNewSawToothMirrorOutputBi.html"];
+  rotateMirrorData [URL="rotateMirrorData.html"];
+  setupImagingCyclePosition [URL="setupImagingCyclePosition.html"];
+  siApplyDAQSampleRates [URL="siApplyDAQSampleRates.html"];
+  siCreateDAQDevices [URL="siCreateDAQDevices.html"];
+  stackAndBlast [URL="stackAndBlast.html"];
+}

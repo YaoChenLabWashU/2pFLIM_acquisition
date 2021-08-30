@@ -1,0 +1,163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of processPhysData</title>
+  <meta name="keywords" content="processPhysData">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">Physiology</a> &gt; processPhysData.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Physiology&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>processPhysData
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function processPhysData(ai, SamplesAcquired) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="abortPhysiology.html" class="code" title="function abortPhysiology">abortPhysiology</a>	</li><li><a href="phEndAcquisitionProcessing.html" class="code" title="function phEndAcquisitionProcessing">phEndAcquisitionProcessing</a>	</li><li><a href="phReloadLoggedData.html" class="code" title="function phReloadLoggedData(fileName)">phReloadLoggedData</a>	</li><li><a href="physDiskLogName.html" class="code" title="function out=physDiskLogName(counter)">physDiskLogName</a>	</li><li><a href="setPhysStatusString.html" class="code" title="function setPhysStatusString(status)">setPhysStatusString</a>	</li><li><a href="updateMinInCell.html" class="code" title="function updateMinInCell(clockTime)">updateMinInCell</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function processPhysData(ai, SamplesAcquired)</a>
+0002     <span class="keyword">global</span> state physInputDevice
+0003 
+0004     <span class="keyword">if</span> state.phys.internal.stopInfiniteAcq
+0005         stop(physInputDevice);
+0006         <a href="setPhysStatusString.html" class="code" title="function setPhysStatusString(status)">setPhysStatusString</a>(<span class="string">'Proccesing...'</span>);
+0007     <span class="keyword">end</span>
+0008     
+0009     <span class="comment">% extract the data</span>
+0010     data=getdata(physInputDevice, state.phys.internal.samplesPerStripe);
+0011 
+0012     <span class="comment">% do the proper scaling</span>
+0013 
+0014     <span class="keyword">persistent</span> channelList HWChannelList
+0015 
+0016     <span class="keyword">if</span> state.phys.internal.stripeCounter==1
+0017         <span class="comment">% record the trigger time</span>
+0018         channelList=get(physInputDevice, <span class="string">'Channel'</span>);
+0019         HWChannelList=get(channelList, <span class="string">'HwChannel'</span>);
+0020         <span class="keyword">if</span> ~iscell(HWChannelList)
+0021             HWChannelList={HWChannelList};
+0022         <span class="keyword">end</span>
+0023         
+0024         eventLog=get(physInputDevice, <span class="string">'EventLog'</span>);
+0025         f=find(strcmp({eventLog.Type}, <span class="string">'Trigger'</span>));
+0026         <span class="keyword">if</span> isempty(f)
+0027             disp(<span class="string">'*** processPhysData: ERROR:  No trigger information returned'</span>);
+0028             <a href="abortPhysiology.html" class="code" title="function abortPhysiology">abortPhysiology</a>;
+0029             <span class="keyword">return</span>
+0030         <span class="keyword">end</span>
+0031         state.phys.internal.triggerClock=eventLog(f(1)).Data.AbsTime;
+0032         <a href="updateMinInCell.html" class="code" title="function updateMinInCell(clockTime)">updateMinInCell</a>(state.phys.internal.triggerClock);
+0033 
+0034         state.phys.acquisitionFiles=cell(4, length(channelList));
+0035         <span class="comment">% this cell structure will save information about the waves of each</span>
+0036         <span class="comment">% channel as follows:</span>
+0037         <span class="comment">%    state.phys.acquisitionFiles{1, :} will have the AD channel #</span>
+0038         <span class="comment">%    state.phys.acquisitionFiles{2, :} will have the name of the</span>
+0039         <span class="comment">%        display wave (e.g. dataWave0)</span>
+0040         <span class="comment">%    state.phys.acquisitionFiles{3, :} will have the name of the</span>
+0041         <span class="comment">%        acquisition wave (e.g. AD0_9)</span>
+0042         <span class="comment">%    state.phys.acquisitionFiles{4, :} will have the name of the</span>
+0043         <span class="comment">%        average wave (e.g. AD0_e1p1avg)</span>
+0044     <span class="keyword">end</span>
+0045 
+0046     <span class="comment">% At this point, we got the data and recorded the trigger time.</span>
+0047 
+0048     <span class="comment">% Below, put it in data waves, calculate Rs if appropriate, store headerString,</span>
+0049     <span class="comment">% save, average, and, if desired, kill</span>
+0050 
+0051     startData=state.phys.internal.samplesPerStripe*(state.phys.internal.stripeCounter-1)+1;
+0052     endData=state.phys.internal.samplesPerStripe*state.phys.internal.stripeCounter;
+0053 
+0054     <span class="keyword">global</span> physData
+0055     <span class="keyword">for</span> counter=1:length(channelList)
+0056         channel=HWChannelList{counter};            <span class="comment">% what DA #</span>
+0057 
+0058         physData(counter, startData:endData)=<span class="keyword">...</span>
+0059             state.phys.internal.channelGains(channel+1)*data(:,counter)';
+0060 
+0061         <span class="keyword">if</span> state.phys.internal.stripeCounter==1
+0062             state.phys.acquisitionFiles{1, counter}=channel;
+0063             state.phys.acquisitionFiles{2, counter}=[<span class="string">'dataWave'</span> num2str(channel)];
+0064             <span class="keyword">if</span> ~iswave([<span class="string">'dataWave'</span> num2str(channel)])
+0065                 waveo([<span class="string">'dataWave'</span> num2str(channel)], physData(counter), <span class="keyword">...</span>
+0066                     <span class="string">'xscale'</span>, [0 1000/state.phys.settings.inputRate]);
+0067             <span class="keyword">else</span>
+0068                 setWave([<span class="string">'dataWave'</span> num2str(channel)], <span class="string">'xscale'</span>, [0 1000/state.phys.settings.inputRate]);
+0069                 eval([<span class="string">'global dataWave'</span> num2str(channel)]);
+0070                 eval([<span class="string">'dataWave'</span> num2str(channel) <span class="string">'(startData:endData)=physData(counter, startData:endData);'</span>]);
+0071             <span class="keyword">end</span>
+0072 
+0073             setfield([<span class="string">'dataWave'</span> num2str(channel)], <span class="string">'headerString'</span>, state.headerString);
+0074         <span class="keyword">end</span>
+0075          <span class="keyword">if</span> (state.phys.internal.stripeCounter==state.phys.internal.stripes)
+0076             setWave([<span class="string">'dataWave'</span> num2str(channel)], <span class="string">'data'</span>, physData(counter,:))
+0077         <span class="keyword">else</span>
+0078             eval([<span class="string">'global dataWave'</span> num2str(channel)]);
+0079             eval([<span class="string">'dataWave'</span> num2str(channel) <span class="string">'(startData:endData)=physData(counter, startData:endData);'</span>]);
+0080         <span class="keyword">end</span>
+0081 
+0082         <span class="comment">% this adds a small leading blank as the data appears on the screen</span>
+0083         <span class="keyword">if</span> state.phys.internal.stripeCounter&lt;state.phys.internal.stripes
+0084             eval([<span class="string">'dataWave'</span> num2str(channel) <span class="string">'(endData+1:round(endData+state.phys.internal.samplesPerStripe/2))=NaN;'</span>]);
+0085         <span class="keyword">end</span>
+0086     <span class="keyword">end</span>
+0087 
+0088     
+0089     <span class="keyword">if</span> (state.phys.internal.stripeCounter==state.phys.internal.stripes) || state.phys.internal.stopInfiniteAcq <span class="comment">% last one, process everything</span>
+0090         <span class="keyword">if</span> (get(physInputDevice, <span class="string">'SamplesPerTrigger'</span>)==Inf) &amp;&amp; ~state.phys.internal.stopInfiniteAcq
+0091             <span class="comment">% we are in the live mode and continuing.  Let's overwrite data</span>
+0092             state.phys.internal.stripeCounter=1;
+0093             <span class="keyword">return</span>
+0094         <span class="keyword">end</span>
+0095         
+0096         <span class="keyword">if</span> (get(physInputDevice, <span class="string">'SamplesPerTrigger'</span>)==Inf) &amp;&amp; state.files.autoSave &amp;&amp; state.phys.settings.reloadContAcq
+0097             <span class="comment">% we were in infinite mode.  We need to reload data from the</span>
+0098             <span class="comment">% drive</span>
+0099             <a href="phReloadLoggedData.html" class="code" title="function phReloadLoggedData(fileName)">phReloadLoggedData</a>(fullfile(state.files.savePath, <a href="physDiskLogName.html" class="code" title="function out=physDiskLogName(counter)">physDiskLogName</a>));
+0100         <span class="keyword">end</span>
+0101             
+0102         <a href="phEndAcquisitionProcessing.html" class="code" title="function phEndAcquisitionProcessing">phEndAcquisitionProcessing</a>
+0103         <span class="keyword">global</span> physOutputDevice
+0104         <span class="keyword">while</span> strcmp(get(physOutputDevice, <span class="string">'Running'</span>), <span class="string">'On'</span>)
+0105             <a href="setPhysStatusString.html" class="code" title="function setPhysStatusString(status)">setPhysStatusString</a>(<span class="string">'waiting for output'</span>);
+0106             pause(0.05);
+0107         <span class="keyword">end</span>
+0108         timerRegisterPackageDone(<span class="string">'Physiology'</span>);
+0109     <span class="keyword">else</span>
+0110         state.phys.internal.stripeCounter=state.phys.internal.stripeCounter+1;
+0111         <span class="keyword">if</span> (get(physInputDevice, <span class="string">'SamplesPerTrigger'</span>)==Inf)
+0112             <a href="setPhysStatusString.html" class="code" title="function setPhysStatusString(status)">setPhysStatusString</a>(<span class="string">'Infinite acq'</span>);
+0113         <span class="keyword">end</span>
+0114     <span class="keyword">end</span>
+0115 
+0116</pre></div>
+<hr><address>Generated on Fri 17-Aug-2012 10:39:43 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

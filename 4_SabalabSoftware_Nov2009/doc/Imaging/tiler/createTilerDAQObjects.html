@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of createTilerDAQObjects</title>
+  <meta name="keywords" content="createTilerDAQObjects">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Imaging</a> &gt; <a href="index.html">tiler</a> &gt; createTilerDAQObjects.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\tiler&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>createTilerDAQObjects
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function createTilerDAQObjects </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="initTiler.html" class="code" title="function initTiler">initTiler</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function createTilerDAQObjects</a>
+0002     <span class="keyword">global</span> state
+0003     
+0004     <span class="comment">% input object will read from channeks 3 (to see pulse) and 4 (physiology to see effect on cell)</span>
+0005     
+0006     state.tiler.mirrorInputObj = analoginput(<span class="string">'nidaq'</span>, state.init.acquisitionBoardIndex);
+0007 
+0008     set(state.tiler.mirrorInputObj, <span class="string">'TriggerType'</span>, <span class="string">'HwDigital'</span>);                                        
+0009     set(state.tiler.mirrorInputObj, <span class="string">'SampleRate'</span>, state.tiler.inputRate);
+0010     set(state.tiler.mirrorInputObj, <span class="string">'SamplesAcquiredFcn'</span>, {<span class="string">'tilerActionFunction'</span>});
+0011 
+0012     state.tiler.mirrorActualInputRate = get(state.tiler.mirrorInputObj, <span class="string">'SampleRate'</span>);    
+0013 
+0014     state.tiler.physInputObj = analoginput(<span class="string">'nidaq'</span>, state.phys.daq.inputBoardIndex);
+0015 
+0016     set(state.tiler.physInputObj, <span class="string">'TriggerType'</span>, <span class="string">'HwDigital'</span>);                                        
+0017     set(state.tiler.physInputObj, <span class="string">'SampleRate'</span>, state.tiler.inputRate);
+0018     set(state.tiler.physInputObj, <span class="string">'SamplesAcquiredFcn'</span>, {<span class="string">'tilerActionFunction'</span>});
+0019 
+0020     state.tiler.physActualInputRate = get(state.tiler.physInputObj, <span class="string">'SampleRate'</span>);    
+0021 
+0022     <span class="comment">% output trigger a pockel or shutter pulse</span>
+0023 
+0024     state.tiler.pcellOutputObj = analogoutput(<span class="string">'nidaq'</span>, state.pcell.pcellBoardIndex);
+0025 
+0026     set(state.tiler.pcellOutputObj, <span class="string">'SampleRate'</span>, state.tiler.outputRate);
+0027     set(state.tiler.pcellOutputObj, <span class="string">'TriggerType'</span>, <span class="string">'HwDigital'</span>);        
+0028 
+0029     addchannel(state.tiler.pcellOutputObj, 0:3);
+0030     
+0031     state.tiler.pcellActualOutputRate = get(state.tiler.pcellOutputObj, <span class="string">'SampleRate'</span>);    
+0032     
+0033     state.tiler.mirrorOutputObj = analogoutput(<span class="string">'nidaq'</span>, state.init.mirrorOutputBoardIndex);
+0034 
+0035     set(state.tiler.mirrorOutputObj, <span class="string">'SampleRate'</span>, state.tiler.outputRate);
+0036     set(state.tiler.mirrorOutputObj, <span class="string">'TriggerType'</span>, <span class="string">'HwDigital'</span>);        
+0037 
+0038     addchannel(state.tiler.mirrorOutputObj, state.init.XMirrorChannelIndex);
+0039     addchannel(state.tiler.mirrorOutputObj, state.init.YMirrorChannelIndex);
+0040 
+0041     state.tiler.mirrorActualOutputRate = get(state.tiler.mirrorOutputObj, <span class="string">'SampleRate'</span>);    
+0042 
+0043</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

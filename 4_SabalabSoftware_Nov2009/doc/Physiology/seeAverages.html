@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of seeAverages</title>
+  <meta name="keywords" content="seeAverages">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">Physiology</a> &gt; seeAverages.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Physiology&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>seeAverages
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function seeAverages(pulses, channels) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="physAvgName.html" class="code" title="function out=physAvgName(epoch, channel, pulse)">physAvgName</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function seeAverages(pulses, channels) </a>
+0002     <span class="keyword">global</span> state
+0003     
+0004     <span class="keyword">if</span> nargin==0
+0005         <span class="keyword">if</span> state.cycle.useCyclePos
+0006             pulses=1:size(state.cycle.delayList,2);
+0007         <span class="keyword">else</span>
+0008             pulses=unique(state.cycle.da0List);
+0009         <span class="keyword">end</span>
+0010         
+0011     <span class="keyword">end</span>
+0012     
+0013     <span class="keyword">if</span> nargin&lt;2 || isempty(channels)
+0014         channelList=zeros(1,8);
+0015         <span class="keyword">for</span> channel=0:7
+0016             <span class="keyword">if</span> getfield(state.phys.settings, [<span class="string">'acq'</span> num2str(channel)]) &amp;&amp; getfield(state.phys.settings, [<span class="string">'disp'</span> num2str(channel)])
+0017                 channelList(channel+1)=1;
+0018             <span class="keyword">end</span>
+0019         <span class="keyword">end</span>
+0020         channels=find(channelList)-1;
+0021     <span class="keyword">end</span>
+0022 
+0023     <span class="keyword">persistent</span> colors
+0024     
+0025     <span class="keyword">if</span> ~iscell(colors)
+0026         colors={<span class="string">'red'</span>, <span class="string">'black'</span>, <span class="string">'blue'</span>, <span class="string">'green'</span>, <span class="string">'yellow'</span>, <span class="string">'gray'</span>, <span class="string">'gray'</span>, <span class="string">'gray'</span>};
+0027     <span class="keyword">end</span>
+0028     
+0029     first=1;
+0030     channelsUsed=[];
+0031     pulsesUsed=[];
+0032     counter=0;
+0033     <span class="keyword">for</span> channel=channels
+0034         <span class="keyword">if</span> getfield(state.phys.settings, [<span class="string">'acq'</span> num2str(channel)]) &amp;&amp; getfield(state.phys.settings, [<span class="string">'avg'</span> num2str(channel)])
+0035             pulsesDone=zeros(1,100);
+0036             channelsUsed(end+1)=channel;
+0037             <span class="keyword">for</span> pulse=pulses
+0038                 <span class="keyword">if</span> pulse &amp;&amp; ~pulsesDone(pulse)
+0039                     pulsesDone(pulse)=1;
+0040                     name=<a href="physAvgName.html" class="code" title="function out=physAvgName(epoch, channel, pulse)">physAvgName</a>(state.epoch, channel, pulse);
+0041                     <span class="keyword">if</span> ~iswave(name);
+0042                         wave(name, []);
+0043                     <span class="keyword">end</span>
+0044                     <span class="keyword">if</span> ~any(pulse==pulsesUsed)
+0045                         pulsesUsed(end+1)=pulse;
+0046                     <span class="keyword">end</span>
+0047                     counter=mod(counter, length(colors))+1;
+0048                     <span class="keyword">if</span> first
+0049                         evalin(<span class="string">'base'</span>,[<span class="string">'plot('</span> name <span class="string">');'</span>]);
+0050                         evalin(<span class="string">'base'</span>,[<span class="string">'setplotprops('''</span> name <span class="string">''', ''color'', '''</span> colors{counter} <span class="string">'''); '</span>]);
+0051                         first=0;
+0052                     <span class="keyword">else</span>
+0053                         figure(gcf);
+0054                         evalin(<span class="string">'base'</span>, [<span class="string">'append('</span> name <span class="string">');'</span>]);
+0055                         evalin(<span class="string">'base'</span>, [<span class="string">'setplotprops('</span> name <span class="string">', ''color'', '''</span> colors{counter} <span class="string">'''); '</span>]);
+0056                     <span class="keyword">end</span>
+0057                 <span class="keyword">end</span>
+0058             <span class="keyword">end</span>
+0059         <span class="keyword">end</span>
+0060     <span class="keyword">end</span>
+0061     <span class="keyword">if</span> first
+0062         figure;
+0063     <span class="keyword">end</span>
+0064     set(gcf, <span class="string">'Name'</span>, [<span class="string">'EPOCH '</span> num2str(state.epoch) <span class="string">', Chan '</span> num2str(channelsUsed) <span class="string">', Pulses '</span> num2str(pulsesUsed)], <span class="keyword">...</span>
+0065         <span class="string">'NumberTitle'</span>, <span class="string">'off'</span>);
+0066 
+0067 
+0068</pre></div>
+<hr><address>Generated on Fri 17-Aug-2012 10:39:43 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

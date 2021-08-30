@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of initPhys</title>
+  <meta name="keywords" content="initPhys">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">Physiology</a> &gt; initPhys.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Physiology&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>initPhys
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function initPhys(userFile, analysisMode) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="changeChannelType.html" class="code" title="function changeChannelType(channelList)">changeChannelType</a>	</li><li><a href="../Physiology/guis/physcontrols.html" class="code" title="function varargout = physcontrols(varargin)">physcontrols</a>	PHYSCONTROLS Application M-file for physControls.fig</li><li><a href="../Physiology/guis/physsettings.html" class="code" title="function varargout = physsettings(varargin)">physsettings</a>	PHYSSETTINGS Application M-file for physSettings.fig</li><li><a href="../Physiology/guis/scope.html" class="code" title="function varargout = scope(varargin)">scope</a>	</li><li><a href="hideScope.html" class="code" title="function hideScope">hideScope</a>	</li><li><a href="initializePhysDaq.html" class="code" title="function initializePhysDaq">initializePhysDaq</a>	</li><li><a href="initializeScopeDaq.html" class="code" title="function initializeScopeDaq">initializeScopeDaq</a>	</li><li><a href="makeScopeOutput.html" class="code" title="function makeScopeOutput">makeScopeOutput</a>	</li><li><a href="phSetDAQRates.html" class="code" title="function phSetDAQRates">phSetDAQRates</a>	</li><li><a href="resetScopeDaq.html" class="code" title="function resetScopeDaq">resetScopeDaq</a>	</li><li><a href="setupPhysDaqInputChannels.html" class="code" title="function setupPhysDaqInputChannels">setupPhysDaqInputChannels</a>	adds appropriate channels to physInputDevice</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="analyzePhys.html" class="code" title="function analyzePhys">analyzePhys</a>	</li><li><a href="../Physiology/timerFunctions/timerInit_Physiology.html" class="code" title="function timerInit_Physiology">timerInit_Physiology</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function initPhys(userFile, analysisMode)</a>
+0002     <span class="keyword">if</span> nargin&lt;2
+0003         userFile=<span class="string">''</span>;
+0004         analysisMode=0;
+0005     <span class="keyword">end</span>
+0006     
+0007     <span class="keyword">global</span> state gh
+0008     
+0009     <span class="keyword">if</span> ~analysisMode
+0010         h=waitbar(0,<span class="string">'Initializing Physiology'</span>);
+0011     <span class="keyword">else</span>
+0012         h=waitbar(0,<span class="string">'Initializing Physiology in Analysis Mode'</span>);
+0013     <span class="keyword">end</span>    
+0014     
+0015     gh.physControls=guihandles(<a href="../Physiology/guis/physcontrols.html" class="code" title="function varargout = physcontrols(varargin)">physcontrols</a>);
+0016     gh.physSettings=guihandles(<a href="../Physiology/guis/physsettings.html" class="code" title="function varargout = physsettings(varargin)">physsettings</a>);
+0017     gh.scope=guihandles(<a href="../Physiology/guis/scope.html" class="code" title="function varargout = scope(varargin)">scope</a>);
+0018 
+0019     waitbar(.1,h);
+0020     
+0021     openini(<span class="string">'phys.ini'</span>);
+0022     
+0023     <span class="keyword">if</span> analysisMode
+0024         state.analysisMode=1;
+0025     <span class="keyword">end</span>
+0026     
+0027     waitbar(.2,h);
+0028     
+0029     waveo(<span class="string">'physAcqTrace'</span>, repmat(nan, 1, 1000));
+0030     waveo(<span class="string">'physAcqTime0'</span>, repmat(nan, 1, 1000));
+0031     waveo(<span class="string">'physAcqTime1'</span>, repmat(nan, 1, 1000));    
+0032     waveo(<span class="string">'physCellRm0'</span>, repmat(nan, 1, 1000));
+0033     waveo(<span class="string">'physCellRs0'</span>, repmat(nan, 1, 1000));
+0034     waveo(<span class="string">'physCellCm0'</span>, repmat(nan, 1, 1000));
+0035     waveo(<span class="string">'physCellVm0'</span>, repmat(nan, 1, 1000));
+0036     waveo(<span class="string">'physCellIm0'</span>, repmat(nan, 1, 1000));
+0037     waveo(<span class="string">'physCellRm1'</span>, repmat(nan, 1, 1000));
+0038     waveo(<span class="string">'physCellRs1'</span>, repmat(nan, 1, 1000));
+0039     waveo(<span class="string">'physCellCm1'</span>, repmat(nan, 1, 1000));
+0040     waveo(<span class="string">'physCellVm1'</span>, repmat(nan, 1, 1000));
+0041     waveo(<span class="string">'physCellIm1'</span>, repmat(nan, 1, 1000));
+0042     
+0043     waitbar(.3,h);
+0044     
+0045     waitbar(.4,h);
+0046 
+0047     <span class="comment">% initialize scope</span>
+0048     waveo(<span class="string">'scopeOutput'</span>, 0, <span class="string">'xscale'</span>, [0 1000/state.phys.scope.outputRate]);
+0049     waveo(<span class="string">'scopeInput'</span>, 0, <span class="string">'xscale'</span>, [0 1000/state.phys.scope.inputRate]);
+0050     waveo(<span class="string">'scopeInputFit'</span>, []);
+0051     <span class="keyword">global</span> scopeInput scopeInputFit
+0052     
+0053     plot(scopeInput);
+0054     state.phys.internal.scopeHandle=gcf;
+0055     state.phys.internal.scopeAxisHandle=gca;
+0056     state.phys.cellParams.breakInClock0=clock;
+0057     state.phys.cellParams.breakInClock1=clock;    
+0058     state.phys.internal.channelGains=ones(1,32);
+0059         
+0060     evalin(<span class="string">'base'</span>, <span class="string">'global physData'</span>)
+0061     append(scopeInputFit);
+0062     setPlotProps(scopeInputFit, <span class="string">'color'</span>, <span class="string">'red'</span>, <span class="string">'LineWidth'</span>, 2);
+0063     setPlotProps(scopeInput, <span class="string">'LineWidth'</span>, 2);
+0064     set(state.phys.internal.scopeHandle, <span class="string">'Name'</span>, <span class="string">'SCOPE'</span>, <span class="keyword">...</span>
+0065         <span class="string">'NumberTitle'</span>, <span class="string">'off'</span>, <span class="keyword">...</span>
+0066         <span class="string">'CloseRequestFcn'</span>, <span class="string">'hideScope'</span>, <span class="keyword">...</span>
+0067         <span class="string">'MenuBar'</span>, <span class="string">'none'</span>);
+0068         
+0069     waitbar(.5,h);
+0070 
+0071     evalin(<span class="string">'base'</span>, <span class="string">'global physOutputDevice physAuxOutputDevice physInputDevice'</span>);
+0072     
+0073     <a href="changeChannelType.html" class="code" title="function changeChannelType(channelList)">changeChannelType</a>([0 1]);
+0074     <a href="initializeScopeDaq.html" class="code" title="function initializeScopeDaq">initializeScopeDaq</a>;
+0075     <a href="makeScopeOutput.html" class="code" title="function makeScopeOutput">makeScopeOutput</a>;
+0076     <a href="resetScopeDaq.html" class="code" title="function resetScopeDaq">resetScopeDaq</a>;
+0077     waitbar(.6,h);
+0078 
+0079     state.cycle.physOn=1;
+0080     updateGUIByGlobal(<span class="string">'state.cycle.physOn'</span>);
+0081     state.cycle.physOnList(1)=1;
+0082     
+0083     <span class="keyword">if</span> ~state.analysisMode
+0084         state.phys.daq.triggerDevice = digitalio(<span class="string">'nidaq'</span>, state.phys.daq.triggerBoardIndex);
+0085         state.phys.daq.triggerLine = addline(state.phys.daq.triggerDevice, state.phys.daq.triggerLineIndex, <span class="string">'out'</span>);
+0086     
+0087         <a href="initializePhysDaq.html" class="code" title="function initializePhysDaq">initializePhysDaq</a>;
+0088         <a href="phSetDAQRates.html" class="code" title="function phSetDAQRates">phSetDAQRates</a>    
+0089         <a href="setupPhysDaqInputChannels.html" class="code" title="function setupPhysDaqInputChannels">setupPhysDaqInputChannels</a>;
+0090     <span class="keyword">end</span>
+0091     
+0092     <span class="keyword">if</span> analysisMode
+0093         set(gh.physControls.startButton, <span class="string">'Enable'</span>, <span class="string">'off'</span>)
+0094          set(get(gh.scope.figure1, <span class="string">'Children'</span>), <span class="string">'Enable'</span>, <span class="string">'off'</span>);
+0095          <a href="hideScope.html" class="code" title="function hideScope">hideScope</a>;
+0096          set(get(gh.pulseMaker.figure1, <span class="string">'Children'</span>), <span class="string">'Enable'</span>, <span class="string">'off'</span>);
+0097     <span class="keyword">end</span>
+0098     waitbar(1,h);
+0099     close(h);</pre></div>
+<hr><address>Generated on Fri 17-Aug-2012 10:39:43 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

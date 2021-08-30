@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of timerTrigger</title>
+  <meta name="keywords" content="timerTrigger">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">Timer</a> &gt; timerTrigger.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Timer&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>timerTrigger
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function timerTrigger(freshTriggerTime) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>	This function sets the status field in mainControls.</li><li><a href="timerCallPackageFunctions.html" class="code" title="function status=timerCallPackageFunctions(type, package)">timerCallPackageFunctions</a>	</li><li><a href="timerGetActiveStatus.html" class="code" title="function status=timerGetActiveStatus(package)">timerGetActiveStatus</a>	</li><li><a href="timerRegisterPackageDone.html" class="code" title="function timerRegisterPackageDone(package)">timerRegisterPackageDone</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="timerDoOne.html" class="code" title="function timerDoOne">timerDoOne</a>	</li><li><a href="timerMainLoop.html" class="code" title="function timerMainLoop">timerMainLoop</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function timerTrigger(freshTriggerTime)</a>
+0002     <span class="keyword">if</span> nargin&lt;1
+0003         freshTriggerTime=1;
+0004     <span class="keyword">end</span>
+0005     
+0006     <span class="keyword">global</span> state grabInput physInputDevice
+0007     state.cycle.cycleStatus=2;     <span class="comment">% acquiring</span>
+0008     state.cycle.lastPositionUsed = state.cycle.currentCyclePosition;
+0009         
+0010     ready=0;
+0011     attemptCounter=0;
+0012     <span class="keyword">while</span> ~ready
+0013         status=<a href="timerCallPackageFunctions.html" class="code" title="function status=timerCallPackageFunctions(type, package)">timerCallPackageFunctions</a>(<span class="string">'ReadyForTrigger'</span>);
+0014         <span class="keyword">if</span> any(status==0)
+0015             attemptCounter=attemptCounter+1;
+0016             disp(<span class="string">'timerTrigger: Timer packages not ready'</span>);
+0017             pause(0.01);
+0018             <span class="keyword">if</span> attemptCounter==10
+0019                 <a href="timerCallPackageFunctions.html" class="code" title="function status=timerCallPackageFunctions(type, package)">timerCallPackageFunctions</a>(<span class="string">'Abort'</span>);
+0020                 disp(<span class="string">'timerTrigger: Failed 10 attempts to trigger.  Aborting'</span>);
+0021                 <span class="keyword">return</span>
+0022             <span class="keyword">end</span>
+0023         <span class="keyword">else</span>
+0024             ready=1;
+0025         <span class="keyword">end</span>
+0026     <span class="keyword">end</span>
+0027 
+0028     state.files.lastAcquisition=state.files.fileCounter;
+0029     
+0030     <span class="keyword">if</span> state.cycle.imageOnList(state.cycle.currentCyclePosition) <span class="comment">% is imaging is on?</span>
+0031         <span class="keyword">if</span> state.cycle.physOnList(state.cycle.currentCyclePosition) <span class="comment">% is phys is on?</span>
+0032              start([grabInput physInputDevice]);
+0033             trigger([grabInput physInputDevice]);            
+0034         <span class="keyword">else</span>
+0035             start(grabInput);
+0036             trigger(grabInput);
+0037         <span class="keyword">end</span>
+0038     <span class="keyword">elseif</span> state.cycle.physOnList(state.cycle.currentCyclePosition) <span class="comment">% is phys is on?</span>
+0039         start(physInputDevice);
+0040         trigger(physInputDevice);
+0041     <span class="keyword">end</span>
+0042     
+0043     
+0044     <a href="../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Triggered'</span>)
+0045     <span class="keyword">if</span> freshTriggerTime
+0046         triggerTime=clock;
+0047         disp([<span class="string">'Triggered at '</span> clockToString(triggerTime) <span class="string">', '</span> num2str(etime(clock,state.internal.triggerTime)) <span class="string">' seconds since last acquisition.'</span>]);
+0048         state.internal.triggerTime=triggerTime;
+0049     <span class="keyword">end</span>
+0050 
+0051     <span class="keyword">if</span> ~any(<a href="timerGetActiveStatus.html" class="code" title="function status=timerGetActiveStatus(package)">timerGetActiveStatus</a>)
+0052         <a href="timerRegisterPackageDone.html" class="code" title="function timerRegisterPackageDone(package)">timerRegisterPackageDone</a>([])
+0053     <span class="keyword">end</span>
+0054     
+0055</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

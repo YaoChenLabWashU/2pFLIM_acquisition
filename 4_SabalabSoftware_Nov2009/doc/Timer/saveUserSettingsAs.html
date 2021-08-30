@@ -1,0 +1,70 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of saveUserSettingsAs</title>
+  <meta name="keywords" content="saveUserSettingsAs">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../index.html">Home</a> &gt;  <a href="index.html">Timer</a> &gt; saveUserSettingsAs.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../index.html"><img alt="<" border="0" src="../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Timer&nbsp;<img alt=">" border="0" src="../right.png"></a></td></tr></table>-->
+
+<h1>saveUserSettingsAs
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="box"><strong>function varargout=saveUserSettingsAs </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="saveUserSettings.html" class="code" title="function saveUserSettings">saveUserSettings</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../matlabicon.gif)">
+<li><a href="saveUserSettings.html" class="code" title="function saveUserSettings">saveUserSettings</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function varargout=saveUserSettingsAs</a>
+0002     <span class="keyword">global</span> state
+0003 
+0004     <span class="keyword">if</span> ~isempty(state.userSettingsPath)
+0005         <span class="keyword">try</span>
+0006             cd(state.userSettingsPath);
+0007         <span class="keyword">catch</span>
+0008         <span class="keyword">end</span>
+0009             
+0010     <span class="keyword">end</span>
+0011 
+0012     [fname, pname]=uiputfile(<span class="string">'*.usr'</span>, <span class="string">'Choose user settings file'</span>);
+0013 
+0014     <span class="keyword">if</span> ~isnumeric(fname)
+0015         periods=findstr(fname, <span class="string">'.'</span>);
+0016         <span class="keyword">if</span> any(periods)                                
+0017             fname=fname(1:periods(1)-1);
+0018         <span class="keyword">end</span>    
+0019         state.userSettingsName=fname;
+0020         state.userSettingsPath=pname;
+0021         <a href="saveUserSettings.html" class="code" title="function saveUserSettings">saveUserSettings</a>;
+0022         makeUserSettingsMenu;
+0023     <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

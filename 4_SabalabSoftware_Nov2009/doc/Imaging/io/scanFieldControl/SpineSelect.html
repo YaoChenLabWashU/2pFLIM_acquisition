@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of SpineSelect</title>
+  <meta name="keywords" content="SpineSelect">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Imaging</a> &gt; <a href="../index.html">io</a> &gt; <a href="index.html">scanFieldControl</a> &gt; SpineSelect.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\io\scanFieldControl&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>SpineSelect
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function SpineSelect(num) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Imaging/guis/gui_callbacks/executeGrabOneCallback.html" class="code" title="function executeGrabOneCallback">executeGrabOneCallback</a>	</li><li><a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>	given the name of a global variable, find and update the GUI that contains it</li><li><a href="../../../Imaging/io/ad_da/preallocateMemory.html" class="code" title="function preallocateMemory">preallocateMemory</a>	</li><li><a href="../../../Imaging/io/applyChangesToOutput.html" class="code" title="function applyChangesToOutput(force)">applyChangesToOutput</a>	</li><li><a href="saveScan.html" class="code" title="function saveScan(varargin)">saveScan</a>	</li><li><a href="updateReferenceImage.html" class="code" title="function updateReferenceImage">updateReferenceImage</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function SpineSelect(num)</a>
+0002     <span class="keyword">if</span>(nargin&lt;1)
+0003         num=0;
+0004     <span class="keyword">end</span>
+0005     <span class="keyword">global</span> state imageData
+0006 
+0007     <span class="comment">%if ~ishandle(state.internal.refFigure)</span>
+0008     <span class="comment">%    displayReferenceImage;</span>
+0009     <span class="comment">%end</span>
+0010         
+0011     old_zoomfactor=state.acq.zoomFactor;
+0012     
+0013     state.acq.zoomFactor=35;
+0014     state.acq.averaging=1;
+0015     state.acq.numberOfFrames=3;
+0016     state.acq.numberOfZSlices=1;
+0017     state.acq.autoTrack=0;
+0018     state.internal.needNewRotatedMirrorOutput=1;
+0019        state.internal.needNewPcellRepeatedOutput=1;
+0020     
+0021     <span class="keyword">global</span> grabInput
+0022     
+0023     <span class="keyword">try</span> 
+0024         set(grabInput, <span class="string">'SamplesPerTrigger'</span>, state.internal.samplesPerFrame*state.acq.numberOfFrames);
+0025         
+0026         <a href="../../../Imaging/io/applyChangesToOutput.html" class="code" title="function applyChangesToOutput(force)">applyChangesToOutput</a>;
+0027        
+0028         <a href="../../../Imaging/io/ad_da/preallocateMemory.html" class="code" title="function preallocateMemory">preallocateMemory</a>;
+0029         <a href="../../../Imaging/guis/gui_callbacks/executeGrabOneCallback.html" class="code" title="function executeGrabOneCallback">executeGrabOneCallback</a>; wait(grabInput, 20);
+0030     <span class="keyword">catch</span>
+0031         error(<span class="string">'Spineselect: error in grabbing reference image'</span>)
+0032     <span class="keyword">end</span>
+0033     <span class="keyword">if</span> num==0
+0034         <span class="keyword">try</span>
+0035             pos=state.internal.saveScanLastPos+1;
+0036         <span class="keyword">catch</span>
+0037             pos=1;
+0038         <span class="keyword">end</span>
+0039     <span class="keyword">else</span>
+0040         pos=num;
+0041     <span class="keyword">end</span>
+0042     
+0043     addEntryToNotebook(2, [<span class="string">'SpineSelect scan '</span> num2str(pos) <span class="string">', RefImage Acq '</span> num2str(state.files.fileCounter-1)]);
+0044 
+0045     
+0046     state.acq.trackerReferenceAll=medfilt2(mean(imageData{state.acq.trackerChannel},3));
+0047 
+0048     sx=size(state.acq.trackerReferenceAll,1);
+0049     sy=size(state.acq.trackerReferenceAll,2);
+0050     
+0051     x0=round(sx*0.10);
+0052     y0=round(sy*0.10);
+0053     x1=round(sx*0.90);
+0054     y1=round(sy*0.90);
+0055     
+0056     state.acq.trackerReference=state.acq.trackerReferenceAll(y0:y1, x0:x1);
+0057     state.internal.trackerX0=x0;
+0058     state.internal.trackerY0=y0;
+0059 
+0060     state.acq.scanShiftX=0;
+0061     state.acq.scanShiftY=0;
+0062     state.acq.pixelShiftX=0;
+0063     state.acq.pixelShiftY=0;
+0064     
+0065     state.internal.refShiftX= state.acq.postRotOffsetX + state.acq.scanOffsetX;
+0066     state.internal.refShiftY= state.acq.postRotOffsetY + state.acq.scanOffsetY;
+0067     state.internal.refAngle= state.acq.scanRotation;
+0068     state.internal.refZoom= state.acq.zoomFactor;
+0069     
+0070     <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.scanShiftX'</span>);
+0071     <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.scanShiftY'</span>);
+0072     <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.pixelShiftX'</span>);
+0073     <a href="../../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.acq.pixelShiftY'</span>);
+0074     <a href="updateReferenceImage.html" class="code" title="function updateReferenceImage">updateReferenceImage</a>;
+0075     
+0076     <span class="keyword">if</span>(num==0)
+0077     <a href="saveScan.html" class="code" title="function saveScan(varargin)">saveScan</a>;
+0078     <span class="keyword">else</span>
+0079         <a href="saveScan.html" class="code" title="function saveScan(varargin)">saveScan</a>(num);
+0080     <span class="keyword">end</span>
+0081     
+0082     state.acq.averaging=0;
+0083     state.acq.numberOfFrames=1;
+0084     state.acq.zoomFactor=old_zoomfactor;
+0085     state.acq.scanRotation=0;
+0086     set(grabInput, <span class="string">'SamplesPerTrigger'</span>, state.internal.samplesPerFrame*state.acq.numberOfFrames);
+0087     
+0088     state.internal.needNewRotatedMirrorOutput=1;
+0089     <a href="../../../Imaging/io/applyChangesToOutput.html" class="code" title="function applyChangesToOutput(force)">applyChangesToOutput</a>;
+0090         
+0091     state.acq.autoTrack=1;</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of addGUIOfGlobal</title>
+  <meta name="keywords" content="addGUIOfGlobal">
+  <meta name="description" content="add a GUI to the list of GUIs associated with a global variable">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Imaging</a> &gt; <a href="../index.html">guis</a> &gt; <a href="index.html">gui_handling</a> &gt; addGUIOfGlobal.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\guis\gui_handling&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>addGUIOfGlobal
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>add a GUI to the list of GUIs associated with a global variable</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function addGUIOfGlobal(globalName, guiName) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> add a GUI to the list of GUIs associated with a global variable
+ this is done by storing GUI NAME in the GLOBAL NAME subfield of the
+ corresponding globalGUIPairs structure.  For top level variables (ie no 
+ subfields for a structure) the association is stored in the global named
+ globalGUIPairs.  For subfields of a structure, the association is stored in a
+ new subfield, created on the same level as the variable, called globalGUIPairs.</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="getGuiOfGlobal.html" class="code" title="function out=getGuiOfGlobal(globalName)">getGuiOfGlobal</a>	</li><li><a href="structNameParts.html" class="code" title="function [outTopName, outStructName, outFieldName] = structNameParts(s)">structNameParts</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Imaging/io/file_io/initialization/initGUIs.html" class="code" title="function [out,fname,pname,ext]=initGUIs(fileName, callCallbacks, file)">initGUIs</a>	opens and interprets and initialization file</li><li><a href="../../../Imaging/io/file_io/initialization/initGUIs_OLD.html" class="code" title="function [out,fname,pname,ext]=initGUIs(fileName, callCallbacks)">initGUIs_OLD</a>	opens and interprets and initialization file</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function addGUIOfGlobal(globalName, guiName)</a>
+0002 <span class="comment">% add a GUI to the list of GUIs associated with a global variable</span>
+0003 <span class="comment">% this is done by storing GUI NAME in the GLOBAL NAME subfield of the</span>
+0004 <span class="comment">% corresponding globalGUIPairs structure.  For top level variables (ie no</span>
+0005 <span class="comment">% subfields for a structure) the association is stored in the global named</span>
+0006 <span class="comment">% globalGUIPairs.  For subfields of a structure, the association is stored in a</span>
+0007 <span class="comment">% new subfield, created on the same level as the variable, called globalGUIPairs.</span>
+0008 
+0009     [topName, structName, fieldName]=<a href="structNameParts.html" class="code" title="function [outTopName, outStructName, outFieldName] = structNameParts(s)">structNameParts</a>(globalName);    <span class="comment">% parse the variable name</span>
+0010     <span class="keyword">if</span> length(topName)==0                                            <span class="comment">% is there a valid name?</span>
+0011         disp([<span class="string">'addGuiOfGlobal: empty global name (guiName = '</span> guiName <span class="string">')'</span>]);
+0012     <span class="keyword">end</span>
+0013     eval([<span class="string">'global '</span> topName <span class="string">';'</span>]);                                    <span class="comment">% get access to the global</span>
+0014     <span class="keyword">if</span> ~exist(topName, <span class="string">'var'</span>)                                        <span class="comment">% does the variable exist?</span>
+0015         disp([<span class="string">'addGuiOfGlobal: global'</span> globalName <span class="string">'does not exists (guiName = '</span> guiName <span class="string">')'</span>]);
+0016         <span class="keyword">return</span>
+0017     <span class="keyword">end</span>
+0018 
+0019     <span class="keyword">if</span> length(structName)==0            <span class="comment">% we are dealing with a top level global</span>
+0020         <span class="keyword">global</span> globalGUIPairs
+0021         <span class="keyword">if</span> ~isstruct(globalGUIPairs)    <span class="comment">% if not a structure (or doesn't exist),</span>
+0022             globalGUIPairs=[];            <span class="comment">% make it</span>
+0023         <span class="keyword">end</span>
+0024         <span class="keyword">if</span> ~isfield(globalGUIPairs, topName)    <span class="comment">% if field named topName, make it, and put guiName in it</span>
+0025             globalGUIPairs=setfield(globalGUIPairs, topName, {guiName});
+0026             <span class="keyword">return</span>
+0027         <span class="keyword">end</span>
+0028         <span class="keyword">if</span> ~any(strcmp(<a href="getGuiOfGlobal.html" class="code" title="function out=getGuiOfGlobal(globalName)">getGuiOfGlobal</a>(globalName), {guiName}))    <span class="comment">% if field is there, add guiName to cell array</span>
+0029             globalGUIPairs=setfield(globalGUIPairs, topName, [getfield(globalGUIPairs, topName), {guiName}]);    
+0030         <span class="keyword">end</span>
+0031     <span class="keyword">else</span>                                <span class="comment">% we are dealing with the subfield of a global structure. Same logic as above.</span>
+0032         <span class="keyword">if</span> ~eval([<span class="string">'isfield('</span> structName <span class="string">', ''globalGUIPairs'');'</span>])
+0033             eval([structName <span class="string">'.globalGUIPairs=[];'</span>]);
+0034         <span class="keyword">end</span>
+0035         <span class="keyword">if</span> ~eval([<span class="string">'isfield('</span> structName <span class="string">'.globalGUIPairs, '''</span> fieldName <span class="string">''');'</span>])
+0036             eval([structName <span class="string">'.globalGUIPairs.'</span> fieldName <span class="string">'={'''</span> guiName <span class="string">'''};'</span>]);
+0037             <span class="keyword">return</span>
+0038         <span class="keyword">end</span>
+0039         <span class="keyword">if</span> ~any(strcmp(<a href="getGuiOfGlobal.html" class="code" title="function out=getGuiOfGlobal(globalName)">getGuiOfGlobal</a>(globalName), {guiName}))
+0040             eval([structName <span class="string">'.globalGUIPairs.'</span> fieldName <span class="string">'=['</span> structName <span class="string">'.globalGUIPairs.'</span> fieldName <span class="string">', {'''</span> guiName <span class="string">'''}];'</span>]);    
+0041         <span class="keyword">end</span>
+0042     <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

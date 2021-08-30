@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of setupInputChannels</title>
+  <meta name="keywords" content="setupInputChannels">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Imaging</a> &gt; <a href="../index.html">io</a> &gt; <a href="index.html">scanFieldControl</a> &gt; setupInputChannels.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\io\scanFieldControl&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>setupInputChannels
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function setupInputChannels </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Imaging/io/ad_da/selectNumberOfStripes.html" class="code" title="function selectNumberOfStripes; % Function that selects the number of stripes appropriate for the given image size.">selectNumberOfStripes</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="applyImagingInputParams.html" class="code" title="function applyImagingInputParams">applyImagingInputParams</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function setupInputChannels</a>
+0002     <span class="keyword">global</span> state
+0003     
+0004     <span class="keyword">global</span> focusInput grabInput
+0005     <span class="comment">% delete active channels</span>
+0006     delete(get(focusInput, <span class="string">'Channel'</span>));
+0007     delete(get(grabInput, <span class="string">'Channel'</span>));
+0008     delete(get(state.daq.pmtOffsetInput, <span class="string">'Channel'</span>));
+0009     
+0010     <span class="keyword">if</span> state.acq.dualLaserMode==1 <span class="comment">% if the lasers are on simulataneously then nothing special</span>
+0011         sampleFactor=1;
+0012     <span class="keyword">elseif</span> state.acq.dualLaserMode==2
+0013         sampleFactor=2;    <span class="comment">% if they are alternating, then double the number of acqs before trigger the trigger function</span>
+0014     <span class="keyword">else</span>
+0015         disp(<span class="string">'    setupInputChannels needs more for lasermodes'</span>);
+0016     <span class="keyword">end</span>
+0017     <span class="comment">% add channels that are wanted but not active</span>
+0018     
+0019     <span class="keyword">for</span> channelCounter=1:state.init.maximumNumberOfInputChannels
+0020         <span class="keyword">if</span> getfield(state.acq, [<span class="string">'acquiringChannel'</span> num2str(channelCounter)]) 
+0021             channel=addchannel(focusInput, channelCounter-1);
+0022             channel.InputRange = [-10 10];
+0023             channel.SensorRange = [-10 10];
+0024             channel.UnitsRange = [-10 10];
+0025             channel.Coupling=<span class="string">'DC'</span>;
+0026             channel=addchannel(grabInput, channelCounter-1);
+0027             channel.InputRange = [-10 10];
+0028             channel.SensorRange = [-10 10];
+0029             channel.UnitsRange = [-10 10];
+0030             channel.Coupling=<span class="string">'DC'</span>;
+0031             channel=addchannel(state.daq.pmtOffsetInput, channelCounter-1);
+0032             channel.InputRange = [-10 10];
+0033             channel.SensorRange = [-10 10];
+0034             channel.UnitsRange = [-10 10];
+0035             channel.Coupling=<span class="string">'DC'</span>;
+0036         <span class="keyword">end</span>
+0037     <span class="keyword">end</span>
+0038     
+0039     <a href="../../../Imaging/io/ad_da/selectNumberOfStripes.html" class="code" title="function selectNumberOfStripes; % Function that selects the number of stripes appropriate for the given image size.">selectNumberOfStripes</a>;    <span class="comment">% select number of stripes based on # channels and resolution</span>
+0040     
+0041     <span class="comment">% GRAB acquisition: set up total acquisition duration</span>
+0042     actualInputRate = get(grabInput, <span class="string">'SampleRate'</span>);    
+0043     state.internal.samplesPerLine = round(actualInputRate*state.acq.msPerLine/1000);    
+0044     state.internal.samplesPerFrame = state.internal.samplesPerLine*state.acq.linesPerFrame;
+0045     
+0046     <span class="comment">% GRAB acquisition: set up action function trigger (1 per stripe)</span>
+0047     set(grabInput, <span class="string">'SamplesPerTrigger'</span>, sampleFactor*state.internal.samplesPerFrame*state.acq.numberOfFrames);
+0048     set(grabInput, <span class="string">'SamplesAcquiredFcnCount'</span>, sampleFactor*state.internal.samplesPerFrame/state.internal.numberOfStripes); 
+0049 
+0050     <span class="comment">% FOCUS acquisition: set up total acquisition duration</span>
+0051     actualInputRate = get(focusInput, <span class="string">'SampleRate'</span>);
+0052     state.internal.samplesPerStripe = sampleFactor*state.internal.samplesPerLine*state.acq.linesPerFrame/state.internal.numberOfStripes;          
+0053     set(focusInput, <span class="string">'SamplesPerTrigger'</span>, <span class="keyword">...</span>
+0054         state.internal.samplesPerStripe*state.internal.numberOfStripes); <span class="comment">% 1 frame per trigger *state.internal.numberOfFocusFrames);</span>
+0055     set(focusInput, <span class="string">'TriggerRepeat'</span>, state.internal.numberOfFocusFrames)
+0056     
+0057     <span class="comment">% FOCUS acquisition: set up action function trigger (1 per stripe)</span>
+0058     set(focusInput, <span class="string">'SamplesAcquiredFcnCount'</span>, state.internal.samplesPerStripe); 
+0059     
+0060     <span class="comment">% PMT Offset: set up total acquisition duration</span>
+0061     actualInputRate = get(state.daq.pmtOffsetInput, <span class="string">'SampleRate'</span>);
+0062     totalSamplesInputOffsets = 50*state.acq.samplesAcquiredPerLine;        <span class="comment">% acquire 50 lines of Data</span>
+0063     set(state.daq.pmtOffsetInput, <span class="string">'SamplesPerTrigger'</span>, totalSamplesInputOffsets);
+0064</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

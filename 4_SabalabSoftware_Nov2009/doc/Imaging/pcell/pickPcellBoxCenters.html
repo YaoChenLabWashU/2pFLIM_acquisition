@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of pickPcellBoxCenters</title>
+  <meta name="keywords" content="pickPcellBoxCenters">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Imaging</a> &gt; <a href="index.html">pcell</a> &gt; pickPcellBoxCenters.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\pcell&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>pickPcellBoxCenters
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function pickPcellBoxCenters(invert) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../Imaging/FluoProcessing/extractMaxFromStack.html" class="code" title="function [maxImage, maxIndex]=extractMaxFromStack(channel, xb, yb)">extractMaxFromStack</a>	</li><li><a href="../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>	This function sets the status field in mainControls.</li><li><a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>	given the name of a global variable, find and update the GUI that contains it</li><li><a href="../../Imaging/guis/siSelectionChannelToFront.html" class="code" title="function siSelectionChannelToFront">siSelectionChannelToFront</a>	</li><li><a href="../../Imaging/io/applyChangesToOutput.html" class="code" title="function applyChangesToOutput(force)">applyChangesToOutput</a>	</li><li><a href="../../Imaging/io/scanFieldControl/mode.html" class="code" title="function out=mode(data)">mode</a>	</li><li><a href="../../Imaging/io/scanFieldControl/settingsManager.html" class="code" title="function varargout=settingsManager(varargin)">settingsManager</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../Imaging/io/stackAndBlast.html" class="code" title="function stackAndBlast">stackAndBlast</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function pickPcellBoxCenters(invert)</a>
+0002     <span class="keyword">if</span> nargin&lt;1
+0003         invert=0;
+0004     <span class="keyword">end</span>
+0005     
+0006     <span class="keyword">global</span> state 
+0007      pixWidth=state.pcell.boxSize; <span class="comment">% default is 10</span>
+0008 <span class="comment">%      pixWidth=10;     % 6</span>
+0009 
+0010     <a href="../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Click spines'</span>);
+0011     <a href="../../Imaging/guis/siSelectionChannelToFront.html" class="code" title="function siSelectionChannelToFront">siSelectionChannelToFront</a>
+0012     
+0013     <span class="keyword">try</span>
+0014         [xc,yc]=ginput;
+0015         xc=round(xc);
+0016         yc=round(yc);
+0017         
+0018         <span class="keyword">if</span> length(xc)&lt;1
+0019             <span class="keyword">return</span>
+0020         <span class="keyword">end</span>
+0021         
+0022         state.pcell.boxNumber=1;
+0023         <a href="../../Imaging/io/scanFieldControl/settingsManager.html" class="code" title="function varargout=settingsManager(varargin)">settingsManager</a>(<span class="string">'recall'</span>, <span class="string">'pcellBox'</span>, state.pcell.boxNumber);
+0024         <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.pcell.boxNumber'</span>);
+0025 
+0026         laserPower1=state.pcell.boxPowerLevel1;
+0027         laserPower2=state.pcell.boxPowerLevel2;
+0028         
+0029         disp([num2str(length(xc)) <span class="string">' box centers picked'</span>])
+0030         disp([<span class="string">'Using box size state.pcell.boxSize = '</span> num2str(pixWidth)]);
+0031         
+0032         <span class="keyword">for</span> counter=1:length(xc)
+0033             state.pcell.boxNumber=counter;
+0034             <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.pcell.boxNumber'</span>);
+0035             x=[max(xc(state.pcell.boxNumber)-pixWidth,1) min(xc(state.pcell.boxNumber)+pixWidth, state.acq.pixelsPerLine)];         
+0036             y=[max(yc(state.pcell.boxNumber)-pixWidth,1) min(yc(state.pcell.boxNumber)+pixWidth, state.acq.linesPerFrame)];
+0037                 
+0038             state.pcell.boxPowerLevel1=laserPower1;
+0039             state.pcell.boxPowerLevel2=laserPower2;
+0040             state.pcell.boxActiveStatus=1;
+0041             state.pcell.boxFrameNumber=1;
+0042     
+0043             [maxImage, maxIndex]=<a href="../../Imaging/FluoProcessing/extractMaxFromStack.html" class="code" title="function [maxImage, maxIndex]=extractMaxFromStack(channel, xb, yb)">extractMaxFromStack</a>(state.internal.selectionChannel, x, y);
+0044             <span class="keyword">if</span> ~invert
+0045                 state.pcell.boxSliceNumber=<a href="../../Imaging/io/scanFieldControl/mode.html" class="code" title="function out=mode(data)">mode</a>(maxIndex);
+0046             <span class="keyword">else</span>
+0047                 state.pcell.boxSliceNumber=0+state.acq.numberOfZSlices-<a href="../../Imaging/io/scanFieldControl/mode.html" class="code" title="function out=mode(data)">mode</a>(maxIndex)+ state.internal.blastSliceOffset; <span class="comment">%default Offset is 0</span>
+0048                 disp([<span class="string">'state.pcell.boxSliceNumber= '</span> num2str(state.pcell.boxSliceNumber)]);
+0049             <span class="keyword">end</span>
+0050             disp([counter state.pcell.boxSliceNumber]);
+0051             <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.pcell.boxSliceNumber'</span>);
+0052             
+0053             state.pcell.boxStartX=x(1);
+0054             state.pcell.boxStartY=y(1);
+0055             state.pcell.boxEndX=x(2);
+0056             state.pcell.boxEndY=y(2);
+0057         
+0058             state.pcell.boxStartX
+0059             <a href="../../Imaging/io/scanFieldControl/settingsManager.html" class="code" title="function varargout=settingsManager(varargin)">settingsManager</a>(<span class="string">'store'</span>, <span class="string">'pcellBox'</span>, state.pcell.boxNumber);
+0060             <a href="../../Imaging/io/scanFieldControl/settingsManager.html" class="code" title="function varargout=settingsManager(varargin)">settingsManager</a>(<span class="string">'extractval'</span>, <span class="string">'pcellBox'</span>, state.pcell.boxNumber, <span class="string">'state.pcell.boxStartX'</span>)
+0061         <span class="keyword">end</span>
+0062 
+0063         setLength=<a href="../../Imaging/io/scanFieldControl/settingsManager.html" class="code" title="function varargout=settingsManager(varargin)">settingsManager</a>(<span class="string">'getsetlength'</span>, <span class="string">'pcellBox'</span>);
+0064         <span class="keyword">if</span> length(xc)&lt;setLength
+0065             <span class="keyword">for</span> counter=length(xc)+1:setLength
+0066                 state.pcell.boxActiveStatus=0;
+0067                 <a href="../../Imaging/io/scanFieldControl/settingsManager.html" class="code" title="function varargout=settingsManager(varargin)">settingsManager</a>(<span class="string">'storeone'</span>, <span class="string">'pcellBox'</span>, counter, <span class="string">'state.pcell.boxActiveStatus'</span>);
+0068             <span class="keyword">end</span>
+0069         <span class="keyword">end</span>
+0070 
+0071         state.pcell.boxNumber=1;
+0072         <a href="../../Imaging/guis/gui_handling/updateGUIByGlobal.html" class="code" title="function updateGUIByGlobal(globalName)">updateGUIByGlobal</a>(<span class="string">'state.pcell.boxNumber'</span>);
+0073         <a href="../../Imaging/io/scanFieldControl/settingsManager.html" class="code" title="function varargout=settingsManager(varargin)">settingsManager</a>(<span class="string">'recall'</span>, <span class="string">'pcellBox'</span>, state.pcell.boxNumber);
+0074 
+0075         state.internal.needNewPcellPowerOutput=1;
+0076         <a href="../../Imaging/io/applyChangesToOutput.html" class="code" title="function applyChangesToOutput(force)">applyChangesToOutput</a>;
+0077         
+0078         <a href="../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Done'</span>);
+0079     <span class="keyword">catch</span>
+0080         disp([<span class="string">'*** pickPcellBoxCenters : '</span> lasterr])
+0081         state.pcell.boxNumber=1;
+0082         <a href="../../Imaging/io/scanFieldControl/settingsManager.html" class="code" title="function varargout=settingsManager(varargin)">settingsManager</a>(<span class="string">'recall'</span>, <span class="string">'pcellBox'</span>, state.pcell.boxNumber);
+0083         <a href="../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'Error'</span>);
+0084 
+0085     <span class="keyword">end</span>
+0086</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of runLineScanAnalysis</title>
+  <meta name="keywords" content="runLineScanAnalysis">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">Imaging</a> &gt; <a href="index.html">FluoProcessing</a> &gt; runLineScanAnalysis.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\FluoProcessing&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>runLineScanAnalysis
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function founderr=runLineScanAnalysis </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="calcLineScan.html" class="code" title="function out=calcLineScan(im, startLine, stopLine, filterPoint)">calcLineScan</a>	</li><li><a href="findPeaks.html" class="code" title="function [peakDefs, peakY]=findPeaks(data, nPeaks, offset, hwPer)">findPeaks</a>	</li><li><a href="roiFluor.html" class="code" title="function out=roiFluor(imData, roiDefs, offset)">roiFluor</a>	</li><li><a href="../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>	This function sets the status field in mainControls.</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="runFluorAnalysis.html" class="code" title="function runFluorAnalysis(acqNumber)">runFluorAnalysis</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function founderr=runLineScanAnalysis</a>
+0002     <span class="keyword">global</span> state imageData
+0003     
+0004     founderr=0;
+0005     <span class="comment">% calculate line scan</span>
+0006     
+0007     state.analysis.deltax = state.acq.msPerLine;
+0008     
+0009 
+0010     analysisData=cell(1, state.init.maximumNumberOfInputChannels+10);
+0011     
+0012     analyzedChannels=zeros(1,state.init.maximumNumberOfInputChannels);
+0013     <span class="keyword">for</span> channel=1:state.init.maximumNumberOfInputChannels
+0014         <span class="keyword">if</span> ~isempty(imageData{channel}) &amp;&amp; getfield(state.analysis, [<span class="string">'anaChannel'</span> num2str(channel)])
+0015             analyzedChannels(channel)=1;
+0016             <span class="keyword">if</span> ndims(imageData{channel})==3
+0017                 tempData=permute(imageData{channel}, [2 1 3]);
+0018                 analysisData{channel} = tempData(:,:)';
+0019                 <span class="keyword">if</span> state.acq.dualLaserMode==2    <span class="comment">% we are acquiring with alternating    lines</span>
+0020                     analysisData{channel+10} = permute(imageData{channel+10}, [2 1 3])';        
+0021                 <span class="keyword">end</span>
+0022             <span class="keyword">else</span>
+0023                 analysisData{channel} = imageData{channel};
+0024                 <span class="keyword">if</span> state.acq.dualLaserMode==2    <span class="comment">% we are acquiring with alternating    lines</span>
+0025                     analysisData{channel+10} = imageData{channel+10};
+0026                 <span class="keyword">end</span>
+0027             <span class="keyword">end</span>
+0028         <span class="keyword">end</span>
+0029     <span class="keyword">end</span>
+0030     
+0031     analyzedChannels=find(analyzedChannels);
+0032     <span class="keyword">if</span> state.acq.dualLaserMode==2
+0033         analyzedChannels=[analyzedChannels analyzedChannels+10];
+0034     <span class="keyword">end</span>
+0035 
+0036     state.analysis.analyzedChannels=analyzedChannels;
+0037     state.analysis.avgLineScan=<a href="calcLineScan.html" class="code" title="function out=calcLineScan(im, startLine, stopLine, filterPoint)">calcLineScan</a>(<span class="keyword">...</span>
+0038         analysisData{state.analysis.avgLineScanChannel}, <span class="keyword">...</span>
+0039         state.analysis.avgLineScanStart, state.analysis.avgLineScanEnd, 1);    <span class="comment">% set smoothing to 1</span>
+0040 
+0041     setWave(<span class="string">'avgLineScanWave'</span>, <span class="string">'data'</span>, state.analysis.avgLineScan);
+0042     
+0043     <span class="comment">%     determine ROIs</span>
+0044     offset=getfield(state.acq, [<span class="string">'pmtOffsetChannel'</span> num2str(state.analysis.avgLineScanChannel)])*state.acq.binFactor;
+0045     offsetAmp=offset;
+0046     <span class="keyword">if</span> getfield(state.acq, [<span class="string">'pmtOffsetAutoSubtractChannel'</span> num2str(state.analysis.avgLineScanChannel)])
+0047         offset=0;
+0048     <span class="keyword">end</span>
+0049     setWave(<span class="string">'offsetWave'</span>, <span class="string">'data'</span>, repmat(offset, 1, evalin(<span class="string">'base'</span>, <span class="string">'length(avgLineScanWave)'</span>)));
+0050     
+0051     <span class="keyword">if</span> state.analysis.autosetROI
+0052         [roix, roiy]=<a href="findPeaks.html" class="code" title="function [peakDefs, peakY]=findPeaks(data, nPeaks, offset, hwPer)">findPeaks</a>(state.analysis.avgLineScan, state.analysis.numberOfROI, offset, state.analysis.roiWidth); 
+0053         <span class="comment">%why did I have offset+offsetAmp/5?</span>
+0054             
+0055         state.analysis.roiDefs = roix;
+0056     <span class="keyword">else</span>
+0057         <span class="keyword">for</span> counter=1:state.analysis.numberOfROI
+0058             roix = state.analysis.roiDefs(:,1:2);
+0059             roiy = state.analysis.avgLineScan(roix);
+0060         <span class="keyword">end</span>
+0061     <span class="keyword">end</span>
+0062     
+0063     <span class="keyword">if</span> (size(roix, 1) &lt; state.analysis.numberOfROI) || (size(roix, 2) ~= 2)
+0064         founderr=1;
+0065         disp(<span class="string">'*** Need to select proper number of 1D ROIs or autoset could not find sufficient ROIs ***'</span>);
+0066         <a href="../../Imaging/guis/gui_handling/setStatusString.html" class="code" title="function setStatusString(st)">setStatusString</a>(<span class="string">'INCORRECT 1D ROIs'</span>);
+0067         clear analysisData
+0068         <span class="keyword">return</span>
+0069     <span class="keyword">end</span>
+0070 
+0071     <span class="keyword">for</span> counter=1:state.analysis.numberOfROI
+0072         <span class="keyword">if</span> counter&lt;=size(roix, 1)
+0073             <span class="keyword">if</span> ~iswave([<span class="string">'roi_'</span> num2str(counter) <span class="string">'x'</span>])
+0074                 wave([<span class="string">'roi_'</span> num2str(counter) <span class="string">'x'</span>], roix(counter, :)-1);
+0075             <span class="keyword">else</span>
+0076                 setWave([<span class="string">'roi_'</span> num2str(counter) <span class="string">'x'</span>], <span class="string">'data'</span>, roix(counter, :)-1);
+0077             <span class="keyword">end</span>
+0078                 
+0079             <span class="keyword">if</span> ~iswave([<span class="string">'roi_'</span> num2str(counter) <span class="string">'y'</span>])
+0080                 wave([<span class="string">'roi_'</span> num2str(counter) <span class="string">'y'</span>], roiy(counter, :));
+0081             <span class="keyword">else</span>
+0082                 setWave([<span class="string">'roi_'</span> num2str(counter) <span class="string">'y'</span>], <span class="string">'data'</span>, roiy(counter, :));
+0083             <span class="keyword">end</span>
+0084         <span class="keyword">else</span>
+0085             <span class="keyword">if</span> iswave([<span class="string">'roi_'</span> num2str(counter) <span class="string">'x'</span>])
+0086                 setWave([<span class="string">'roi_'</span> num2str(counter) <span class="string">'x'</span>], <span class="string">'data'</span>, []);
+0087             <span class="keyword">end</span>                
+0088             <span class="keyword">if</span> iswave([<span class="string">'roi_'</span> num2str(counter) <span class="string">'y'</span>])
+0089                 setWave([<span class="string">'roi_'</span> num2str(counter) <span class="string">'y'</span>], <span class="string">'data'</span>, []);
+0090             <span class="keyword">end</span>                
+0091         <span class="keyword">end</span>            
+0092     <span class="keyword">end</span>
+0093     
+0094     counter=state.analysis.numberOfROI+1;
+0095     <span class="keyword">while</span> iswave([<span class="string">'roi_'</span> num2str(counter) <span class="string">'x'</span>])
+0096         evalin(<span class="string">'base'</span>, [<span class="string">'roi_'</span> num2str(counter) <span class="string">'x.data=[];'</span>]);
+0097         <span class="keyword">if</span> iswave([<span class="string">'roi_'</span> num2str(counter) <span class="string">'y'</span>])
+0098             evalin(<span class="string">'base'</span>, [<span class="string">'roi_'</span> num2str(counter) <span class="string">'y.data=[];'</span>]);
+0099         <span class="keyword">end</span>                
+0100         counter=counter+1;
+0101     <span class="keyword">end</span>
+0102 
+0103     <span class="comment">%     get fluorescence profile</span>
+0104     state.analysis.roiFluorData=cell(1, state.init.maximumNumberOfInputChannels+10);
+0105     
+0106     numLines=[];
+0107      <span class="keyword">for</span> channel=analyzedChannels
+0108         offset=0;
+0109         rawChannel=mod(channel, 10);
+0110         <span class="keyword">if</span> getfield(state.analysis, [<span class="string">'autosubOffset'</span> num2str(rawChannel)]) <span class="keyword">...</span>
+0111                 &amp;&amp; ~getfield(state.acq, [<span class="string">'pmtOffsetAutoSubtractChannel'</span> num2str(rawChannel)])
+0112             offset=getfield(state.acq, [<span class="string">'pmtOffsetChannel'</span> num2str(rawChannel)])*state.acq.binFactor;
+0113         <span class="keyword">end</span>
+0114 
+0115         state.analysis.roiFluorData{channel} = <span class="keyword">...</span>
+0116             <a href="roiFluor.html" class="code" title="function out=roiFluor(imData, roiDefs, offset)">roiFluor</a>(analysisData{channel}, state.analysis.roiDefs, offset);
+0117     <span class="keyword">end</span>
+0118     
+0119     clear analysisData
+0120</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

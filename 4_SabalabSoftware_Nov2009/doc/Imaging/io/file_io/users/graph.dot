@@ -1,0 +1,9 @@
+/* Created by mdot for Matlab */
+digraph m2html {
+  openusr -> saveUserSettingsPath;
+
+  openusr [URL="openusr.html"];
+  recordWindowPositions [URL="recordWindowPositions.html"];
+  saveUserSettingsPath [URL="saveUserSettingsPath.html"];
+  setUserSettingsPath [URL="setUserSettingsPath.html"];
+}

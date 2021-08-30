@@ -1,0 +1,252 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of multiscanGUI</title>
+  <meta name="keywords" content="multiscanGUI">
+  <meta name="description" content="MULTISCANGUI M-file for multiscanGUI.fig">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Imaging</a> &gt; <a href="../index.html">io</a> &gt; <a href="index.html">scanFieldControl</a> &gt; multiscanGUI.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\io\scanFieldControl&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>multiscanGUI
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>MULTISCANGUI M-file for multiscanGUI.fig</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function varargout = multiscanGUI(varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> MULTISCANGUI M-file for multiscanGUI.fig
+      MULTISCANGUI, by itself, creates a new MULTISCANGUI or raises the existing
+      singleton*.
+
+      H = MULTISCANGUI returns the handle to a new MULTISCANGUI or the handle to
+      the existing singleton*.
+
+      MULTISCANGUI('CALLBACK',hObject,eventData,handles,...) calls the local
+      function named CALLBACK in MULTISCANGUI.M with the given input arguments.
+
+      MULTISCANGUI('Property','Value',...) creates a new MULTISCANGUI or raises the
+      existing singleton*.  Starting from the left, property value pairs are
+      applied to the GUI before multiscanGUI_OpeningFunction gets called.  An
+      unrecognized property name or invalid value makes property application
+      stop.  All inputs are passed to multiscanGUI_OpeningFcn via varargin.
+
+      *See GUI Options on GUIDE's Tools menu.  Choose &quot;GUI allows only one
+      instance to run (singleton)&quot;.
+
+ See also: GUIDE, GUIDATA, GUIHANDLES</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function multiscanGUI_OpeningFcn(hObject, eventdata, handles, varargin)</a></li><li><a href="#_sub2" class="code">function varargout = multiscanGUI_OutputFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub3" class="code">function edit1_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub4" class="code">function edit1_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub5" class="code">function cal_pz_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub6" class="code">function defcycle_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub7" class="code">function savescan_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub8" class="code">function edit2_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub9" class="code">function edit2_CreateFcn(hObject, eventdata, handles)</a></li><li><a href="#_sub10" class="code">function pushbutton5_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub11" class="code">function pushbutton6_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub12" class="code">function owrlast_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub13" class="code">function reset_coord_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub14" class="code">function regrab_Callback(hObject, eventdata, handles)</a></li><li><a href="#_sub15" class="code">function setref_Callback(hObject, eventdata, handles)</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function varargout = multiscanGUI(varargin)</a>
+0002 <span class="comment">% MULTISCANGUI M-file for multiscanGUI.fig</span>
+0003 <span class="comment">%      MULTISCANGUI, by itself, creates a new MULTISCANGUI or raises the existing</span>
+0004 <span class="comment">%      singleton*.</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">%      H = MULTISCANGUI returns the handle to a new MULTISCANGUI or the handle to</span>
+0007 <span class="comment">%      the existing singleton*.</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">%      MULTISCANGUI('CALLBACK',hObject,eventData,handles,...) calls the local</span>
+0010 <span class="comment">%      function named CALLBACK in MULTISCANGUI.M with the given input arguments.</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">%      MULTISCANGUI('Property','Value',...) creates a new MULTISCANGUI or raises the</span>
+0013 <span class="comment">%      existing singleton*.  Starting from the left, property value pairs are</span>
+0014 <span class="comment">%      applied to the GUI before multiscanGUI_OpeningFunction gets called.  An</span>
+0015 <span class="comment">%      unrecognized property name or invalid value makes property application</span>
+0016 <span class="comment">%      stop.  All inputs are passed to multiscanGUI_OpeningFcn via varargin.</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">%      *See GUI Options on GUIDE's Tools menu.  Choose &quot;GUI allows only one</span>
+0019 <span class="comment">%      instance to run (singleton)&quot;.</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">% See also: GUIDE, GUIDATA, GUIHANDLES</span>
+0022 
+0023 <span class="comment">% Edit the above text to modify the response to help multiscanGUI</span>
+0024 
+0025 <span class="comment">% Last Modified by GUIDE v2.5 18-Apr-2005 16:34:03</span>
+0026 
+0027 <span class="comment">% Begin initialization code - DO NOT EDIT</span>
+0028 gui_Singleton = 1;
+0029 gui_State = struct(<span class="string">'gui_Name'</span>,       mfilename, <span class="keyword">...</span>
+0030                    <span class="string">'gui_Singleton'</span>,  gui_Singleton, <span class="keyword">...</span>
+0031                    <span class="string">'gui_OpeningFcn'</span>, @<a href="#_sub1" class="code" title="subfunction multiscanGUI_OpeningFcn(hObject, eventdata, handles, varargin)">multiscanGUI_OpeningFcn</a>, <span class="keyword">...</span>
+0032                    <span class="string">'gui_OutputFcn'</span>,  @<a href="#_sub2" class="code" title="subfunction varargout = multiscanGUI_OutputFcn(hObject, eventdata, handles)">multiscanGUI_OutputFcn</a>, <span class="keyword">...</span>
+0033                    <span class="string">'gui_LayoutFcn'</span>,  [] , <span class="keyword">...</span>
+0034                    <span class="string">'gui_Callback'</span>,   []);
+0035 <span class="keyword">if</span> nargin &amp;&amp; ischar(varargin{1})
+0036     gui_State.gui_Callback = str2func(varargin{1});
+0037 <span class="keyword">end</span>
+0038 
+0039 <span class="keyword">if</span> nargout
+0040     [varargout{1:nargout}] = gui_mainfcn(gui_State, varargin{:});
+0041 <span class="keyword">else</span>
+0042     gui_mainfcn(gui_State, varargin{:});
+0043 <span class="keyword">end</span>
+0044 <span class="comment">% End initialization code - DO NOT EDIT</span>
+0045 
+0046 
+0047 <span class="comment">% --- Executes just before multiscanGUI is made visible.</span>
+0048 <a name="_sub1" href="#_subfunctions" class="code">function multiscanGUI_OpeningFcn(hObject, eventdata, handles, varargin)</a>
+0049 <span class="comment">% This function has no output args, see OutputFcn.</span>
+0050 <span class="comment">% hObject    handle to figure</span>
+0051 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0052 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0053 <span class="comment">% varargin   command line arguments to multiscanGUI (see VARARGIN)</span>
+0054 
+0055 <span class="comment">% Choose default command line output for multiscanGUI</span>
+0056 handles.output = hObject;
+0057 
+0058 <span class="comment">% Update handles structure</span>
+0059 guidata(hObject, handles);
+0060 
+0061 <span class="comment">% UIWAIT makes multiscanGUI wait for user response (see UIRESUME)</span>
+0062 <span class="comment">% uiwait(handles.figure1);</span>
+0063 
+0064 
+0065 <span class="comment">% --- Outputs from this function are returned to the command line.</span>
+0066 <a name="_sub2" href="#_subfunctions" class="code">function varargout = multiscanGUI_OutputFcn(hObject, eventdata, handles) </a>
+0067 <span class="comment">% varargout  cell array for returning output args (see VARARGOUT);</span>
+0068 <span class="comment">% hObject    handle to figure</span>
+0069 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0070 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0071 
+0072 <span class="comment">% Get default command line output from handles structure</span>
+0073 varargout{1} = handles.output;
+0074 
+0075 
+0076 
+0077 <a name="_sub3" href="#_subfunctions" class="code">function edit1_Callback(hObject, eventdata, handles)</a>
+0078 <span class="comment">% hObject    handle to edit1 (see GCBO)</span>
+0079 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0080 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0081 
+0082 <span class="comment">% Hints: get(hObject,'String') returns contents of edit1 as text</span>
+0083 <span class="comment">%        str2double(get(hObject,'String')) returns contents of edit1 as a double</span>
+0084 
+0085 
+0086 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0087 <a name="_sub4" href="#_subfunctions" class="code">function edit1_CreateFcn(hObject, eventdata, handles)</a>
+0088 <span class="comment">% hObject    handle to edit1 (see GCBO)</span>
+0089 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0090 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0091 
+0092 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0093 <span class="comment">%       See ISPC and COMPUTER.</span>
+0094 <span class="keyword">if</span> ispc &amp;&amp; isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+0095     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0096 <span class="keyword">end</span>
+0097 
+0098 
+0099 <span class="comment">% --- Executes on button press in cal_pz.</span>
+0100 <a name="_sub5" href="#_subfunctions" class="code">function cal_pz_Callback(hObject, eventdata, handles)</a>
+0101 <span class="comment">% hObject    handle to cal_pz (see GCBO)</span>
+0102 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0103 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0104 
+0105 
+0106 <span class="comment">% --- Executes on button press in defcycle.</span>
+0107 <a name="_sub6" href="#_subfunctions" class="code">function defcycle_Callback(hObject, eventdata, handles)</a>
+0108 <span class="comment">% hObject    handle to defcycle (see GCBO)</span>
+0109 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0110 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0111 
+0112 
+0113 <span class="comment">% --- Executes on button press in savescan.</span>
+0114 <a name="_sub7" href="#_subfunctions" class="code">function savescan_Callback(hObject, eventdata, handles)</a>
+0115 <span class="comment">% hObject    handle to savescan (see GCBO)</span>
+0116 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0117 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0118 
+0119 
+0120 
+0121 <a name="_sub8" href="#_subfunctions" class="code">function edit2_Callback(hObject, eventdata, handles)</a>
+0122 <span class="comment">% hObject    handle to edit2 (see GCBO)</span>
+0123 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0124 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0125 
+0126 <span class="comment">% Hints: get(hObject,'String') returns contents of edit2 as text</span>
+0127 <span class="comment">%        str2double(get(hObject,'String')) returns contents of edit2 as a double</span>
+0128 
+0129 
+0130 <span class="comment">% --- Executes during object creation, after setting all properties.</span>
+0131 <a name="_sub9" href="#_subfunctions" class="code">function edit2_CreateFcn(hObject, eventdata, handles)</a>
+0132 <span class="comment">% hObject    handle to edit2 (see GCBO)</span>
+0133 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0134 <span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+0135 
+0136 <span class="comment">% Hint: edit controls usually have a white background on Windows.</span>
+0137 <span class="comment">%       See ISPC and COMPUTER.</span>
+0138 <span class="keyword">if</span> ispc &amp;&amp; isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+0139     set(hObject,<span class="string">'BackgroundColor'</span>,<span class="string">'white'</span>);
+0140 <span class="keyword">end</span>
+0141 
+0142 
+0143 <span class="comment">% --- Executes on button press in pushbutton5.</span>
+0144 <a name="_sub10" href="#_subfunctions" class="code">function pushbutton5_Callback(hObject, eventdata, handles)</a>
+0145 <span class="comment">% hObject    handle to pushbutton5 (see GCBO)</span>
+0146 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0147 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0148 
+0149 
+0150 <span class="comment">% --- Executes on button press in pushbutton6.</span>
+0151 <a name="_sub11" href="#_subfunctions" class="code">function pushbutton6_Callback(hObject, eventdata, handles)</a>
+0152 <span class="comment">% hObject    handle to pushbutton6 (see GCBO)</span>
+0153 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0154 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0155 
+0156 
+0157 <span class="comment">% --- Executes on button press in owrlast.</span>
+0158 <a name="_sub12" href="#_subfunctions" class="code">function owrlast_Callback(hObject, eventdata, handles)</a>
+0159 <span class="comment">% hObject    handle to owrlast (see GCBO)</span>
+0160 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0161 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0162 
+0163 
+0164 <span class="comment">% --- Executes on button press in reset_coord.</span>
+0165 <a name="_sub13" href="#_subfunctions" class="code">function reset_coord_Callback(hObject, eventdata, handles)</a>
+0166 <span class="comment">% hObject    handle to reset_coord (see GCBO)</span>
+0167 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0168 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0169 
+0170 
+0171 <span class="comment">% --- Executes on button press in regrab.</span>
+0172 <a name="_sub14" href="#_subfunctions" class="code">function regrab_Callback(hObject, eventdata, handles)</a>
+0173 <span class="comment">% hObject    handle to regrab (see GCBO)</span>
+0174 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0175 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0176 
+0177 
+0178 <span class="comment">% --- Executes on button press in setref.</span>
+0179 <a name="_sub15" href="#_subfunctions" class="code">function setref_Callback(hObject, eventdata, handles)</a>
+0180 <span class="comment">% hObject    handle to setref (see GCBO)</span>
+0181 <span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+0182 <span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+0183 
+0184</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

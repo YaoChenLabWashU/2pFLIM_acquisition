@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of convertToIgor</title>
+  <meta name="keywords" content="convertToIgor">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Imaging</a> &gt; <a href="../index.html">io</a> &gt; <a href="index.html">scanFieldControl</a> &gt; convertToIgor.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\io\scanFieldControl&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>convertToIgor
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function convertToIgor(num) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="saveNotebooksToTxt.html" class="code" title="function saveNotebooksToTxt(counter)">saveNotebooksToTxt</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function convertToIgor(num)</a>
+0002 
+0003 <span class="keyword">global</span> state
+0004 
+0005 <span class="keyword">if</span>(nargin&lt;1)
+0006     num=state.files.fileCounter;
+0007 <span class="keyword">end</span>
+0008 
+0009 nrois=2;
+0010 nchans=2;
+0011 
+0012 num_ad=num;
+0013 num_ls=num;
+0014 
+0015 cd(state.files.savePath);
+0016 
+0017 <span class="keyword">for</span> acq=1:num
+0018       <span class="keyword">try</span>
+0019         in_name=[<span class="string">'AD0_'</span> num2str(acq)];
+0020   
+0021         evalin(<span class="string">'base'</span>, [<span class="string">'load('''</span> in_name <span class="string">''');'</span>]);
+0022 
+0023         out_name=[in_name <span class="string">'.itx'</span>];
+0024         exportWave(in_name, out_name);
+0025         killo(in_name);
+0026       <span class="keyword">catch</span>
+0027          num_ad=num_ad-1;
+0028       <span class="keyword">end</span>
+0029      <span class="keyword">try</span>
+0030         <span class="keyword">for</span> roi=1:nrois
+0031             <span class="keyword">for</span> chan=1:nchans
+0032                in_name=[<span class="string">'c'</span> num2str(chan) <span class="string">'r'</span> num2str(roi) <span class="string">'_'</span> num2str(acq)];
+0033                 evalin(<span class="string">'base'</span>, [<span class="string">'load('''</span> in_name <span class="string">''');'</span>]);
+0034         
+0035                 out_name=[in_name <span class="string">'.itx'</span>];
+0036                 exportWave(in_name, out_name);
+0037                 killo(in_name);
+0038             <span class="keyword">end</span>
+0039         <span class="keyword">end</span>
+0040     <span class="keyword">catch</span>
+0041         num_ls=num_ls-1;
+0042     <span class="keyword">end</span>
+0043 <span class="keyword">end</span>
+0044 
+0045 <span class="keyword">try</span>
+0046     load <span class="string">'mynotes'</span>
+0047 <span class="keyword">catch</span>
+0048 <span class="keyword">end</span>
+0049 <span class="keyword">try</span>
+0050     load <span class="string">'autonotes'</span>
+0051 <span class="keyword">catch</span>
+0052 <span class="keyword">end</span>
+0053 <span class="keyword">try</span>
+0054     <a href="saveNotebooksToTxt.html" class="code" title="function saveNotebooksToTxt(counter)">saveNotebooksToTxt</a>
+0055 <span class="keyword">catch</span>
+0056 <span class="keyword">end</span>
+0057 
+0058    
+0059 disp([<span class="string">'Found '</span> num2str(num_ad) <span class="string">' phys files and '</span> num2str(num_ls) <span class="string">' linescans'</span>])</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

@@ -1,0 +1,62 @@
+function genericKeyPressFcn
+global state gh
+
+% genericKeyPressFcn.m*****
+% Function that looks at the last key pressed and executes an appropriate function.
+% First gets all the current character from all the GUIs
+%
+% Written By: Thomas Pologruto and Bernardo Sabatini
+% Cold Spring Harbor Labs
+% January 30, 2001
+
+val = double(get(gcbo,'CurrentCharacter'));
+if length(val) ~= 1
+    return
+%	val = double(get(gcf, 'CurrentCharacter'));
+%	if length(val) ~= 1
+%		return
+%    end
+end
+
+if val>=49 & val<=57
+    global state
+   	turnOffMotorButtons;
+    gotoPosition(val-48);
+	turnOnMotorButtons;
+    return
+elseif any(val==[33 64 35 36 37 94 38 42 40])
+    p=find(val==[33 64 35 36 37 94 38 42 40]);
+    turnOffMotorButtons;
+    definePosition(p);
+	turnOnMotorButtons;
+    return
+end
+
+
+switch val
+	case 'z'
+	   	turnOffMotorButtons;
+		gotoZero;
+		turnOnMotorButtons;
+	case ')'
+		setStatusString('Defining (0,0,0)...');
+		turnOffMotorButtons;
+		updateMotorPosition(0);
+		state.motor.offsetX=state.motor.absXPosition;
+		state.motor.offsetY=state.motor.absYPosition;
+		state.motor.offsetZ=state.motor.absZPosition;
+		updateRelativeMotorPosition;
+		turnOnMotorButtons;
+		setStatusString('');
+
+		
+	case '0'
+		global gh
+		executeFocusCallback;
+		
+	case 'p'
+        turnOffMotorButtons;
+    	updateMotorPosition;
+    	turnOnMotorButtons;
+    otherwise
+end

@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of moveToRelativePosition</title>
+  <meta name="keywords" content="moveToRelativePosition">
+  <meta name="description" content="updateRelPos.m*****">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../../index.html">Home</a> &gt;  <a href="../../index.html">Imaging</a> &gt; <a href="../index.html">io</a> &gt; <a href="index.html">motors</a> &gt; moveToRelativePosition.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../../index.html"><img alt="<" border="0" src="../../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for Imaging\io\motors&nbsp;<img alt=">" border="0" src="../../../right.png"></a></td></tr></table>-->
+
+<h1>moveToRelativePosition
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>updateRelPos.m*****</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="box"><strong>function moveToRelativePosition(h) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> updateRelPos.m*****
+ Function that is the call back for the GUis associated with these values.
+ When they are changed on the screen, the folowing happen:
+ 1) GenericCallback updates the global state.motor.relXPosition to new desired value.
+ N.B. This is done prior to this execution.
+ 3) The absolute coordinate is defined, saved as state.motor.absXPosition, and updated.
+ 2) The motor position is updated by setXMotorPosition to this value.</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Imaging/io/motors/MP285/mp285SetVelocity.html" class="code" title="function out=mp285SetVelocity(vel, res)">mp285SetVelocity</a>	</li><li><a href="setMotorPosition.html" class="code" title="function setMotorPosition(newPos)">setMotorPosition</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../../matlabicon.gif)">
+<li><a href="../../../Imaging/guis/gui_building/motorGUI.html" class="code" title="function varargout = motorGUI(varargin)">motorGUI</a>	MOTORGUI Application M-file for motorGUI.fig</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function moveToRelativePosition(h)</a>
+0002 <span class="comment">% updateRelPos.m*****</span>
+0003 <span class="comment">% Function that is the call back for the GUis associated with these values.</span>
+0004 <span class="comment">% When they are changed on the screen, the folowing happen:</span>
+0005 <span class="comment">% 1) GenericCallback updates the global state.motor.relXPosition to new desired value.</span>
+0006     <span class="comment">% N.B. This is done prior to this execution.</span>
+0007 <span class="comment">% 3) The absolute coordinate is defined, saved as state.motor.absXPosition, and updated.</span>
+0008 <span class="comment">% 2) The motor position is updated by setXMotorPosition to this value.</span>
+0009 
+0010     <span class="keyword">global</span> state gh
+0011     state.motor.absXPosition = state.motor.relXPosition + state.motor.offsetX; <span class="comment">% Calculate absoluteX Position</span>
+0012     state.motor.absYPosition = state.motor.relYPosition + state.motor.offsetY; <span class="comment">% Calculate absoluteX Position</span>
+0013     state.motor.absZPosition = state.motor.relZPosition + state.motor.offsetZ; <span class="comment">% Calculate absoluteX Position</span>
+0014     <a href="../../../Imaging/io/motors/MP285/mp285SetVelocity.html" class="code" title="function out=mp285SetVelocity(vel, res)">mp285SetVelocity</a>(state.motor.velocityFast);
+0015     <a href="setMotorPosition.html" class="code" title="function setMotorPosition(newPos)">setMotorPosition</a>;    <span class="comment">% Sets X Motor Position to state.motor.absXPosition</span>
+0016     <a href="../../../Imaging/io/motors/MP285/mp285SetVelocity.html" class="code" title="function out=mp285SetVelocity(vel, res)">mp285SetVelocity</a>(state.motor.velocitySlow);</pre></div>
+<hr><address>Generated on Thu 19-Apr-2012 16:55:20 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>
