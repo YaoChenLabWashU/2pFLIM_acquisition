@@ -4,7 +4,7 @@ global spc gui
 % figure(gui.spc.figure.image);
 s=warning('off','all');
 for numROI=1:length(gui.gy.rois)
-    for fc=chan %(can be multiple list)
+    for fc=1:4 %(can be multiple list)%Yao: changed from fc=chan to fc=1:4 so that we update all windows on 5/4/2022.
         for type=1:2
             try
                 delete(gui.gy.rois{numROI}.obj{fc,type});
@@ -21,4 +21,4 @@ spc_calculateROIvals(0);
 warning(s);
 
 % TODO here we need to redraw all windows that depend on it
-%spc_redrawSetting;
+% spc_redrawSetting(1);
