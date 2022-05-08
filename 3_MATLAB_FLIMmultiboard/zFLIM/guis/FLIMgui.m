@@ -28,7 +28,7 @@ function varargout = FLIMgui(varargin)
 
 % Edit the above text to modify the response to help FLIMgui
 
-% Last Modified by GUIDE v2.5 19-Apr-2012 11:41:35
+% Last Modified by GUIDE v2.5 08-May-2022 12:34:13
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -630,3 +630,12 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
+
+
+% --- Executes on button press in rbC5.
+function rbC5_Callback(hObject, eventdata, handles)%added SPC1+SPC3 (rbC5) to img4sel to manage the sum of SPC channels. Yao 5/8/2022
+% hObject    handle to rbC5 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of rbC5
