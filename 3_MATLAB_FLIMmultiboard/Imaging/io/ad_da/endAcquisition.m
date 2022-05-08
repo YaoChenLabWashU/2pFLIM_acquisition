@@ -123,6 +123,11 @@ function endAcquisition
                             lastAcquiredFrame{4}=spc.projects{4}/divBy;
                             ok=1;
                         end
+                    case 5 %case 5 added for spc(1)+spc(3) (2 channels of the router); Yao 5/7/2022
+                        if bitget(state.spc.FLIMchoices(1),2)|bitget(state.spc.FLIMchoices(3),2)
+                            lastAcquiredFrame{4}=(spc.projects{1}+spc.projects{3})/divBy;
+                            ok=1;
+                        end
                 end
                 % ALWAYS STORE SOMETHING (otherwise the Imaging package
                 % complains that it has nothing to save)
