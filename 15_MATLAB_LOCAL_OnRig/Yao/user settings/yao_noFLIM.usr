@@ -1,0 +1,313 @@
+structure state
+   user=''
+   structure db
+      structure phys
+      endstructure
+      structure imaging
+      endstructure
+      structure cell
+      endstructure
+   endstructure
+   figurePath='C:\MATLAB_LOCAL\Yao\SavedFigures\'
+   structure software
+   endstructure
+   structure init
+      autoReadPMTOffsets=1
+   endstructure
+   structure daq
+   endstructure
+   structure acq
+      autoTrack=1
+      maxShift=30
+      trackerChannel=3
+      zStepSize=1
+      averaging=0
+      preStep=0.1
+      pmtOffsetChannel1=14.99
+      pmtOffsetChannel2=1.0143
+      pmtOffsetChannel3=-2.8114
+      pmtOffsetAutoSubtractChannel1=0
+      pmtOffsetAutoSubtractChannel2=0
+      pmtOffsetAutoSubtractChannel3=0
+      pmtOffsetAutoSubtractChannel4=0
+      maxMode=0
+   endstructure
+   structure internal
+      saveHeaderAsTxt=1
+      currentObjective=63
+      selectionChannel=5
+      colorPlace=[2  1  3]
+      blastSliceRange=1
+      blastSliceOffset=0
+      keepAllSlicesInMemory=0
+      highPixelValue1=500
+      lowPixelValue1=60
+      highPixelValue2=300
+      lowPixelValue2=0
+      highPixelValue3=1000
+      lowPixelValue3=-1000
+      highPixelValue4=500
+      lowPixelValue4=0
+      highPixelValue11=500
+      lowPixelValue11=0
+      highPixelValue12=500
+      lowPixelValue12=0
+      highPixelValue13=2000
+      lowPixelValue13=0
+      highPixelValue14=2000
+      lowPixelValue14=0
+   endstructure
+   structure pulses
+      pulseSetName='FLIMRigYao_pulse'
+      pulseSetPath='C:\MATLAB_LOCAL\Yao\PulsePatterns\'
+      autoSavePatterns=1
+   endstructure
+   structure files
+      autoSave=1
+      automaticOverwrite=0
+   endstructure
+   structure timer
+      analysisFunctionPath=''
+   endstructure
+   structure cycle
+      cycleName='calcium_imaging.cyc'
+      cyclePath='N:\Yao\electrophysiology\user_files\cycles\'
+   endstructure
+   structure windowPositions
+      image1_position=[41   52  366  366]
+      image2_position=[421   65  350  350]
+      image3_position=[423   65  350  350]
+      image4_position=[1497    50   350   350]
+      image11_position=[11  127  350  350]
+      image12_position=[371  127  350  350]
+      image13_position=[729  127  350  350]
+      image14_position=[709  107  350  350]
+      maxImage1_position=[411  625  350  350]
+      maxImage2_position=[789   92  350  350]
+      maxImage3_position=[719  677  350  350]
+      maxImage4_position=[709  647  350  350]
+      maxImage11_position=[411  525  350  350]
+      maxImage12_position=[743  525  350  350]
+      maxImage13_position=[719  577  350  350]
+      maxImage14_position=[709  547  350  350]
+      compositeImage_position=[35  200  350  350]
+      chooser_position=[103.8      53.76923            33      7.769231]
+      chooser_visible='off'
+      timerMainControls_position=[4.6      72.7692         47.2      14.3846]
+      timerMainControls_visible='on'
+      pulseMaker_position=[2.4      35.1538         59.6      11.6923]
+      pulseMaker_visible='on'
+      advancedCycleGui_position=[134.6      51.76923            59      22.53846]
+      advancedCycleGui_visible='on'
+      notebook_position=[146.2      76.76923          81.2      12.76923]
+      notebook_visible='on'
+      notebookLine_position=[263.8      79.30769          79.8      6.076923]
+      notebookLine_visible='off'
+      imageGUI_position=[232.6      70.76923            67      19.38462]
+      imageGUI_visible='on'
+      channelGUI_position=[125.2      57.30769          37.2             9]
+      channelGUI_visible='off'
+      basicConfigurationGUI_position=[176.2      46.84615          71.2      28.69231]
+      basicConfigurationGUI_visible='off'
+      motorGUI_position=[3.8      56.7692         52.2      12.5385]
+      motorGUI_visible='on'
+      siGUI_ImagingControls_position=[57      72.7692         38.6      14.6154]
+      siGUI_ImagingControls_visible='on'
+      pcellControl_position=[102      77.76923          39.8      9.769231]
+      pcellControl_visible='on'
+      fieldAdjustGUI_position=[60.2      49.3846         47.6      20.2308]
+      fieldAdjustGUI_visible='on'
+      blaster_position=[243.6      42.53846          66.2      18.07692]
+      blaster_visible='off'
+      lmSettings_position=[67.4      31.3846           26      14.6154]
+      lmSettings_visible='on'
+      traceAnalyzer_position=[-238.8      44.07692          63.8      40.30769]
+      traceAnalyzer_visible='on'
+      physControls_position=[-71.8      23.6923         64.8      12.4615]
+      physControls_visible='off'
+      physsettings_position=[194      65.30769          66.2      21.30769]
+      physsettings_visible='off'
+      scope_position=[-90.2      41.3846         82.2      10.6923]
+      scope_visible='off'
+      scopeWindow_position=[-483  721  442  420]
+   endstructure
+   structure pcell
+      pcellScanning1=40
+      pcellFlyBack1=0
+      pcellDefaultLevel1=-1
+      pcellDualLevel1=0
+      pcellScanning2=0
+      pcellFlyBack2=0
+      pcellDefaultLevel2=-1
+      pcellDualLevel2=0
+      boxSize=10
+      pcellPowerCal1=
+      pcellPowerCal2=
+      pcellTablePath=''
+      pcellTableName1=''
+      pcellTableName2=''
+   endstructure
+   structure phys
+      structure daq
+      endstructure
+      structure internal
+         stripes=10
+      endstructure
+      structure settings
+         channelType0=3
+         channelType1=1
+         outputRate=10000
+         inputRate=10000
+         keepInMemory=1
+         autosavePassiveParam=1
+         multiClampPAPerVIn=2000
+         multiClampPAPerVOut=400
+         multiClampMVPerVIn=100
+         multiClampMVPerVOut=20
+         readGain0=1
+         readMode0=1
+         readGain1=1
+         readMode1=1
+         ADPrefix0='AD0'
+         acq0=1
+         disp0=1
+         avg0=1
+         ADPrefix1='AD1'
+         acq1=0
+         disp1=1
+         avg1=1
+         ADPrefix2='AD2'
+         acq2=0
+         disp2=1
+         avg2=1
+         ADPrefix3='AD3'
+         acq3=0
+         disp3=1
+         avg3=1
+         ADPrefix4='AD4'
+         acq4=0
+         disp4=1
+         avg4=1
+         ADPrefix5='AD5'
+         acq5=0
+         disp5=1
+         avg5=1
+         ADPrefix6='AD6'
+         acq6=0
+         disp6=1
+         avg6=1
+         ADPrefix7='AD7'
+         acq7=0
+         disp7=1
+         avg7=1
+      endstructure
+      structure cellParams
+      endstructure
+      structure scope
+         pulseWidthVC=10
+         pulseAmpVC=-5
+         pulseWidthCC=100
+         pulseAmpCC=-100
+         frequency=5
+      endstructure
+   endstructure
+   structure motor
+      offsetX=0
+      offsetY=0
+      offsetZ=0
+   endstructure
+   structure piezo
+   endstructure
+   structure laser
+   endstructure
+   structure spc
+      structure acq
+      endstructure
+      structure init
+      endstructure
+      structure internal
+      endstructure
+   endstructure
+   structure notebook
+   endstructure
+   configName='3channels128X128'
+   configPath='C:\MATLAB_LOCAL\Yao\ImagingConfigurations'
+   structure blaster
+      active=0
+      setupName='yao_blaster.mat'
+      setupPath='N:\Yao\electrophysiology\User_files_fromAndrewRig\'
+   endstructure
+   structure shutter
+   endstructure
+   structure navigator
+   endstructure
+   structure lm
+      lineMonitorActive=0
+      pollDuringWait=1
+      pollEachAcq=0
+      paramName1=''
+      paramName2=''
+      paramName3=''
+      paramName4=''
+      paramName5=''
+      paramName6=''
+      paramValue1=NaN
+      paramValue2=NaN
+      paramValue3=NaN
+      paramValue4=NaN
+      paramValue5=NaN
+      paramValue6=NaN
+      active1=0
+      active2=0
+      active3=0
+      active4=0
+      active5=0
+      active6=0
+      dev1=1
+      dev2=1
+      dev3=1
+      dev4=1
+      dev5=1
+      dev6=1
+      ad1=0
+      ad2=1
+      ad3=2
+      ad4=3
+      ad5=4
+      ad6=5
+      linear1=0
+      linear2=0
+      linear3=0
+      linear4=0
+      linear5=0
+      linear6=0
+      linearOffset1=0
+      linearOffset2=0
+      linearOffset3=0
+      linearOffset4=0
+      linearOffset5=0
+      linearOffset6=0
+      linearSlope1=1
+      linearSlope2=1
+      linearSlope3=1
+      linearSlope4=1
+      linearSlope5=1
+      linearSlope6=1
+      transformFunction1=''
+      transformFunction2=''
+      transformFunction3=''
+      transformFunction4=''
+      transformFunction5=''
+      transformFunction6=''
+      sigDigits1=3
+      sigDigits2=3
+      sigDigits3=3
+      sigDigits4=3
+      sigDigits5=3
+      sigDigits6=3
+   endstructure
+   structure analysis
+      setupPath='N:\Yao\electrophysiology\User_files_fromAndrewRig\analysis\'
+      setupName='Vm_calcium.ana'
+   endstructure
+endstructure

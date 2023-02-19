@@ -1,0 +1,209 @@
+structure state
+   user=''
+   structure db
+   endstructure
+   figurePath='C:\MATLAB_LOCAL\Yao\SavedFigures\estim\'
+   structure software
+   endstructure
+   structure init
+   endstructure
+   structure daq
+   endstructure
+   structure acq
+   endstructure
+   structure internal
+      saveHeaderAsTxt=0
+   endstructure
+   structure pulses
+      pulseSetName='FLIMRigYao_Physpulse'
+      pulseSetPath='C:\MATLAB_LOCAL\Yao\PulsePatterns\'
+      autoSavePatterns=1
+   endstructure
+   structure files
+      autoSave=1
+      automaticOverwrite=0
+   endstructure
+   structure timer
+      analysisFunctionPath=''
+   endstructure
+   structure cycle
+      cycleName='estim.cyc'
+      cyclePath='C:\MATLAB_LOCAL\Yao\Cycles\'
+   endstructure
+   structure windowPositions
+      chooser_position=[103.8      53.69231            33      7.769231]
+      chooser_visible='off'
+      timerMainControls_position=[6.4      71.5385         47.2      14.3846]
+      timerMainControls_visible='on'
+      pulseMaker_position=[139.8      42.61538          59.6      11.69231]
+      pulseMaker_visible='on'
+      advancedCycleGui_position=[58.2      47.8462           59      22.5385]
+      advancedCycleGui_visible='on'
+      notebook_position=[126.4      75.61538          81.2      12.76923]
+      notebook_visible='on'
+      notebookLine_position=[263.8      79.23077          79.8      6.076923]
+      notebookLine_visible='off'
+      physControls_position=[58.2      73.9231         64.8      12.4615]
+      physControls_visible='on'
+      physSettings_position=[194      65.30769          66.2      21.30769]
+      physSettings_visible='off'
+      scope_position=[-98      39.6154         82.2      10.6923]
+      scope_visible='on'
+      lmSettings_position=[103.8            47            26      14.61538]
+      lmSettings_visible='on'
+      traceAnalyzer_position=[-238.4            45          63.8      40.30769]
+      traceAnalyzer_visible='on'
+      scopeWindow_position=[-651  696  560  420]
+   endstructure
+   structure pcell
+   endstructure
+   structure phys
+      structure daq
+      endstructure
+      structure internal
+         stripes=10
+      endstructure
+      structure settings
+         channelType0=3
+         channelType1=1
+         outputRate=10000
+         inputRate=10000
+         keepInMemory=1
+         autosavePassiveParam=1
+         multiClampPAPerVIn=2000
+         multiClampPAPerVOut=400
+         multiClampMVPerVIn=100
+         multiClampMVPerVOut=20
+         readGain0=1
+         readMode0=1
+         readGain1=1
+         readMode1=1
+         ADPrefix0='AD0'
+         acq0=1
+         disp0=1
+         avg0=1
+         ADPrefix1='AD1'
+         acq1=0
+         disp1=1
+         avg1=1
+         ADPrefix2='AD2'
+         acq2=0
+         disp2=1
+         avg2=1
+         ADPrefix3='AD3'
+         acq3=0
+         disp3=1
+         avg3=1
+         ADPrefix4='AD4'
+         acq4=0
+         disp4=1
+         avg4=1
+         ADPrefix5='AD5'
+         acq5=0
+         disp5=1
+         avg5=1
+         ADPrefix6='AD6'
+         acq6=0
+         disp6=1
+         avg6=1
+         ADPrefix7='AD7'
+         acq7=0
+         disp7=1
+         avg7=1
+      endstructure
+      structure cellParams
+      endstructure
+      structure scope
+         pulseWidthVC=10
+         pulseAmpVC=-5
+         pulseWidthCC=100
+         pulseAmpCC=-100
+         frequency=5
+      endstructure
+   endstructure
+   structure motor
+   endstructure
+   structure piezo
+   endstructure
+   structure laser
+   endstructure
+   structure spc
+      structure acq
+      endstructure
+      structure init
+      endstructure
+      structure internal
+      endstructure
+   endstructure
+   structure notebook
+   endstructure
+   structure lm
+      lineMonitorActive=0
+      pollDuringWait=1
+      pollEachAcq=0
+      paramName1=''
+      paramName2=''
+      paramName3=''
+      paramName4=''
+      paramName5=''
+      paramName6=''
+      paramValue1=NaN
+      paramValue2=NaN
+      paramValue3=NaN
+      paramValue4=NaN
+      paramValue5=NaN
+      paramValue6=NaN
+      active1=0
+      active2=0
+      active3=0
+      active4=0
+      active5=0
+      active6=0
+      dev1=1
+      dev2=1
+      dev3=1
+      dev4=1
+      dev5=1
+      dev6=1
+      ad1=0
+      ad2=1
+      ad3=2
+      ad4=3
+      ad5=4
+      ad6=5
+      linear1=0
+      linear2=0
+      linear3=0
+      linear4=0
+      linear5=0
+      linear6=0
+      linearOffset1=0
+      linearOffset2=0
+      linearOffset3=0
+      linearOffset4=0
+      linearOffset5=0
+      linearOffset6=0
+      linearSlope1=1
+      linearSlope2=1
+      linearSlope3=1
+      linearSlope4=1
+      linearSlope5=1
+      linearSlope6=1
+      transformFunction1=''
+      transformFunction2=''
+      transformFunction3=''
+      transformFunction4=''
+      transformFunction5=''
+      transformFunction6=''
+      sigDigits1=3
+      sigDigits2=3
+      sigDigits3=3
+      sigDigits4=3
+      sigDigits5=3
+      sigDigits6=3
+   endstructure
+   structure analysis
+      setupPath='C:\MATLAB_LOCAL\Yao\analysis\'
+      setupName='estim.ana'
+   endstructure
+endstructure

@@ -1,0 +1,248 @@
+structure state
+   user=''
+   structure db
+      structure phys
+      endstructure
+      structure imaging
+      endstructure
+      structure cell
+      endstructure
+   endstructure
+   figurePath='C:\MATLAB_LOCAL\Yao\SavedFigures\'
+   structure software
+   endstructure
+   structure init
+      autoReadPMTOffsets=1
+   endstructure
+   structure daq
+   endstructure
+   structure acq
+      autoTrack=1
+      maxShift=30
+      trackerChannel=1
+      zStepSize=1
+      averaging=0
+      preStep=0.1
+      pmtOffsetChannel1=3.8107
+      pmtOffsetChannel2=1.6531
+      pmtOffsetChannel3=-8.4762
+      pmtOffsetAutoSubtractChannel1=0
+      pmtOffsetAutoSubtractChannel2=0
+      pmtOffsetAutoSubtractChannel3=0
+      pmtOffsetAutoSubtractChannel4=0
+      maxMode=0
+   endstructure
+   structure internal
+      saveHeaderAsTxt=1
+      currentObjective=63
+      selectionChannel=5
+      colorPlace=[2  1  3]
+      blastSliceRange=1
+      blastSliceOffset=0
+      keepAllSlicesInMemory=0
+      highPixelValue1=300
+      lowPixelValue1=0
+      highPixelValue2=300
+      lowPixelValue2=0
+      highPixelValue3=1000
+      lowPixelValue3=-1000
+      highPixelValue4=2000
+      lowPixelValue4=0
+      highPixelValue11=500
+      lowPixelValue11=0
+      highPixelValue12=500
+      lowPixelValue12=0
+      highPixelValue13=2000
+      lowPixelValue13=0
+      highPixelValue14=2000
+      lowPixelValue14=0
+   endstructure
+   structure pulses
+      pulseSetName='FLIMRigYao_pulse'
+      pulseSetPath='C:\MATLAB_LOCAL\Yao\PulsePatterns\'
+      autoSavePatterns=1
+   endstructure
+   structure files
+      autoSave=1
+      automaticOverwrite=0
+   endstructure
+   structure timer
+      analysisFunctionPath='C:\MATLAB_LOCAL\Yao\analysis\'
+   endstructure
+   structure cycle
+      cycleName='yc_imaging.cyc'
+      cyclePath='C:\MATLAB_LOCAL\Yao\Cycles\'
+   endstructure
+   structure windowPositions
+      image1_position=[20  189  350  350]
+      image2_position=[382  159  350  350]
+      image3_position=[384  189  350  350]
+      image4_position=[738  228  350  350]
+      image11_position=[11  127  350  350]
+      image12_position=[371  127  350  350]
+      image13_position=[729  127  350  350]
+      image14_position=[709  107  350  350]
+      maxImage1_position=[780  202  350  350]
+      maxImage2_position=[743  625  350  350]
+      maxImage3_position=[719  677  350  350]
+      maxImage4_position=[709  647  350  350]
+      maxImage11_position=[411  525  350  350]
+      maxImage12_position=[743  525  350  350]
+      maxImage13_position=[719  577  350  350]
+      maxImage14_position=[709  547  350  350]
+      compositeImage_position=[35  200  350  350]
+      chooser_position=[103.8      53.76923            33      7.769231]
+      chooser_visible='off'
+      timerMainControls_position=[6.4      71.6923         47.2      14.3846]
+      timerMainControls_visible='on'
+      pulseMaker_position=[125      55.53846          59.6      11.69231]
+      pulseMaker_visible='on'
+      advancedCycleGui_position=[61.6           47           59      22.5385]
+      advancedCycleGui_visible='on'
+      notebook_position=[164.8      75.84615          81.2      12.76923]
+      notebook_visible='on'
+      notebookLine_position=[263.8      79.30769          79.8      6.076923]
+      notebookLine_visible='off'
+      imageGUI_position=[297.8            69            67      19.38462]
+      imageGUI_visible='on'
+      channelGUI_position=[124.2      55.61538          37.2             9]
+      channelGUI_visible='off'
+      basicConfigurationGUI_position=[176.2      46.84615          71.2      28.69231]
+      basicConfigurationGUI_visible='off'
+      motorGUI_position=[5.6           57         52.2      12.5385]
+      motorGUI_visible='on'
+      siGUI_ImagingControls_position=[59.6      71.3846         38.6      14.6154]
+      siGUI_ImagingControls_visible='on'
+      pcellControl_position=[113.2      77.07692          39.8      9.769231]
+      pcellControl_visible='on'
+      fieldAdjustGUI_position=[188.6      51.30769          47.6      20.23077]
+      fieldAdjustGUI_visible='on'
+      blaster_position=[237.4      52.30769          66.2      18.07692]
+      blaster_visible='on'
+      lmSettings_position=[103.8            47            26      14.61538]
+      lmSettings_visible='on'
+      traceAnalyzer_position=[-228.2      43.84615          63.8      40.30769]
+      traceAnalyzer_visible='on'
+   endstructure
+   structure pcell
+      pcellScanning1=35
+      pcellFlyBack1=0
+      pcellDefaultLevel1=-1
+      pcellDualLevel1=0
+      pcellScanning2=0
+      pcellFlyBack2=0
+      pcellDefaultLevel2=-1
+      pcellDualLevel2=0
+      boxSize=10
+      pcellPowerCal1=
+      pcellPowerCal2=
+      pcellTablePath=''
+      pcellTableName1=''
+      pcellTableName2=''
+   endstructure
+   structure phys
+      structure daq
+      endstructure
+      structure internal
+      endstructure
+   endstructure
+   structure motor
+      offsetX=337790.5
+      offsetY=-175752.2
+      offsetZ=5450.73
+   endstructure
+   structure piezo
+   endstructure
+   structure laser
+   endstructure
+   structure spc
+      structure acq
+      endstructure
+      structure init
+      endstructure
+      structure internal
+      endstructure
+   endstructure
+   structure notebook
+   endstructure
+   configName='Channel13_128'
+   configPath='C:\MATLAB_LOCAL\Yao\ImagingConfigurations'
+   structure blaster
+      active=0
+      setupName='Yao_FLIM_Blaster.mat'
+      setupPath='N:\Yao\electrophysiology\user_files\configurations\'
+   endstructure
+   structure shutter
+   endstructure
+   structure navigator
+   endstructure
+   structure lm
+      lineMonitorActive=0
+      pollDuringWait=1
+      pollEachAcq=0
+      paramName1=''
+      paramName2=''
+      paramName3=''
+      paramName4=''
+      paramName5=''
+      paramName6=''
+      paramValue1=NaN
+      paramValue2=NaN
+      paramValue3=NaN
+      paramValue4=NaN
+      paramValue5=NaN
+      paramValue6=NaN
+      active1=0
+      active2=0
+      active3=0
+      active4=0
+      active5=0
+      active6=0
+      dev1=1
+      dev2=1
+      dev3=1
+      dev4=1
+      dev5=1
+      dev6=1
+      ad1=0
+      ad2=1
+      ad3=2
+      ad4=3
+      ad5=4
+      ad6=5
+      linear1=0
+      linear2=0
+      linear3=0
+      linear4=0
+      linear5=0
+      linear6=0
+      linearOffset1=0
+      linearOffset2=0
+      linearOffset3=0
+      linearOffset4=0
+      linearOffset5=0
+      linearOffset6=0
+      linearSlope1=1
+      linearSlope2=1
+      linearSlope3=1
+      linearSlope4=1
+      linearSlope5=1
+      linearSlope6=1
+      transformFunction1=''
+      transformFunction2=''
+      transformFunction3=''
+      transformFunction4=''
+      transformFunction5=''
+      transformFunction6=''
+      sigDigits1=3
+      sigDigits2=3
+      sigDigits3=3
+      sigDigits4=3
+      sigDigits5=3
+      sigDigits6=3
+   endstructure
+   structure analysis
+      setupPath='C:\MATLAB_LOCAL\Yao\analysis\'
+      setupName='sLTP.ana'
+   endstructure
+endstructure
